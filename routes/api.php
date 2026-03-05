@@ -1,8 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\RegisterUserController;
-use App\Http\Controllers\api\v1\UserSessionController;
-use App\Models\User;
+use App\Http\Controllers\Api\V1\UserSessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

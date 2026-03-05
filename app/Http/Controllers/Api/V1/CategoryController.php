@@ -17,4 +17,12 @@ class CategoryController extends Controller
             ->get()
             );
     }
+
+    public function show($category_id) {
+        return new CategoryResource(
+            QueryBuilder::for(Category::class)
+            ->allowedIncludes(Category::allowedIncludes())
+            ->findOrFail($category_id)
+        );
+    }
 }

@@ -22,23 +22,12 @@ class CategoryResource extends JsonResource
                 'icon' => $this->icon,
             ],
             'relationships' => [
-                'parent' => [
-                    'data' => $this->parent_id ? [
-                        'type' => 'category',
-                        'id' => $this->parent_id,
-                    ] : null,
-                    'links' => [
-                        'self' => route('categories.show', ['category' => $this->id])
-                    ]
-                ],
-                'children' => [
-                    'data' => [
-                        'type' => 'category',
-                    ]
-                ]
+                'parent',
+                'children',
             ],
             'included' => [
                 'parent' => new CategoryResource($this->whenLoaded('parent')),
+                'children' => CategoryResource::collection($this->whenLoaded('children')),
             ],
             'links' => ['self' => route('categories.show', ['category' => $this->id])],
         ];

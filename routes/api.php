@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\RegisterUserController;
 use App\Http\Controllers\Api\V1\UserSessionController;
 use Illuminate\Http\Request;
@@ -14,3 +15,5 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [UserSessionController::class, 'store']);
     Route::post('/logout', [UserSessionController::class, 'destroy'])->middleware('auth:sanctum');
 });
+
+Route::apiResource('categories', CategoryController::class)->middleware('auth:sanctum');

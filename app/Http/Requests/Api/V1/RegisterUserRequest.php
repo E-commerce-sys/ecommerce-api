@@ -26,7 +26,6 @@ class RegisterUserRequest extends BaseUserRequest
             'data.attributes.lastName' => ['required', 'string', 'max:255'],
             'data.attributes.email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'data.attributes.password' => ['required', 'string', 'min:8', 'confirmed'],
-            'data.attributes.address' => ['required', 'string', 'max:255'],
         ];
     }
 }

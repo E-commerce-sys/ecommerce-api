@@ -18,7 +18,9 @@ class CategoryResource extends JsonResource
             'type' => 'category',
             'id' => $this->id,
             'attributes' => [
-                'name' => $this->name,
+                'nameEn' => $this->name_en,
+                'nameAr' => $this->name_ar,
+                'nameKu' => $this->name_ku,
                 'icon' => $this->icon,
             ],
             'relationships' => [

@@ -16,7 +16,7 @@ jobs:
 
       # Step 2: Setup SSH
       - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.8.1
+        uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
@@ -36,8 +36,8 @@ jobs:
             # Generate Laravel app key (only if needed)
             php artisan key:generate
 
-            # Run migrations fresh with seeding
-            php artisan migrate:fresh --seed
+            # Run migrations with force to avoid confirmation prompt 
+            php artisan migrate --force
 
             # Optimize Laravel performance
             php artisan optimize

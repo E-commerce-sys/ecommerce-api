@@ -25,6 +25,8 @@ return new class extends Migration
             $table->integer('stock_quantity')->default(0);
             $table->boolean('is_best_selling')->default(false);
             $table->boolean('is_featured')->default(false);
+            $table->boolean('is_new_arrival')->default(false);
+            $table->string('new_arrival_image')->nullable();
             $table->decimal('average_rating', 3, 2)->default(0);
             $table->integer('rating_count')->default(0);
             $table->timestamps();

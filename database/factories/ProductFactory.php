@@ -26,6 +26,7 @@ class ProductFactory extends Factory
         $stock = $this->faker->numberBetween(0, 200);
         $ratingCount = $this->faker->numberBetween(0, 500);
         $isNewArrival = $this->faker->boolean(15);
+        $hasDiscount = $this->faker->boolean(15);
 
         return [
             'name_en'              => $product['en'] . ' ' . $suffix,
@@ -36,7 +37,8 @@ class ProductFactory extends Factory
             'description_ku'       => 'پێناسەی بەرهەم: ' . $this->faker->paragraph(3),
             'category_id'          => Category::inRandomOrder()->value('id'),
             'price'                => $this->faker->randomFloat(2, 10, 2000),
-            'discount_percentage'  => $discount,
+            'has_discount'         => $hasDiscount,
+            'discount_percentage'  => $hasDiscount ? $discount : 0,
             'stock_quantity'       => $stock,
             'is_best_selling'      => $this->faker->boolean(20),
             'is_featured'          => $this->faker->boolean(15),
@@ -48,6 +50,7 @@ class ProductFactory extends Factory
             'new_arrival_image' => $isNewArrival
                 ? 'https://picsum.photos/seed/' . $this->faker->unique()->word() . '/600/400'
                 : null,
+            'is_new' => $this->faker->boolean(10),
         ];
     }
 }

@@ -39,6 +39,8 @@ class Product extends Model
             AllowedFilter::exact('isBestSelling', 'is_best_selling'),
             AllowedFilter::exact('isFeatured', 'is_featured'),
             AllowedFilter::exact('isNewArrival', 'is_new_arrival'),
+            AllowedFilter::exact('isNew', 'is_new'),
+            AllowedFilter::exact('hasDiscount', 'has_discount'),
 
             AllowedFilter::scope('minPrice'),
             AllowedFilter::scope('maxPrice'),

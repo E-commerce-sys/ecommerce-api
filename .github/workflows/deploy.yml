@@ -3,49 +3,54 @@ name: CI/CD Backend Deploy
 on:
   push:
     branches:
-      - develop  # change to your branch if needed
+      - develop
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout your repo
+      # 1️⃣ Checkout repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Setup SSH
+      # 2️⃣ Start SSH agent and add private key
       - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.7.0
+        uses: webfactory/ssh-agent@v0.8.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      # Step 3: Deploy to EC2
+      # 3️⃣ Deploy to EC2
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            cd /var/www/ecommerce_api
 
-            # Reset local changes and pull latest code
+            cd /var/www/ecommerce-api
+
+            echo "Fixing permissions..."
+            sudo chown -R ubuntu:www-data /var/www/ecommerce-api
+
+            echo "Pulling latest code..."
             git reset --hard
             git pull origin develop
 
-            # Install PHP dependencies
+            echo "Installing PHP dependencies..."
             composer install --no-interaction --prefer-dist --optimize-autoloader
 
-            # Generate Laravel app key (only if needed)
-            php artisan key:generate
-
-            # Run migrations with force to avoid confirmation prompt 
+            echo "Running migrations..."
             php artisan migrate --force
 
-            # Optimize Laravel performance
+            echo "Optimizing Laravel..."
             php artisan optimize
 
-            # Set proper permissions for storage & cache
+            echo "Fixing Laravel writable directories..."
             sudo chown -R www-data:www-data storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
 
-            # Restart Nginx to apply changes
+            echo "Restarting services..."
+            sudo systemctl restart php8.2-fpm
             sudo systemctl restart nginx
+
+            echo "🚀 Deployment completed successfully"
+
           EOF

@@ -25,6 +25,7 @@ class ProductFactory extends Factory
         $discount = $this->faker->randomElement([0, 0, 0, 10, 15, 20, 25, 30, 35, 40]);
         $stock = $this->faker->numberBetween(0, 200);
         $ratingCount = $this->faker->numberBetween(0, 500);
+        $isNewArrival = $this->faker->boolean(15);
 
         return [
             'name_en'              => $product['en'] . ' ' . $suffix,
@@ -43,6 +44,10 @@ class ProductFactory extends Factory
                                         ? $this->faker->randomFloat(2, 1, 5)
                                         : 0,
             'rating_count'         => $ratingCount,
+            'is_new_arrival' => $isNewArrival,
+            'new_arrival_image' => $isNewArrival
+                ? 'https://picsum.photos/seed/' . $this->faker->unique()->word() . '/600/400'
+                : null,
         ];
     }
 }

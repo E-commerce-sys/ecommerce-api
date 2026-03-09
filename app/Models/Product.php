@@ -42,6 +42,12 @@ class Product extends Model
             AllowedFilter::scope('minPrice'),
             AllowedFilter::scope('maxPrice'),
             AllowedFilter::scope('priceBetween'),
+
+            AllowedFilter::exact('discountPercentage', 'discount_percentage'),
+
+            AllowedFilter::scope('minAverageRating'),
+            AllowedFilter::scope('maxAverageRating'),
+            AllowedFilter::scope('averageRatingBetween'),
         ];
     }
 
@@ -55,6 +61,18 @@ class Product extends Model
 
     public function scopePriceBetween($query, ...$prices) {
         return $query->whereBetween('price', $prices);
+    }
+    
+    public function scopeMinAverageRating($query, $average_rating) {
+        return $query->where('average_rating', '>=', $average_rating);
+    }
+
+    public function scopeMaxAverageRating($query, $average_rating) {
+        return $query->where('average_rating', '<=', $average_rating);
+    }
+
+    public function scopeAverageRatingBetween($query, ...$ratings) {
+        return $query->whereBetween('average_rating', $ratings);
     }
 
     public static function allowedIncludes() {

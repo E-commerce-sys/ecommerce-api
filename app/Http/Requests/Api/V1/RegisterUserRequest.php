@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\v1;
 
 use App\Http\Requests\Api\V1\BaseRequests\BaseUserRequest;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterUserRequest extends BaseUserRequest 
 {
@@ -25,7 +26,14 @@ class RegisterUserRequest extends BaseUserRequest
             'data.attributes.firstName' => ['required', 'string', 'max:255'],
             'data.attributes.lastName' => ['required', 'string', 'max:255'],
             'data.attributes.email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'data.attributes.password' => ['required', 'string', 'min:8', 'confirmed'],
+            'data.attributes.password' => [
+                'required',
+                 Password::min(8)
+                 ->mixedCase()
+                 ->numbers()
+                 ->symbols(),
+                 'confirmed'
+            ],
         ];
     }
 }

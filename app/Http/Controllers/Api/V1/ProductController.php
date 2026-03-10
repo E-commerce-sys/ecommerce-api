@@ -13,7 +13,8 @@ class ProductController extends Controller
         return ProductResource::collection(
             QueryBuilder::for(Product::class)
             ->allowedFilters(Product::allowedFilters())
-            ->allowedIncludes((Product::allowedIncludes()))
+            ->allowedSorts(Product::allowedSorts())
+            ->allowedIncludes('category')
             ->paginate()
         );
     }

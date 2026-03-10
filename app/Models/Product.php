@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 
 class Product extends Model
 {
@@ -78,9 +79,9 @@ class Product extends Model
         return $query->whereBetween('average_rating', $ratings);
     }
 
-    public static function allowedIncludes() {
+    public static function allowedSorts() {
         return [
-            'category'
+            AllowedSort::field('averageRating', 'average_rating'),
         ];
     }
 }

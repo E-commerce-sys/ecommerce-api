@@ -84,4 +84,10 @@ class Product extends Model
             AllowedSort::field('averageRating', 'average_rating'),
         ];
     }
+
+    public static function allowedIncludes() {
+        return [
+            'category'
+        ];
+    }
 }

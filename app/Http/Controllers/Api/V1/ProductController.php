@@ -14,7 +14,7 @@ class ProductController extends Controller
             QueryBuilder::for(Product::class)
             ->allowedFilters(Product::allowedFilters())
             ->allowedSorts(Product::allowedSorts())
-            ->allowedIncludes('category')
+            ->allowedIncludes(Product::allowedIncludes())
             ->paginate()
         );
     }

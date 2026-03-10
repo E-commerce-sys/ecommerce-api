@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - main
 
 jobs:
   deploy:
@@ -16,7 +17,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      # 2️⃣ Check if database folder changed
+      # 2️⃣ Detect database folder changes
       - name: Check database changes
         id: db_changes
         run: |
@@ -26,7 +27,7 @@ jobs:
             echo "db_changed=false" >> $GITHUB_OUTPUT
           fi
 
-      # 3️⃣ Start SSH agent and add private key
+      # 3️⃣ Setup SSH access
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.8.0
         with:
@@ -44,17 +45,27 @@ jobs:
 
             echo "Pulling latest code..."
             git reset --hard
-            git pull origin develop
+            git pull origin ${{ github.ref_name }}
 
             echo "Installing PHP dependencies..."
             composer install --no-interaction --prefer-dist --optimize-autoloader
 
+            echo "Checking database changes..."
+
             if [ "${{ steps.db_changes.outputs.db_changed }}" = "true" ]; then
-              echo "Database folder changed → Running migrate:fresh --seed"
-              php artisan migrate:fresh --seed
+
+              echo "Database folder changed."
+
+              if [ "${{ github.ref_name }}" = "main" ]; then
+                echo "Production branch detected → Running migrate"
+                php artisan migrate --force
+              else
+                echo "Develop branch detected → Running migrate:fresh --seed"
+                php artisan migrate:fresh --seed
+              fi
+
             else
-              echo "No database changes → Running migrate"
-              php artisan migrate
+              echo "No database changes detected → Skipping migrations"
             fi
 
             echo "Optimizing Laravel..."

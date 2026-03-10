@@ -17,5 +17,5 @@ Route::prefix('auth')->group(function () {
     Route::post('/logout', [UserSessionController::class, 'destroy'])->middleware('auth:sanctum');
 });
 
-Route::apiResource('categories', CategoryController::class)->middleware('auth:sanctum');
-Route::apiResource('products', ProductController::class)->middleware('auth:sanctum');
+Route::apiResource('categories', CategoryController::class);
+Route::apiResource('products', ProductController::class);

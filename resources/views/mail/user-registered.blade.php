@@ -7,7 +7,7 @@ Thank you for signing up for {{ config('app.name') }}. We're excited to have you
 Before you start exploring and shopping on our platform, please take a moment to verify your email address. This helps us keep your account secure and ensures you can create orders. 
 Simply click the button below to confirm your email address.
 
-<x-mail::button :url="{{ env('FRONTEND_ORIGIN')  }}">
+<x-mail::button :url="config('app.frontend_origin')">
 Verify My Email
 </x-mail::button>
 

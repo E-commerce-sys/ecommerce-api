@@ -14,7 +14,7 @@ class RegisterUserController extends ApiController
 
         $token = $user->createToken($user->email)->plainTextToken;
 
-        Mail::to($user->email)->send(new UserRegistered($user));
+        Mail::to($user->email)->queue(new UserRegistered($user));
 
         return $this->success(
             [

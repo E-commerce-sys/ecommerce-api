@@ -23,12 +23,20 @@ class RegisterUserRequest extends BaseUserRequest
     public function rules(): array
     {
         return [
-            'data.attributes.firstName' => ['required', 'string', 'max:255'],
-            'data.attributes.lastName' => ['required', 'string', 'max:255'],
-            'data.attributes.email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'data.attributes.firstName' => ['required', 'string', 'max:32', 'min:3', 'alpha'],
+            'data.attributes.lastName' => ['required', 'string', 'max:32', 'min:3', 'alpha'],
+            'data.attributes.email' => [
+                'required', 
+                'string', 
+                'email', 
+                'max:255', 
+                'unique:users,email',
+                'regex:/^[^@\s]+@[^@\s]+\.[^@\s]+$/'
+            ],
             'data.attributes.password' => [
                 'required',
                  Password::min(8)
+                 ->max(25)
                  ->mixedCase()
                  ->numbers()
                  ->symbols(),

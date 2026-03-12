@@ -81,6 +81,7 @@ class Product extends Model
 
     public static function allowedSorts() {
         return [
+            'price',
             AllowedSort::field('averageRating', 'average_rating'),
         ];
     }

@@ -32,6 +32,7 @@ class ProductResource extends JsonResource
                 'newArrivalImage' => $this->new_arrival_image,
                 'hasDiscount' => $this->has_discount,
                 'discountPercentage' => $this->discount_percentage,
+                'priceAfterDiscount' => $this->price - ($this->price * ($this->discount_percentage / 100)),
                 'averageRating' => $this->average_rating,
                 'ratingCount' => $this->rating_count,
             ],

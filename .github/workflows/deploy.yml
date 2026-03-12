@@ -71,9 +71,6 @@ jobs:
             echo "Optimizing Laravel..."
             php artisan optimize
 
-            echo "Restarting Laravel queue workers..."
-            sudo supervisorctl restart laravel-worker:*
-
             echo "Fixing Laravel writable directories..."
             sudo chown -R www-data:www-data storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache

@@ -27,7 +27,7 @@ jobs:
             echo "db_changed=false" >> $GITHUB_OUTPUT
           fi
 
-      # 3️⃣ Setup SSH access
+      # 3️⃣ Setup SSH
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.8.0
         with:
@@ -36,49 +36,55 @@ jobs:
       # 4️⃣ Deploy to EC2
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
 
             cd /var/www/ecommerce-api
 
-            echo "Fixing permissions..."
-            sudo chown -R ubuntu:www-data /var/www/ecommerce-api
+            echo "Fixing base permissions..."
+            sudo chown -R ubuntu:www-data .
 
             echo "Pulling latest code..."
             git reset --hard
             git pull origin ${{ github.ref_name }}
 
-            echo "Installing PHP dependencies..."
+            echo "Ensuring Laravel directories exist..."
+            mkdir -p storage/logs
+            mkdir -p bootstrap/cache
+
+            echo "Fixing Laravel writable permissions..."
+            sudo chown -R ubuntu:www-data storage bootstrap/cache
+            sudo chmod -R 775 storage bootstrap/cache
+
+            echo "Installing dependencies..."
             composer install --no-interaction --prefer-dist --optimize-autoloader
 
+            echo "Clearing Laravel caches..."
+            php artisan optimize:clear
+
             echo "Checking database changes..."
-
             if [ "${{ steps.db_changes.outputs.db_changed }}" = "true" ]; then
-
               echo "Database folder changed."
-
               if [ "${{ github.ref_name }}" = "main" ]; then
-                echo "Production branch detected → Running migrate"
+                echo "Production branch → migrate"
                 php artisan migrate --force
               else
-                echo "Develop branch detected → Running migrate:fresh --seed"
+                echo "Develop branch → migrate:fresh --seed"
                 php artisan migrate:fresh --seed
               fi
-
             else
-              echo "No database changes detected → Skipping migrations"
+              echo "No database changes detected"
             fi
 
             echo "Optimizing Laravel..."
             php artisan optimize
 
-            echo "Fixing Laravel writable directories..."
-            sudo chown -R www-data:www-data storage bootstrap/cache
-            sudo chmod -R 775 storage bootstrap/cache
-
             echo "Restarting services..."
             sudo systemctl restart php8.2-fpm
             sudo systemctl restart nginx
 
-            echo "🚀 Deployment completed successfully"
+            echo "Restarting queue workers..."
+            sudo supervisorctl restart all
+
+            echo "🚀 Deployment completed"
 
           EOF

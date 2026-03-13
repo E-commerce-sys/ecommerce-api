@@ -22,7 +22,7 @@ class ProductFactory extends Factory
 
         $product = $this->faker->randomElement($products);
         $suffix = $this->faker->bothify('?##');
-        $discount = $this->faker->randomElement([0, 0, 0, 10, 15, 20, 25, 30, 35, 40]);
+        $discount = $this->faker->randomElement([10, 15, 20, 25, 30, 35, 40]);
         $stock = $this->faker->numberBetween(0, 200);
         $ratingCount = $this->faker->numberBetween(0, 500);
         $isNewArrival = $this->faker->boolean(15);

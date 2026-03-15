@@ -6,7 +6,7 @@ Hello {{ $user->full_name }},
 
 Use the following **One-Time Password (OTP)** to verify your email address.
 
-# {{ $user->otp }}
+# {{ $otp }}
 
 This code will expire in **5 minutes**.
 

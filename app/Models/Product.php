@@ -18,6 +18,10 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function productColors() {
+        return $this->hasMany(ProductColor::class);
+    }
+
     public static function allowedFilters() {
         return [
             AllowedFilter::exact('nameEn', 'name_en'),
@@ -88,7 +92,8 @@ class Product extends Model
 
     public static function allowedIncludes() {
         return [
-            'category'
+            'category',
+            'productColors'
         ];
     }
 }

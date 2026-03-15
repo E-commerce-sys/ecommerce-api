@@ -18,15 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategorySeeder::class,
             ProductSeeder::class,
-            BannerSeeder::class
-        ]);
-
-        User::create([
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => 'john@gmail.com',
-            'address' => '123 Main St',
-            'password' => 'password',
+            BannerSeeder::class,
+            ProductColorSeeder::class,
         ]);
     }
 }

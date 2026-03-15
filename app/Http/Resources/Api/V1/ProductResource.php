@@ -43,12 +43,26 @@ class ProductResource extends JsonResource
                         'id' => $this->category_id,
                     ],
                     'links' => [
-                        'self' => 'todo'
+                        'related' => route('categories.show', ['category' => $this->category_id])
                     ]
-                ]
+                ],
+                'productColors' => $this->when(
+                    $this->relationLoaded('productColors'),
+                    fn() => [
+                        'data' => ProductColorResource::collection($this->productColors)
+                            ->map(fn($color) => [
+                                'type' => 'product-color',
+                                'id'   => $color->id,
+                            ]),
+                        'links' => [
+                            'related' => 'todo'
+                        ]
+                    ]
+                ),
             ],
             'included' => [
-                'category' => new CategoryResource($this->whenLoaded('category')),
+                'category'      => new CategoryResource($this->whenLoaded('category')),
+                'productColors' => ProductColorResource::collection($this->whenLoaded('productColors')),
             ],
             'links' => ['self' => route('products.show', ['product' => $this->id])],
         ];

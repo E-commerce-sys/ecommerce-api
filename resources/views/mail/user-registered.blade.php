@@ -1,20 +1,17 @@
 <x-mail::message>
-# Welcome to {{ config('app.name') }}! 🎉
 
-Hi {{ $user->first_name }},
+# Email Verification
 
-Thank you for signing up for {{ config('app.name') }}. We're excited to have you join our community!
-Before you start exploring and shopping on our platform, please take a moment to verify your email address. This helps us keep your account secure and ensures you can create orders. 
-Simply click the button below to confirm your email address.
+Hello {{ $user->full_name }},
 
-<x-mail::button :url="config('app.frontend_origin')">
-Verify My Email
-</x-mail::button>
+Use the following **One-Time Password (OTP)** to verify your email address.
 
-If you didn’t create an account with {{ config('app.name') }}, you can safely ignore this email.
+# {{ $otp }}
 
-We’re happy to have you here and hope you enjoy your experience with us!
+This code will expire in **5 minutes**.
+
+If you did not request this verification, please ignore this email.
 
 Thanks,<br>
-The {{ config('app.name') }} Team
+{{ config('app.name') }}
 </x-mail::message>

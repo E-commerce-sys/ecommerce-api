@@ -10,7 +10,11 @@ use Illuminate\Support\Facades\Mail;
 class RegisterUserController extends ApiController
 {
     public function store(RegisterUserRequest $request) {
-        $user = User::create($request->mappedAttributes());
+        $user = User::create([
+            ...$request->mappedAttributes(),
+            'otp' => random_int(100000, 999999),
+            'otp_expires_at' => now()->addMinutes(5)
+        ]);
 
         $token = $user->createToken($user->email)->plainTextToken;
 

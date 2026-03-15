@@ -35,7 +35,7 @@ class ProductFactory extends Factory
             'description_en'       => $this->faker->paragraph(3),
             'description_ar'       => 'وصف المنتج: ' . $this->faker->paragraph(3),
             'description_ku'       => 'پێناسەی بەرهەم: ' . $this->faker->paragraph(3),
-            'category_id'          => Category::inRandomOrder()->value('id'),
+            'category_id'          => Category::where('parent_id', '!=', null)->inRandomOrder()->value('id'),
             'price'                => $this->faker->randomFloat(2, 10, 2000),
             'has_discount'         => $hasDiscount,
             'discount_percentage'  => $hasDiscount ? $discount : 0,

@@ -17,6 +17,8 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [UserSessionController::class, 'store']);
     Route::post('/logout', [UserSessionController::class, 'destroy'])->middleware('auth:sanctum');
     Route::post('/verify-otp', [RegisterUserController::class, 'verifyOtp'])->middleware(['auth:sanctum', 'throttle:3,1']);
+    Route::post('/resend-otp', [RegisterUserController::class, 'resendOtp'])
+    ->middleware('auth:sanctum');
 });
 
 Route::apiResource('categories', CategoryController::class);

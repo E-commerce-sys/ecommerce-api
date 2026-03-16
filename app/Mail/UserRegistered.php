@@ -14,6 +14,8 @@ class UserRegistered extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public static int $expirationMinutes = 5;
+
     /**
      * Create a new message instance.
      */

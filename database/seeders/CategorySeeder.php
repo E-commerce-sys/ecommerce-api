@@ -144,7 +144,7 @@ class CategorySeeder extends Seeder
                 'name_en' => $category['name_en'],
                 'name_ar' => $category['name_ar'],
                 'name_ku' => $category['name_ku'],
-                'icon' => fake()->imageUrl(64, 64, 'business'),
+                'icon' => null,
                 'parent_id' => null,
             ]);
 
@@ -154,7 +154,7 @@ class CategorySeeder extends Seeder
                     'name_en' => $child['name_en'],
                     'name_ar' => $child['name_ar'],
                     'name_ku' => $child['name_ku'],
-                    'icon' => fake()->imageUrl(64, 64, 'business'),
+                    'icon' => config('app.server_base_url') . '/storage/subcategory-icons/' . $child['name_en'] . '.png',
                     'parent_id' => $parent->id,
                 ]);
             }

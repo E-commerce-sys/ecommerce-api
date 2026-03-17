@@ -123,6 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
     
-    'frontend_origin' => env('FRONTEND_ORIGIN', 'http://localhost:3000'),
+    'server_base_url' => env('SERVER_BASE_URL', 'https://api.exclusive.quest'),
 
 ];

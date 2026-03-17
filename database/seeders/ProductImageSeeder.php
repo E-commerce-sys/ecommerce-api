@@ -14,22 +14,11 @@ class ProductImageSeeder extends Seeder
      */
     public function run(): void
     {
-        $primaryProductImages = [
-            'http://51.21.2.193/storage/product-images/product-image1.png',
-            'http://51.21.2.193/storage/product-images/product-image2.png',
-            'http://51.21.2.193/storage/product-images/product-image3.png',
-            'http://51.21.2.193/storage/product-images/product-image4.png',
-            'http://51.21.2.193/storage/product-images/product-image5.png',
-            'http://51.21.2.193/storage/product-images/product-image6.png',
-            'http://51.21.2.193/storage/product-images/product-image7.png',
-            'http://51.21.2.193/storage/product-images/product-image8.png',
-            'http://51.21.2.193/storage/product-images/product-image9.png',
-            'http://51.21.2.193/storage/product-images/product-image10.png',
-            'http://51.21.2.193/storage/product-images/product-image11.png',
-            'http://51.21.2.193/storage/product-images/product-image12.png',
-            'http://51.21.2.193/storage/product-images/product-image13.png',
-            'http://51.21.2.193/storage/product-images/product-image14.png',
-        ];
+        $primaryProductImages = [];
+
+        for ($i = 1; $i <= 14; $i++) {
+            $primaryProductImages[] = config('app.server_base_url') . "/storage/product-images/product-image$i.png";
+        }
 
         Product::all()->each(function ($product) use ($primaryProductImages) {
             ProductImage::create([

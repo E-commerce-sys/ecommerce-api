@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\BannerController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\RegisterUserController;
 use App\Http\Controllers\Api\V1\UserSessionController;
@@ -24,3 +25,4 @@ Route::prefix('auth')->group(function () {
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
 Route::apiResource('banners', BannerController::class);
+Route::apiResource('contacts', ContactController::class);

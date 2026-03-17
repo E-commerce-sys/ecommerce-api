@@ -67,11 +67,11 @@ class RegisterUserController extends ApiController
     }
 
     public function resendOtp(Request $request) {
-        $request->validate([
-            'email' => 'required|email|exists:users,email',
-        ]);
+        $user = $request->user();
 
-        $user = User::where('email', $request->email)->first();
+        if ($user->email_verified_at) {
+            return $this->error('Email is already verified.', 409);
+        }
 
         if ($user->otp_expires_at && now()->lt($user->otp_expires_at->subMinutes(UserRegistered::$expirationMinutes - 1))) {
             return $this->error([
@@ -81,7 +81,7 @@ class RegisterUserController extends ApiController
 
         $otp = random_int(100000, 999999);
         $user->otp = Hash::make($otp);
-        $user->otp_expires_at = now()->addMinutes(5);
+        $user->otp_expires_at = now()->addMinutes(UserRegistered::$expirationMinutes);
         $user->save();
 
         Mail::to($user->email)->queue(new UserRegistered($user, $otp));

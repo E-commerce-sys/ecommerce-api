@@ -25,17 +25,6 @@ class ContactResource extends JsonResource
                 'message' => $this->message,
                 'is_read' => $this->is_read,
             ],
-            'relationships' => [
-                'user' => [
-                    'data' => [
-                        'type' => 'user',
-                        'id' => $this->user_id
-                    ]
-                ]
-            ],
-            'included' => [
-                'user' => new UserResource($this->whenLoaded('user')),
-            ],
             'links' => ['self' => route('contacts.show', ['contact' => $this->id])],
         ]; 
     }

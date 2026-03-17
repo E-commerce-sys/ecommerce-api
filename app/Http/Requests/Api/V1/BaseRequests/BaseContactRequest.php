@@ -12,7 +12,6 @@ class BaseContactRequest extends FormRequest
                 'data.attributes.email' => 'email',
                 'data.attributes.message' => 'message',
                 'data.attributes.phone' => 'phone',
-                'data.relationships.user.data.id' => 'user_id',
         ];
 
         $attributesToUpdate = [];

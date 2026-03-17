@@ -26,7 +26,6 @@ class StoreContactRequest extends BaseContactRequest
             'data.attributes.email' => 'required|email',
             'data.attributes.phone' => 'required|string',
             'data.attributes.message' => 'required|string|max:500',
-            'data.relationships.user.data.id' => 'required|exists:users,id',
         ];
     }
 }

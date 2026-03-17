@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('phone');
             $table->text('message');
             $table->boolean('is_read')->default(false);
-            $table->foreignId('user_id')->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }

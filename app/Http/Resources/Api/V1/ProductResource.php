@@ -31,7 +31,9 @@ class ProductResource extends JsonResource
                         'is_primary' => true
                     ]
                 )->value('image'),
-                'price' => $this->effective_price,
+                'effectivePrice' => $this->effective_price,
+                'originalPrice' => $this->price,
+                'stockQuantity' => $this->stock_quantity,
                 'isBestSelling' => $this->is_best_selling,
                 'isFeatured' => $this->is_featured,
                 'isNewArrival' => $this->is_new_arrival,

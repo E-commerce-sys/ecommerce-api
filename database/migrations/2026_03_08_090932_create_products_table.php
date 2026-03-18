@@ -23,6 +23,15 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->boolean('has_discount')->default(false);
             $table->integer('discount_percentage')->default(0);
+
+            // stored computed column
+            $table->decimal('effective_price', 8, 2)
+                ->storedAs('CASE WHEN has_discount = true AND discount_percentage > 0
+                    THEN ROUND((price * (1 - discount_percentage / 100.0))::numeric, 2)
+                    ELSE price END');
+
+            $table->index('effective_price');
+
             $table->integer('stock_quantity')->default(0);
             $table->boolean('is_best_selling')->default(false);
             $table->boolean('is_featured')->default(false);

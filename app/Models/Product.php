@@ -60,15 +60,15 @@ class Product extends Model
     }
 
     public function scopeMinPrice($query, $price) {
-        return $query->where('price', '>=', $price);
+        return $query->where('effective_price', '>=', $price);
     }
 
     public function scopeMaxPrice($query, $price) {
-        return $query->where('price', '<=', $price);
+        return $query->where('effective_price', '<=', $price);
     }
 
     public function scopePriceBetween($query, ...$prices) {
-        return $query->whereBetween('price', $prices);
+        return $query->whereBetween('effective_price', $prices);
     }
     
     public function scopeMinAverageRating($query, $average_rating) {
@@ -85,8 +85,8 @@ class Product extends Model
 
     public static function allowedSorts() {
         return [
-            'price',
             AllowedSort::field('averageRating', 'average_rating'),
+            AllowedSort::field('price', 'effective_price'),
         ];
     }
 

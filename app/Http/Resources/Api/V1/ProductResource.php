@@ -25,11 +25,13 @@ class ProductResource extends JsonResource
                 'descriptionEn' => $this->description_en,
                 'descriptionAr' => $this->description_ar,
                 'descriptionKu' => $this->description_ku,
-                'primaryImage' => ProductImage::where([
-                                                        'product_id' => $this->id,
-                                                        'is_primary' => true
-                                                    ])->value('image'),
-                'price' => $this->price,
+                'primaryImage' => ProductImage::where(
+                    [
+                        'product_id' => $this->id,
+                        'is_primary' => true
+                    ]
+                )->value('image'),
+                'price' => $this->effective_price,
                 'isBestSelling' => $this->is_best_selling,
                 'isFeatured' => $this->is_featured,
                 'isNewArrival' => $this->is_new_arrival,
@@ -37,7 +39,6 @@ class ProductResource extends JsonResource
                 'newArrivalImage' => $this->new_arrival_image,
                 'hasDiscount' => $this->has_discount,
                 'discountPercentage' => $this->discount_percentage,
-                'priceAfterDiscount' => $this->when($this->has_discount, $this->price - ($this->price * ($this->discount_percentage / 100))),
                 'averageRating' => $this->average_rating,
                 'ratingCount' => $this->rating_count,
             ],

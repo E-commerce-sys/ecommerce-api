@@ -20,7 +20,7 @@ return new class extends Migration
         Schema::create('wish_list_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('wishlist_id')->constrained('wish_lists')->onDelete('cascade');
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade')->unique();
             $table->timestamps(); 
         });
     }

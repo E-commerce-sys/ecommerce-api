@@ -33,7 +33,8 @@ class WishListItemResource extends JsonResource
                         'id' => $this->wishlist_id
                     ]
                 ]
-            ]
+            ],
+            'links' => ['self' => route('wish-list-items.show', ['wish_list_item' => $this->id])],
         ];
     }
 }

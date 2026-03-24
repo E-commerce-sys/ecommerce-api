@@ -42,6 +42,33 @@ return new class extends Migration
             $table->integer('rating_count')->default(0);
             $table->timestamps();
         });
+
+        Schema::create('product_images', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->string('image');
+            $table->boolean('is_primary')->default(false);
+            $table->timestamps();
+        });
+
+        Schema::create('product_colors', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('hex_code');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->integer('stock_quantity')->default(0);
+            $table->timestamps();
+        });
+
+        Schema::create('product_sizes', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('size_label');
+            $table->decimal('extra_price', 8, 2)->default(0);
+            $table->integer('stock_quantity')->default(0);
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -50,5 +77,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('products');
+        Schema::dropIfExists('product_images');
+        Schema::dropIfExists('product_colors');
+        Schema::dropIfExists('product_sizes');
     }
 };

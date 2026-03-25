@@ -24,11 +24,6 @@ class UserResource extends JsonResource
                 'email' => $this->email,
                 'address' => $this->address,
             ],
-            // 'included' => ResearchResource::collection($this->whenLoaded('researches')),
-            // 'links' => [
-            //     'self' => 'todo'
-            // ]
-
         ];
     }
 }

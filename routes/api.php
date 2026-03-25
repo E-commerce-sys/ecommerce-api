@@ -27,4 +27,6 @@ Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
 Route::apiResource('banners', BannerController::class);
 Route::apiResource('contacts', ContactController::class);
-Route::apiResource('wish-list-items', WishListItemController::class)->middleware('auth:sanctum');
+
+Route::post('wish-list-items', [WishListItemController::class, 'store'])->middleware('auth:sanctum');
+Route::get('wish-list-items', [WishListItemController::class, 'usersWishListItems'])->middleware('auth:sanctum');

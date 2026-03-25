@@ -39,11 +39,6 @@ class ProductResource extends JsonResource
                 'discountPercentage' => $this->discount_percentage,
                 'averageRating' => $this->average_rating,
                 'ratingCount' => $this->rating_count,
-                'isInWishList' => auth('sanctum')->check()
-                    ? $this->wishListItems
-                        ->where('wish_list_id', auth('sanctum')->user()->wish_list->id)
-                        ->isNotEmpty()
-                    : false,
             ],
             'relationships' => [
                 'category' => [

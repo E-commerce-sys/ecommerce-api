@@ -13,9 +13,4 @@ class WishListItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
-
-    function wishList()
-    {
-        return $this->belongsTo(WishList::class);
-    }
 }

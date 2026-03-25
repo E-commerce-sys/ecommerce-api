@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\RegisterUserController;
 use App\Http\Controllers\Api\V1\UserSessionController;
-use App\Http\Controllers\Api\V1\WishListController;
 use App\Http\Controllers\Api\V1\WishListItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,8 +27,4 @@ Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
 Route::apiResource('banners', BannerController::class);
 Route::apiResource('contacts', ContactController::class);
-
-Route::apiResource('wish-lists', WishListController::class)->except('show')->middleware('auth:sanctum');
-Route::get('wish-list', [WishListController::class, 'show'])->middleware('auth:sanctum')->name('wish-list.show');
-
 Route::apiResource('wish-list-items', WishListItemController::class)->middleware('auth:sanctum');

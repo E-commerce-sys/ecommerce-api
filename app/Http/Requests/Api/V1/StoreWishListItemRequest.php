@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\V1;
 
 use App\Http\Requests\Api\V1\BaseRequests\BaseWishListItemRequest;
+use Illuminate\Validation\Rule;
 
 class StoreWishListItemRequest extends BaseWishListItemRequest
 {
@@ -21,9 +22,8 @@ class StoreWishListItemRequest extends BaseWishListItemRequest
      */
     public function rules(): array
     {
-        $user = $this->user();
         return [
-            'data.relationships.product.data.id' => ['required', 'exists:products,id', 'unique:wish_list_items,product_id'],
+            'data.relationships.product.data.id' => ['required', 'exists:products,id', Rule::unique('wish_list_items', 'product_id')->where('user_id', $this->user()->id)],
         ];
     }
 }

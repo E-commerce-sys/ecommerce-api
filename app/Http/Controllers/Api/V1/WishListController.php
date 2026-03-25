@@ -15,6 +15,7 @@ class WishListController extends Controller
         return new WishListResource(
             QueryBuilder::for($wishlist)
             ->allowedIncludes(WishList::allowedIncludes())
+            ->with('items.product')
             ->firstOrFail()
         );
     }

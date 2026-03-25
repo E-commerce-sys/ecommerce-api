@@ -18,7 +18,7 @@ class WishListItemResource extends JsonResource
             'type' => 'wishListItem',
             'id' => $this->id,
             'attributes' => [
-                
+                'product' => new ProductResource($this->whenLoaded('product')),
             ],
             'relationships' => [
                 'product' => [

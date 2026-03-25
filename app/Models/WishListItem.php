@@ -14,8 +14,14 @@ class WishListItem extends Model
         return $this->belongsTo(Product::class);
     }
 
-    function wishList()
-    {
-        return $this->belongsTo(WishList::class);
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public static function allowedIncludes() {
+        return [
+            'product',
+            'user'
+        ];
     }
 }

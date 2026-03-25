@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Api\V1;
 
 use App\Models\ProductImage;
+use App\Models\WishListItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,12 +26,7 @@ class ProductResource extends JsonResource
                 'descriptionEn' => $this->description_en,
                 'descriptionAr' => $this->description_ar,
                 'descriptionKu' => $this->description_ku,
-                'primaryImage' => ProductImage::where(
-                    [
-                        'product_id' => $this->id,
-                        'is_primary' => true
-                    ]
-                )->value('image'),
+                'primaryImage' => $this->images->where('is_primary', true)->first()->image,
                 'effectivePrice' => $this->effective_price,
                 'originalPrice' => $this->price,
                 'stockQuantity' => $this->stock_quantity,

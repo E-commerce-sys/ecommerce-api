@@ -15,6 +15,7 @@ class ProductController extends Controller
             ->allowedFilters(Product::allowedFilters())
             ->allowedSorts(Product::allowedSorts())
             ->allowedIncludes(Product::allowedIncludes())
+            ->with(['images', 'wishListItems'])
             ->paginate()
         );
     }

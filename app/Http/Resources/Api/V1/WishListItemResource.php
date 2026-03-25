@@ -18,7 +18,7 @@ class WishListItemResource extends JsonResource
             'type' => 'wishListItem',
             'id' => $this->id,
             'attributes' => [
-                $this->whenLoaded('product', fn() => $this->product),
+                
             ],
             'relationships' => [
                 'product' => [
@@ -27,14 +27,17 @@ class WishListItemResource extends JsonResource
                         'id' => $this->product_id
                     ]
                 ],
-                'wishlist' => [
+                'user' => [
                     'data' => [
-                        'type' => 'wishlist',
-                        'id' => $this->wish_list_id
+                        'type' => 'user',
+                        'id' => $this->user_id
                     ]
                 ]
             ],
-            'links' => ['self' => route('wish-list-items.show', ['wish_list_item' => $this->id])],
+            'included' => [
+                'product' => new ProductResource($this->whenLoaded('product')),
+                'user' => new UserResource($this->whenLoaded('user')),
+            ]
         ];
     }
 }

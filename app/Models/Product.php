@@ -22,6 +22,14 @@ class Product extends Model
         return $this->hasMany(ProductColor::class);
     }
 
+    public function images() {
+        return $this->hasMany(ProductImage::class, 'product_id');
+    }
+
+    public function wishListItems() {
+        return $this->hasMany(WishListItem::class);
+    }
+
     public static function allowedFilters() {
         return [
             AllowedFilter::exact('nameEn', 'name_en'),

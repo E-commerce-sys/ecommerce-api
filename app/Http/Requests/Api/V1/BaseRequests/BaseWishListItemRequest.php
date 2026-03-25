@@ -24,7 +24,7 @@ class BaseWishListItemRequest extends FormRequest
     public function messages()
     {
         return [
-            'data.relationships.product.data.id.unique' => 'The product has already been added to the wishlist.',
+            'data.relationships.product.data.id.unique' => 'The product has already been added to your wishlist.',
         ];
     }
 }

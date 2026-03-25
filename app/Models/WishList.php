@@ -18,4 +18,11 @@ class WishList extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public static function allowedIncludes() {
+        return [
+            'items',
+            'user'
+        ];
+    }
 }

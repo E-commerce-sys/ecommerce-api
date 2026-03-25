@@ -20,23 +20,23 @@ class WishListResource extends JsonResource
             'attributes' => [],
             'relationships' => [
                 'user' => [
-                    'data`' => [
+                    'data' => [
                         'type' => 'user',
                         'id' => $this->user_id
                     ]
                 ],
-                'wishListItems' => $this->whenLoaded('wishListItems', fn() => [
+                'items' => $this->whenLoaded('items', fn() => [
                     'data' => WishListItemResource::collection($this->items)->map(fn($item) => [
                         'type' => 'wishlist-item',
                         'id' => $item->id
-                    ])
-                ])
-                ],
+                    ])]
+                )
+            ],
             'included' => [
                 'user' => new UserResource($this->whenLoaded('user')),
-                'wishListItems' => WishListItemResource::collection($this->whenLoaded('wishListItems')),
+                'items' => WishListItemResource::collection($this->whenLoaded('items')),
             ],
-            'links' => ['self' => route('wishlists.show', ['wishlist' => $this->id])],
+            'links' => ['self' => route('wish-list.show')]
         ];
     }
 }

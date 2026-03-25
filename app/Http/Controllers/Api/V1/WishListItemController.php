@@ -18,7 +18,7 @@ class WishListItemController extends Controller
         $wishlistItem = WishListItem::create(
             [
                 ...$request->mappedAttributes(),
-                'wishlist_id' => $wishlist->id
+                'wish_list_id' => $wishlist->id
             ]
         );
 

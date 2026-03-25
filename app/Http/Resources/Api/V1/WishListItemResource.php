@@ -30,7 +30,7 @@ class WishListItemResource extends JsonResource
                 'wishlist' => [
                     'data' => [
                         'type' => 'wishlist',
-                        'id' => $this->wishlist_id
+                        'id' => $this->wish_list_id
                     ]
                 ]
             ],

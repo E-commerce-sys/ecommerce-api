@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('wish_lists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('set null');
+            $table->foreignId('user_id')->constrained('users')->onDelete('set null')->unique();
             $table->timestamps();
         });
 
         Schema::create('wish_list_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wishlist_id')->constrained('wish_lists')->onDelete('cascade');
+            $table->foreignId('wish_list_id')->constrained('wish_lists')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade')->unique();
             $table->timestamps(); 
         });

@@ -23,7 +23,7 @@ class WishListItemController extends ApiController
     public function store(StoreWishListItemRequest $request) {
         $user = auth('sanctum')->user();
 
-        if ($user->wishListItems()->count() > 50) {
+        if ($user->wishListItems()->count() > 56) {
             return $this->error('You cannot have more than 50 products in your wish list!', 400);
         }
 
@@ -35,9 +35,13 @@ class WishListItemController extends ApiController
         return new WishListItemResource($wishlistItem);
     }
 
-    public function destroy($wishListItem_id) {
-        $wishListItem = auth('sanctum')->user()->wishListItems()->where('id', $wishListItem_id)->firstOrFail();
-        $wishListItem->delete();
+    public function destroy(Request $request) {
+        auth('sanctum')
+        ->user()
+        ->wishListItems()
+        ->where('product_id', $request->productId)
+        ->firstOrFail()
+        ->delete();
         return $this->ok([], 'Wish list item removed successfully!');
     }
 

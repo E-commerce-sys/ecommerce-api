@@ -21,7 +21,8 @@ class WishListItem extends Model
     public static function allowedIncludes() {
         return [
             'product',
-            'user'
+            'user',
+            'product.images'
         ];
     }
 }

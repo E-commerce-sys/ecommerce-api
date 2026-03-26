@@ -26,7 +26,7 @@ class ProductResource extends JsonResource
                 'descriptionEn' => $this->description_en,
                 'descriptionAr' => $this->description_ar,
                 'descriptionKu' => $this->description_ku,
-                'primaryImage' => $this->images->where('is_primary', true)->first()->image,
+                'primaryImage' => optional($this->images->firstWhere('is_primary', true))->image,
                 'effectivePrice' => $this->effective_price,
                 'originalPrice' => $this->price,
                 'stockQuantity' => $this->stock_quantity,

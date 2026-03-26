@@ -15,7 +15,14 @@ class ProductController extends Controller
             ->allowedFilters(Product::allowedFilters())
             ->allowedSorts(Product::allowedSorts())
             ->allowedIncludes(Product::allowedIncludes())
-            ->with(['images', 'wishListItems'])
+            ->with(['images'])
+            ->withExists(
+                [
+                    'wishListItems as is_in_wish_list' => function ($query) {
+                        $query->where('user_id', auth('sanctum')->id());
+                    }
+                ]
+            )
             ->paginate()
         );
     }

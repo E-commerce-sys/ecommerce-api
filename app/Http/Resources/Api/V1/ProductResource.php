@@ -39,6 +39,7 @@ class ProductResource extends JsonResource
                 'discountPercentage' => $this->discount_percentage,
                 'averageRating' => $this->average_rating,
                 'ratingCount' => $this->rating_count,
+                'isInWishList' => $this->when($request->routeIs('products.index'), $this->is_in_wish_list)
             ],
             'relationships' => [
                 'category' => [

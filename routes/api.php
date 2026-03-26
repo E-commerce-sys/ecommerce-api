@@ -31,3 +31,4 @@ Route::apiResource('contacts', ContactController::class);
 Route::get('wish-list-items', [WishListItemController::class, 'usersWishListItems'])->middleware('auth:sanctum');
 Route::post('wish-list-items', [WishListItemController::class, 'store'])->middleware('auth:sanctum');
 Route::delete('wish-list-items/{wishListItem}', [WishListItemController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('similar-products', [WishListItemController::class, 'getSimilarProducts'])->middleware('auth:sanctum');

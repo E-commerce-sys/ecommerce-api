@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\Api\V1\StoreWishListItemRequest;
+use App\Http\Resources\Api\V1\ProductResource;
 use App\Http\Resources\Api\V1\WishListItemResource;
 use App\Models\WishListItem;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class WishListItemController extends ApiController
@@ -14,18 +16,23 @@ class WishListItemController extends ApiController
         return WishListItemResource::collection(
             QueryBuilder::for($items)
             ->allowedIncludes(WishListItem::allowedIncludes())
-            ->get()
+            ->paginate(8)
         );
     }
 
     public function store(StoreWishListItemRequest $request) {
+        $user = auth('sanctum')->user();
+
+        if ($user->wishListItems()->count() > 50) {
+            return $this->error('You cannot have more than 50 products in your wish list!', 400);
+        }
+
         $wishlistItem = WishListItem::create([
             ...$request->mappedAttributes(),
             'user_id' => $request->user()->id
         ]);
 
         return new WishListItemResource($wishlistItem);
-
     }
 
     public function destroy($wishListItem_id) {
@@ -33,4 +40,12 @@ class WishListItemController extends ApiController
         $wishListItem->delete();
         return $this->ok([], 'Wish list item removed successfully!');
     }
+
+    public function getSimilarProducts(Request $request) {
+        $categoryIds = $request->query('categoryIds', '');
+        return ProductResource::collection(
+            WishListItem::getSimilarProducts($categoryIds)
+        );
+    }
+
 }

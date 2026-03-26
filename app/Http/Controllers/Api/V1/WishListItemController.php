@@ -16,7 +16,6 @@ class WishListItemController extends ApiController
         return WishListItemResource::collection(
             QueryBuilder::for($items)
             ->allowedIncludes(WishListItem::allowedIncludes())
-            ->with(['product.images'])
             ->get()
         );
     }

@@ -24,4 +24,15 @@ class WishListItem extends Model
             'user'
         ];
     }
+
+    public static function getSimilarProducts($categoryIds) {
+        $categoryIds = array_map('intval', explode(',', $categoryIds));
+        return Product::whereIn(
+            'category_id', $categoryIds
+        )
+        ->limit(4)
+        ->inRandomOrder()
+        ->with('images')
+        ->get();
+    }
 }

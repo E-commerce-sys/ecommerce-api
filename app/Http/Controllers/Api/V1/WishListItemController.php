@@ -16,7 +16,7 @@ class WishListItemController extends ApiController
         return WishListItemResource::collection(
             QueryBuilder::for($items)
             ->allowedIncludes(WishListItem::allowedIncludes())
-            ->get()
+            ->paginate(8)
         );
     }
 

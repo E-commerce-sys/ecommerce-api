@@ -25,7 +25,12 @@ class StoreCartItemRequest extends BaseCartItemRequest
         $productId = $this->input('data.relationships.product.data.id');
         return [
             'data.attributes.quantity' => ['required', 'integer', 'min:1'],
-            'data.relationships.product.data.id' => ['required', 'integer', 'exists:products,id'],
+            'data.relationships.product.data.id' => [
+                'required', 
+                'integer', 
+                'exists:products,id',
+                Rule::unique('cart_items', 'product_id')->where('cart_id', $this->user()->cart->id)
+            ],
             'data.relationships.productColor.data.id' => [
                 'sometimes',
                 'integer',

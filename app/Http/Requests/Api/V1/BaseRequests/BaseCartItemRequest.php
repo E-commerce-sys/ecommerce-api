@@ -23,4 +23,11 @@ class BaseCartItemRequest extends FormRequest
         }
         return $attributesToUpdate;
     } 
+
+    public function messages()
+    {
+        return [
+            'data.relationships.product.data.id.unique' => 'The product has already been added to your cart.',
+        ];
+    }
 }

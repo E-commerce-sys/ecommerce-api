@@ -57,6 +57,10 @@ return new class extends Migration
             $table->string('hex_code');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->integer('stock_quantity')->default(0);
+
+            // Composite keys
+            $table->unique(['id', 'product_id']);
+
             $table->timestamps();
         });
 
@@ -67,6 +71,10 @@ return new class extends Migration
             $table->decimal('extra_price', 8, 2)->default(0);
             $table->integer('stock_quantity')->default(0);
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+
+            // Composite keys
+            $table->unique(['id', 'product_id']);
+
             $table->timestamps();
         });
     }

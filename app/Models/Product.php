@@ -22,12 +22,20 @@ class Product extends Model
         return $this->hasMany(ProductColor::class);
     }
 
+    public function productSizes() {
+        return $this->hasMany(ProductSize::class);
+    }
+
     public function images() {
         return $this->hasMany(ProductImage::class, 'product_id');
     }
 
     public function wishListItems() {
         return $this->hasMany(WishListItem::class);
+    }
+
+    public function CartItems() {
+        return $this->hasMany(CartItem::class);
     }
 
     public static function allowedFilters() {

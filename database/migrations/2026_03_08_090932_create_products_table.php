@@ -32,7 +32,6 @@ return new class extends Migration
 
             $table->index('effective_price');
 
-            $table->integer('stock_quantity')->default(0);
             $table->boolean('is_best_selling')->default(false);
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_new_arrival')->default(false);
@@ -56,7 +55,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('hex_code');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->integer('stock_quantity')->default(0);
+
+            // Composite keys
+            $table->unique(['id', 'product_id']);
+
             $table->timestamps();
         });
 
@@ -65,8 +67,24 @@ return new class extends Migration
             $table->string('name');
             $table->string('size_label');
             $table->decimal('extra_price', 8, 2)->default(0);
-            $table->integer('stock_quantity')->default(0);
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+
+            // Composite keys
+            $table->unique(['id', 'product_id']);
+
+            $table->timestamps();
+        });
+
+        Schema::create('product_variants', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('color_id')->nullable()->constrained('product_colors')->onDelete('cascade');
+            $table->foreignId('size_id')->nullable()->constrained('product_sizes')->onDelete('cascade');
+            $table->integer('stock')->default(0);
+
+            // Composite keys
+            $table->unique(['product_id', 'color_id', 'size_id']);
+
             $table->timestamps();
         });
     }

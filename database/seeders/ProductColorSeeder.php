@@ -25,8 +25,14 @@ class ProductColorSeeder extends Seeder
             ['name' => 'Orange', 'hex_code' => '#FFA500'],
         ];
 
-        Product::all()->each(function ($product) use ($colors) {
-            // Assign 1–3 random unique colors per product
+        $allProducts = Product::all();
+        $halfCount = ceil($allProducts->count() / 2);
+
+        // Pick 50% of products randomly
+        $productsToColor = $allProducts->shuffle()->take($halfCount);
+
+        $productsToColor->each(function ($product) use ($colors) {
+            // Assign 1–3 random unique colors per selected product
             $selected = collect($colors)->shuffle()->take(rand(1, 3));
 
             foreach ($selected as $color) {
@@ -34,7 +40,6 @@ class ProductColorSeeder extends Seeder
                     'name'           => $color['name'],
                     'hex_code'       => $color['hex_code'],
                     'product_id'     => $product->id,
-                    'stock_quantity' => rand(0, 100),
                 ]);
             }
         });

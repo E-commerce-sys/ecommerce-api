@@ -29,7 +29,6 @@ class ProductResource extends JsonResource
                 'primaryImage' => optional($this->images->firstWhere('is_primary', true))->image,
                 'effectivePrice' => $this->effective_price,
                 'originalPrice' => $this->price,
-                'stockQuantity' => $this->stock_quantity,
                 'isBestSelling' => $this->is_best_selling,
                 'isFeatured' => $this->is_featured,
                 'isNewArrival' => $this->is_new_arrival,

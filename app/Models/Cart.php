@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductColor extends Model
+class Cart extends Model
 {
-    protected $table = 'product_colors';
+    protected $guarded = [];
 
-    protected $fillable = [
-        'name',
-        'hex_code',
-        'product_id',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function cartItems()
     {

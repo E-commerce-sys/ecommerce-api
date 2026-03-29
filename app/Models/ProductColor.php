@@ -14,4 +14,9 @@ class ProductColor extends Model
         'product_id',
         'stock_quantity',
     ];
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
 }

@@ -30,6 +30,10 @@ class Product extends Model
         return $this->hasMany(WishListItem::class);
     }
 
+    public function CartItems() {
+        return $this->hasMany(CartItem::class);
+    }
+
     public static function allowedFilters() {
         return [
             AllowedFilter::exact('nameEn', 'name_en'),

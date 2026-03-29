@@ -34,7 +34,7 @@ class Product extends Model
         return $this->hasMany(WishListItem::class);
     }
 
-    public function CartItems() {
+    public function cartItems() {
         return $this->hasMany(CartItem::class);
     }
 

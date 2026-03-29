@@ -40,7 +40,6 @@ class ProductColorSeeder extends Seeder
                     'name'           => $color['name'],
                     'hex_code'       => $color['hex_code'],
                     'product_id'     => $product->id,
-                    'stock_quantity' => rand(0, 100),
                 ]);
             }
         });

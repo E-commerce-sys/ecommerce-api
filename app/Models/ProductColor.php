@@ -12,7 +12,6 @@ class ProductColor extends Model
         'name',
         'hex_code',
         'product_id',
-        'stock_quantity',
     ];
 
     public function cartItems()

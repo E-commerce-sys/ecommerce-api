@@ -20,7 +20,6 @@ class ProductColorResource extends JsonResource
             'attributes' => [
                 'name' => $this->name,
                 'hexCode' => $this->hex_code,
-                'stockQuantity' => $this->stock_quantity,
             ],
             'relationships' => [
                 'product' => [

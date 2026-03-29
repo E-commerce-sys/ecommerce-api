@@ -34,7 +34,6 @@ class ProductSizeSeeder extends Seeder
                     'size_label'     => $size['size_label'],
                     'extra_price'    => $size['extra_price'],
                     'product_id'     => $product->id,
-                    'stock_quantity' => rand(0, 100),
                 ]);
             }
         });

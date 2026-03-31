@@ -18,22 +18,17 @@ class ProductSizeSeeder extends Seeder
             ['name' => 'XXL',    'size_label' => 'XXL','extra_price' => 10.00],
         ];
 
-        $allProducts = Product::all();
-        $halfCount = ceil($allProducts->count() / 2);
+        $products = Product::where('has_size', true)->get();
 
-        // Pick 50% of products randomly
-        $productsToSize = $allProducts->shuffle()->take($halfCount);
-
-        $productsToSize->each(function ($product) use ($sizes) {
-            // Assign 1–3 random unique sizes per selected product
+        $products->each(function ($product) use ($sizes) {
             $selected = collect($sizes)->shuffle()->take(rand(1, 3));
 
             foreach ($selected as $size) {
                 ProductSize::create([
-                    'name'           => $size['name'],
-                    'size_label'     => $size['size_label'],
-                    'extra_price'    => $size['extra_price'],
-                    'product_id'     => $product->id,
+                    'name'        => $size['name'],
+                    'size_label'  => $size['size_label'],
+                    'extra_price' => $size['extra_price'],
+                    'product_id'  => $product->id,
                 ]);
             }
         });

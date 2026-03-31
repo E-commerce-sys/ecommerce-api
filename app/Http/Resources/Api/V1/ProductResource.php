@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Api\V1;
 
-use App\Models\ProductImage;
-use App\Models\WishListItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -36,6 +34,8 @@ class ProductResource extends JsonResource
                 'newArrivalImage' => $this->new_arrival_image,
                 'hasDiscount' => $this->has_discount,
                 'discountPercentage' => $this->discount_percentage,
+                'hasSize' => $this->has_size,
+                'hasColor' => $this->has_color,
                 'averageRating' => $this->average_rating,
                 'ratingCount' => $this->rating_count,
                 'isInWishList' => $this->when($request->routeIs('products.index'), $this->is_in_wish_list)
@@ -50,6 +50,13 @@ class ProductResource extends JsonResource
                         'related' => route('categories.show', ['category' => $this->category_id])
                     ]
                 ],
+                'productSizes' => $this->when($this->relationLoaded('productSizes'), fn() => [
+                        'data' => ProductSizeResource::collection($this->productSizes)->map(fn($size) => [
+                                'type' => 'product-size',
+                                'id'   => $size->id,
+                            ]),
+                    ]
+                ),
                 'productColors' => $this->when($this->relationLoaded('productColors'), fn() => [
                         'data' => ProductColorResource::collection($this->productColors)->map(fn($color) => [
                                 'type' => 'product-color',
@@ -61,6 +68,7 @@ class ProductResource extends JsonResource
             'included' => [
                 'category'      => new CategoryResource($this->whenLoaded('category')),
                 'productColors' => ProductColorResource::collection($this->whenLoaded('productColors')),
+                'productSizes' => ProductSizeResource::collection($this->whenLoaded('productSizes')),
             ],
             'links' => ['self' => route('products.show', ['product' => $this->id])],
         ];

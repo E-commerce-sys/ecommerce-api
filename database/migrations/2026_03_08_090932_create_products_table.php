@@ -32,6 +32,8 @@ return new class extends Migration
 
             $table->index('effective_price');
 
+            $table->boolean('has_size');
+            $table->boolean('has_color');
             $table->boolean('is_best_selling')->default(false);
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_new_arrival')->default(false);

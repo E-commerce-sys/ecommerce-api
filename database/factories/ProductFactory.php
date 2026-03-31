@@ -39,6 +39,8 @@ class ProductFactory extends Factory
             'price'                => $this->faker->randomFloat(2, 10, 2000),
             'has_discount'         => $hasDiscount,
             'discount_percentage'  => $hasDiscount ? $discount : 0,
+            'has_size'             => $this->faker->boolean(50),
+            'has_color'            => $this->faker->boolean(50),
             'is_best_selling'      => $this->faker->boolean(20),
             'is_featured'          => $this->faker->boolean(15),
             'average_rating'       => $ratingCount > 0

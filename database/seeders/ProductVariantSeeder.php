@@ -18,7 +18,7 @@ class ProductVariantSeeder extends Seeder
             $sizes  = $product->productSizes;
 
             // CASE 1: Has both colors and sizes
-            if ($colors->isNotEmpty() && $sizes->isNotEmpty()) {
+            if ($product->has_size && $product->has_color) {
                 foreach ($colors as $color) {
                     foreach ($sizes as $size) {
                         ProductVariant::create([
@@ -32,7 +32,7 @@ class ProductVariantSeeder extends Seeder
             }
 
             // CASE 2: Only colors
-            elseif ($colors->isNotEmpty()) {
+            elseif ($product->has_color) {
                 foreach ($colors as $color) {
                     ProductVariant::create([
                         'product_id' => $product->id,
@@ -44,7 +44,7 @@ class ProductVariantSeeder extends Seeder
             }
 
             // CASE 3: Only sizes
-            elseif ($sizes->isNotEmpty()) {
+            elseif ($product->has_size) {
                 foreach ($sizes as $size) {
                     ProductVariant::create([
                         'product_id' => $product->id,

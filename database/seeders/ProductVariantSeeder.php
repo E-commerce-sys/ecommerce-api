@@ -25,7 +25,7 @@ class ProductVariantSeeder extends Seeder
                             'product_id' => $product->id,
                             'color_id'   => $color->id,
                             'size_id'    => $size->id,
-                            'stock'      => rand(0, 20),
+                            'stock'      => rand(0, 100),
                         ]);
                     }
                 }
@@ -38,7 +38,7 @@ class ProductVariantSeeder extends Seeder
                         'product_id' => $product->id,
                         'color_id'   => $color->id,
                         'size_id'    => null,
-                        'stock'      => rand(0, 20),
+                        'stock'      => rand(0, 100),
                     ]);
                 }
             }
@@ -50,9 +50,19 @@ class ProductVariantSeeder extends Seeder
                         'product_id' => $product->id,
                         'color_id'   => null,
                         'size_id'    => $size->id,
-                        'stock'      => rand(0, 20),
+                        'stock'      => rand(0, 100),
                     ]);
                 }
+            }
+
+            // CASE 4: No variants at all (simple product)
+            else {
+                ProductVariant::create([
+                    'product_id' => $product->id,
+                    'color_id'   => null,
+                    'size_id'    => null,
+                    'stock'      => rand(0, 100),
+                ]);
             }
         }
     }

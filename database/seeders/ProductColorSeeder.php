@@ -12,7 +12,7 @@ class ProductColorSeeder extends Seeder
     {
         $colors = [
             ['name' => 'Black',  'hex_code' => '#000000'],
-            ['name' => 'White',  'hex_code' => '#FFFFFF'],
+            ['name' => 'White',  'hex_code' => '#F5F5F5'],
             ['name' => 'Red',    'hex_code' => '#FF0000'],
             ['name' => 'Blue',   'hex_code' => '#0000FF'],
             ['name' => 'Green',  'hex_code' => '#008000'],

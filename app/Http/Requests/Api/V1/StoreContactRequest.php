@@ -22,9 +22,9 @@ class StoreContactRequest extends BaseContactRequest
     public function rules(): array
     {
         return [
-            'data.attributes.name' => 'required|string',
+            'data.attributes.name' => 'required|string|alpha|min:2|max:32',
             'data.attributes.email' => 'required|email',
-            'data.attributes.phone' => 'required|string',
+            'data.attributes.phone' => ['required', 'integer', 'digits:10', 'min:6', 'max:15'],
             'data.attributes.message' => 'required|string|max:500',
         ];
     }

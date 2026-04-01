@@ -47,7 +47,9 @@ class CartItemResource extends JsonResource
                     ]
                 ]
             ],
-            'included' => []
+            'included' => [
+                'product' => $this->when($this->relationLoaded('product'), fn() => new ProductResource($this->product))
+            ]
         ];
     }
 }

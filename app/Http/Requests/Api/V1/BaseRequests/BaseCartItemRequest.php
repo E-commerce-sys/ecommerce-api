@@ -28,6 +28,8 @@ class BaseCartItemRequest extends FormRequest
     {
         return [
             'data.relationships.product.data.id.unique' => 'The product has already been added to your cart.',
+            'data.relationships.productColor.data.id.required' => 'Please select a color.',
+            'data.relationships.productSize.data.id.required' => 'Please select a size.',
         ];
     }
 }

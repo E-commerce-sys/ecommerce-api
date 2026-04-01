@@ -37,5 +37,6 @@ Route::get('similar-products', [WishListItemController::class, 'getSimilarProduc
 
 Route::post('cart-items', [CartItemController::class, 'store'])->middleware('auth:sanctum');
 Route::delete('cart-items', [CartItemController::class, 'destroy'])->middleware('auth:sanctum');
+Route::patch('cart-items', [CartItemController::class, 'update'])->middleware('auth:sanctum');
 
 Route::get('user-cart', [CartController::class, 'show'])->middleware('auth:sanctum');

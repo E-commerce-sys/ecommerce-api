@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\BannerController;
+use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CartItemController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ContactController;
@@ -35,3 +36,5 @@ Route::delete('wish-list-items', [WishListItemController::class, 'destroy'])->mi
 Route::get('similar-products', [WishListItemController::class, 'getSimilarProducts'])->middleware('auth:sanctum');
 
 Route::post('cart-items', [CartItemController::class, 'store'])->middleware('auth:sanctum');
+
+Route::get('user-cart', [CartController::class, 'show'])->middleware('auth:sanctum');

@@ -17,4 +17,15 @@ class Cart extends Model
     {
         return $this->hasMany(CartItem::class);
     }
+
+    public static function allowedIncludes() {
+        return [
+                'cartItems',
+                'user', 
+                'cartItems.product',
+                'cartItems.product.images',
+                'cartItems.product.productColors',
+                'cartItems.product.productSizes'
+            ];
+    }
 }

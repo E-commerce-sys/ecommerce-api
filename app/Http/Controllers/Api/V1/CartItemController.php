@@ -2,8 +2,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\Api\V1\StoreCartItemRequest;
+use App\Http\Requests\Api\V1\UpdateCartItemRequest;
 use App\Http\Resources\Api\V1\CartItemResource;
 use App\Models\CartItem;
+use Illuminate\Http\Request;
 
 class CartItemController extends ApiController
 {
@@ -42,5 +44,34 @@ class CartItemController extends ApiController
         ]);
 
         return $this->success([], 'This product has been added to your cart', 201);
+    }
+
+    public function update(UpdateCartItemRequest $request) {
+        $cartItem = $request
+        ->user()
+        ->cart
+        ->cartItems()
+        ->where(
+            'product_id', $request->productId
+        )
+        ->firstOrFail();
+
+        $cartItem->update($request->mappedAttributes());
+
+        return $this->ok(
+            new CartItemResource($cartItem),
+            'Product was updated in your cart'
+        );
+    }
+
+    public function destroy(Request $request) {
+        auth('sanctum')
+        ->user()
+        ->cart
+        ->cartItems()
+        ->where('product_id', $request->productId)
+        ->firstOrFail()
+        ->delete();
+        return $this->ok([], 'Product was removed from your cart');
     }
 }

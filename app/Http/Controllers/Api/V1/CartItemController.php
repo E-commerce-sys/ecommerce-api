@@ -11,25 +11,36 @@ class CartItemController extends ApiController
     {
         $mappedAttributes = $request->mappedAttributes();
 
+        // cached cart
         $cart = $request->user()->cart;
 
         if ($cart->cartItems()->count() > 30) {
             return $this->error('You cannot have more than 30 products in your cart!', 400);
         }
 
-        $cartItem = CartItem::create([
+        $extraPrice = optional(
+            $request
+            ->product
+            ->productSizes
+            ->where(
+                'id', $mappedAttributes['product_size_id'] ?? null
+            )
+            ->first()
+        )
+        ->extra_price;
+
+        CartItem::create([
             ...$mappedAttributes,
             'cart_id'    => $cart->id,
-            'unit_price' => $request->product->effective_price, // used cached product
+            'unit_price' => $request->product->effective_price + ($extraPrice ?? 0), // cached product
         ]);
 
-        // Use a DB aggregate instead of loading all cart item models into memory
         $cart->update([
             'total_price' => $cart->cartItems->sum(function ($item) {
                 return $item->unit_price * $item->quantity;
             })
         ]);
 
-        return new CartItemResource($cartItem);
+        return $this->success([], 'This product has been added to your cart', 201);
     }
 }

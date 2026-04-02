@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1\Auth;
 
+use App\Http\Controllers\Api\V1\ApiController;
 use App\Http\Requests\Api\V1\RegisterUserRequest;
 use App\Http\Requests\Api\V1\VerifyOtpRequest;
 use App\Mail\UserRegistered;

@@ -28,27 +28,15 @@ class CartItemResource extends JsonResource
                         'id' => $this->cart_id
                     ]
                 ],
-                'product' => [
+                'productVariant' => [
                     'data' => [
-                        'type' => 'product',
-                        'id' => $this->product_id
+                        'type' => 'product-variant',
+                        'id' => $this->product_variant_id
                     ]
                 ],
-                'productColor' => [
-                    'data' => [
-                        'type' => 'productColor',
-                        'id' => $this->product_color_id
-                    ]
-                ],
-                'productSize' => [
-                    'data' => [
-                        'type' => 'productSize',
-                        'id' => $this->product_size_id
-                    ]
-                ]
             ],
             'included' => [
-                'product' => $this->when($this->relationLoaded('product'), fn() => new ProductResource($this->product))
+                'productVariant' => $this->when($this->relationLoaded('productVariant'), fn() => new ProductVariantResource($this->productVariant))
             ]
         ];
     }

@@ -21,4 +21,8 @@ class ProductVariant extends Model
     public function color() {
         return $this->belongsTo(ProductColor::class);
     }
+
+    public function cartItems() {
+        return $this->hasMany(CartItem::class);
+    }
 }

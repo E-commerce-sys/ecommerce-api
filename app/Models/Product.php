@@ -38,6 +38,10 @@ class Product extends Model
         return $this->hasMany(CartItem::class);
     }
 
+    public function variants() {
+        return $this->hasMany(ProductVariant::class);
+    }
+
     public static function allowedFilters() {
         return [
             AllowedFilter::exact('nameEn', 'name_en'),

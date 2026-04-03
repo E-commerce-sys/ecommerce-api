@@ -2,12 +2,11 @@
 namespace App\Http\Requests\Api\V1;
 
 use App\Http\Requests\Api\V1\BaseRequests\BaseCartItemRequest;
-use App\Models\Product;
-use Illuminate\Validation\Rule;
+use App\Models\ProductVariant;
 
 class StoreCartItemRequest extends BaseCartItemRequest
 {
-    public ?Product $product = null;
+    public ?ProductVariant $productVariant = null;
 
     public function authorize(): bool
     {
@@ -22,42 +21,22 @@ class StoreCartItemRequest extends BaseCartItemRequest
             $this->user()->cart()->firstOrCreate([])
         );
 
-        // caching product on the request
-        $productId = $this->input('data.relationships.product.data.id');
-        if ($productId) {
-            $this->product = Product::find((int) $productId);
+        // caching product variant on the request
+        $productVariantId = $this->input('data.relationships.productVariant.data.id');
+        if ($productVariantId) {
+            $this->productVariant = ProductVariant::find((int) $productVariantId);
         }
     }
 
     public function rules(): array
     {
-        $productId = $this->input('data.relationships.product.data.id');
-
         return [
             'data.attributes.quantity' => ['required', 'integer', 'min:1'],
 
-            'data.relationships.product.data.id' => [
+            'data.relationships.productVariant.data.id' => [
                 'required',
                 'integer',
-                'exists:products,id',
-                Rule::unique('cart_items', 'product_id')
-                    ->where('cart_id', $this->user()->cart->id), // uses cached relation
-            ],
-
-            'data.relationships.productColor.data.id' => [
-                Rule::requiredIf($this->product?->has_color ?? false),
-                Rule::prohibitedIf(!($this->product?->has_color ?? false)),
-                'integer',
-                Rule::exists('product_colors', 'id')
-                    ->where(fn($q) => $q->where('product_id', $productId)),
-            ],
-
-            'data.relationships.productSize.data.id' => [
-                Rule::requiredIf($this->product?->has_size ?? false),
-                Rule::prohibitedIf(!($this->product?->has_size ?? false)),
-                'integer',
-                Rule::exists('product_sizes', 'id')
-                    ->where(fn($q) => $q->where('product_id', $productId)),
+                'exists:product_variants,id',
             ],
         ];
     }

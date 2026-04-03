@@ -28,4 +28,8 @@ class CartItem extends Model
     {
         return $this->belongsTo(ProductColor::class);
     }
+
+    public function productVariant() {
+        return $this->belongsTo(ProductVariant::class);
+    }
 }

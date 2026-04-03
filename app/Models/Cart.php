@@ -21,11 +21,12 @@ class Cart extends Model
     public static function allowedIncludes() {
         return [
                 'cartItems',
-                'user', 
-                'cartItems.product',
-                'cartItems.product.images',
-                'cartItems.product.productColors',
-                'cartItems.product.productSizes'
+                'cartItems.productVariant.product',
+                'cartItems.productVariant.product.images',
+                'cartItems.productVariant.product.productColors',
+                'cartItems.productVariant.product.productSizes',
+                'cartItems.productVariant.size',
+                'cartItems.productVariant.color',
             ];
     }
 }

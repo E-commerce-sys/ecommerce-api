@@ -22,19 +22,31 @@ class CartItemController extends ApiController
 
         $extraPrice = optional(
             $request
-            ->product
-            ->productSizes
-            ->where(
-                'id', $mappedAttributes['product_size_id'] ?? null
-            )
-            ->first()
+            ->productVariant
+            ->size
         )
         ->extra_price;
 
+        $cartItem = $cart
+        ->cartItems()
+        ->where(
+            'product_variant_id', $mappedAttributes['product_variant_id']
+        )->first();
+
+        if ($cartItem) {
+            $cartItem->update([
+                'quantity' => $cartItem->quantity + $mappedAttributes['quantity']
+            ]);
+            return $this->success([], 'Cart updated', 201);
+        }  
+        
         CartItem::create([
             ...$mappedAttributes,
             'cart_id'    => $cart->id,
-            'unit_price' => $request->product->effective_price + ($extraPrice ?? 0), // cached product
+            'unit_price' => $request
+            ->productVariant
+            ->product
+            ->effective_price + ($extraPrice ?? 0), // cached product variant
         ]);
 
         $cart->update([
@@ -43,7 +55,7 @@ class CartItemController extends ApiController
             })
         ]);
 
-        return $this->success([], 'This product has been added to your cart', 201);
+        return $this->success([], 'Product was added to your cart', 201);
     }
 
     public function update(UpdateCartItemRequest $request) {
@@ -52,7 +64,7 @@ class CartItemController extends ApiController
         ->cart
         ->cartItems()
         ->where(
-            'product_id', $request->productId
+            'id', $request->cartItemId
         )
         ->firstOrFail();
 
@@ -65,11 +77,12 @@ class CartItemController extends ApiController
     }
 
     public function destroy(Request $request) {
+        // dd($request->cartItem)
         auth('sanctum')
         ->user()
         ->cart
         ->cartItems()
-        ->where('product_id', $request->productId)
+        ->where('id', $request->cartItemId)
         ->firstOrFail()
         ->delete();
         return $this->ok([], 'Product was removed from your cart');

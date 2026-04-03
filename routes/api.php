@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\Auth\RegisterUserController;
 use App\Http\Controllers\Api\V1\Auth\UserSessionController;
+use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\WishListItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,10 @@ Route::prefix('auth')->group(function () {
     Route::post('/resend-otp', [RegisterUserController::class, 'resendOtp'])
     ->middleware('auth:sanctum');
 });
+
+Route::get('user', [UserController::class, 'show'])->middleware('auth:sanctum');
+Route::delete('user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
+Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctum');
 
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);

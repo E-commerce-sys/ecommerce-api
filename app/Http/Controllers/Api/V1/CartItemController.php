@@ -64,7 +64,7 @@ class CartItemController extends ApiController
         ->cart
         ->cartItems()
         ->where(
-            'product_id', $request->productId
+            'id', $request->cartItemId
         )
         ->firstOrFail();
 
@@ -77,11 +77,12 @@ class CartItemController extends ApiController
     }
 
     public function destroy(Request $request) {
+        // dd($request->cartItem)
         auth('sanctum')
         ->user()
         ->cart
         ->cartItems()
-        ->where('product_id', $request->productId)
+        ->where('id', $request->cartItemId)
         ->firstOrFail()
         ->delete();
         return $this->ok([], 'Product was removed from your cart');

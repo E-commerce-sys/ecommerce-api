@@ -27,6 +27,8 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('user', [UserController::class, 'show'])->middleware('auth:sanctum');
+Route::delete('user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
+Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctum');
 
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);

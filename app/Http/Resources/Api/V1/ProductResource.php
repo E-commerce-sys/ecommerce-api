@@ -50,6 +50,13 @@ class ProductResource extends JsonResource
                         'related' => route('categories.show', ['category' => $this->category_id])
                     ]
                 ],
+                'variants' => $this->when($this->relationLoaded('variants'), fn() => [
+                        'data' => ProductVariantResource::collection($this->variants)->map(fn($variant) => [
+                                'type' => 'product-variant',
+                                'id'   => $variant->id,
+                            ]),
+                    ]
+                ),
                 'productSizes' => $this->when($this->relationLoaded('productSizes'), fn() => [
                         'data' => ProductSizeResource::collection($this->productSizes)->map(fn($size) => [
                                 'type' => 'product-size',
@@ -67,6 +74,7 @@ class ProductResource extends JsonResource
             ],
             'included' => [
                 'category'      => new CategoryResource($this->whenLoaded('category')),
+                'variants'      => ProductVariantResource::collection($this->whenLoaded('variants')),
                 'productColors' => ProductColorResource::collection($this->whenLoaded('productColors')),
                 'productSizes' => ProductSizeResource::collection($this->whenLoaded('productSizes')),
             ],

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\v1;
 
 use App\Http\Requests\Api\V1\BaseRequests\BaseUserRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class RegisterUserRequest extends BaseUserRequest 
@@ -30,7 +31,7 @@ class RegisterUserRequest extends BaseUserRequest
                 'string', 
                 'email', 
                 'max:255', 
-                'unique:users,email',
+                Rule::unique('users', 'email')->whereNull('deleted_at'),
                 'regex:/^[^@\s]+@[^@\s]+\.[^@\s]+$/'
             ],
             'data.attributes.password' => [

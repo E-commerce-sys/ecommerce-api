@@ -14,25 +14,50 @@ use Illuminate\Support\Facades\Mail;
 
 class RegisterUserController extends ApiController
 {
-    public function store(RegisterUserRequest $request) {
+    public function store(RegisterUserRequest $request)
+    {
+        $mappedAttributes = $request->mappedAttributes();
         $otp = random_int(100000, 999999);
-        $user = User::create([
-            ...$request->mappedAttributes(),
-            'otp' => Hash::make($otp),
-            'otp_expires_at' => now()->addMinutes(UserRegistered::$expirationMinutes)
-        ]);
+        $otpData = [
+            'otp'            => Hash::make($otp),
+            'otp_expires_at' => now()->addMinutes(UserRegistered::$expirationMinutes),
+        ];
+
+        // Check if a soft-deleted user exists with the same email
+        $existingUser = User::withTrashed()
+            ->where('email', $mappedAttributes['email'])
+            ->first();
+
+        $isRestored = false;
+
+        if ($existingUser?->trashed()) {
+            $existingUser->restore();
+            $existingUser->update([
+                ...$mappedAttributes,
+                ...$otpData,
+            ]);
+            $user = $existingUser->fresh();
+            $isRestored = true;
+        } else {
+            $user = User::create([
+                ...$mappedAttributes,
+                ...$otpData,
+            ]);
+        }
 
         $token = $user->createToken($user->email)->plainTextToken;
-
         Mail::to($user->email)->queue(new UserRegistered($user, $otp));
 
         return $this->success(
             [
-                'token' => $token,
-                'user' => $user
+                'token'        => $token,
+                'user'         => $user,
+                'is_restored'  => $isRestored,
             ],
-            'User registered successfully',
-            201
+            $isRestored
+                ? 'User account restored successfully'
+                : 'User registered successfully',
+            $isRestored ? 200 : 201
         );
     }
 

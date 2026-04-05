@@ -1,13 +1,14 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Auth\RegisterUserController;
+use App\Http\Controllers\Api\V1\Auth\UserSessionController;
 use App\Http\Controllers\Api\V1\BannerController;
 use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CartItemController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ContactController;
+use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ProductController;
-use App\Http\Controllers\Api\V1\Auth\RegisterUserController;
-use App\Http\Controllers\Api\V1\Auth\UserSessionController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\WishListItemController;
 use Illuminate\Http\Request;
@@ -45,3 +46,5 @@ Route::delete('cart-items', [CartItemController::class, 'destroy'])->middleware(
 Route::patch('cart-items', [CartItemController::class, 'update'])->middleware('auth:sanctum');
 
 Route::get('user-cart', [CartController::class, 'show'])->middleware('auth:sanctum');
+
+Route::post('order', [OrderController::class, 'store'])->middleware('auth:sanctum');

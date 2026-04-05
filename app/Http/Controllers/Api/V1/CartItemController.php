@@ -4,11 +4,16 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Requests\Api\V1\StoreCartItemRequest;
 use App\Http\Requests\Api\V1\UpdateCartItemRequest;
 use App\Http\Resources\Api\V1\CartItemResource;
+use App\Models\Cart;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 
 class CartItemController extends ApiController
 {
+    public $subtotal = null;
+    public $shipping = null;
+    public $total = null;
+
     public function store(StoreCartItemRequest $request)
     {
         $mappedAttributes = $request->mappedAttributes();
@@ -24,8 +29,7 @@ class CartItemController extends ApiController
             $request
             ->productVariant
             ->size
-        )
-        ->extra_price;
+        )->extra_price;
 
         $cartItem = $cart
         ->cartItems()
@@ -33,10 +37,19 @@ class CartItemController extends ApiController
             'product_variant_id', $mappedAttributes['product_variant_id']
         )->first();
 
+        // if cart item is already in the cart
         if ($cartItem) {
+            $this->calculateTotal($cart);
             $cartItem->update([
                 'quantity' => $cartItem->quantity + $mappedAttributes['quantity']
             ]);
+
+            $cart->update([
+                'subtotal' => $this->subtotal,
+                'shipping_cost' => $this->shipping,
+                'total_price' => $this->total,
+            ]);
+
             return $this->success([], 'Cart updated', 201);
         }  
         
@@ -49,10 +62,12 @@ class CartItemController extends ApiController
             ->effective_price + ($extraPrice ?? 0), // cached product variant
         ]);
 
+        $this->calculateTotal($cart);
+
         $cart->update([
-            'total_price' => $cart->cartItems->sum(function ($item) {
-                return $item->unit_price * $item->quantity;
-            })
+            'subtotal' => $this->subtotal,
+            'shipping_cost' => $this->shipping,
+            'total_price' => $this->total,
         ]);
 
         return $this->success([], 'Product was added to your cart', 201);
@@ -86,5 +101,19 @@ class CartItemController extends ApiController
         ->firstOrFail()
         ->delete();
         return $this->ok([], 'Product was removed from your cart');
+    }
+
+    // helper function 
+    public function getSubTotal($cart) {
+        return $cart->cartItems->sum(function ($item) {
+            return $item->unit_price * $item->quantity;
+        });
+    }
+
+    // helper function
+    public function calculateTotal($cart) {
+        $this->subtotal = $this->getSubTotal($cart);
+        $this->shipping = $this->subtotal >= Cart::$freeShippingLimit ? 0 : Cart::$shippingCost;
+        $this->total = $this->subtotal + $this->shipping;
     }
 }

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
+    public static $freeShippingLimit = 140;
+    public static $shippingCost = 10;
+    
     protected $guarded = [];
 
     public function user()

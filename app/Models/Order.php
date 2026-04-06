@@ -20,4 +20,16 @@ class Order extends Model
     public function orderItems() {
         return $this->hasMany(OrderItem::class);
     }
+
+    public static function allowedIncludes() {
+        return [
+            'orderItems',
+            'orderItems.productVariant.product',
+            'orderItems.productVariant.product.images',
+            'orderItems.productVariant.product.productColors',
+            'orderItems.productVariant.product.productSizes',
+            'orderItems.productVariant.size',
+            'orderItems.productVariant.color',
+        ];
+    }
 }

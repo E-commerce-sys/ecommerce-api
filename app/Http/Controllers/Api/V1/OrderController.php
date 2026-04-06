@@ -3,15 +3,25 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\Api\V1\StoreOrderRequest;
+use App\Http\Resources\Api\V1\OrderResource;
 use App\Models\Address;
 use App\Models\CartItem;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderController extends ApiController
 {
     public ?CartItem $outOfStockItem = null;
+
+    public function userOrders() {
+        return OrderResource::collection(
+            QueryBuilder::for(auth('sanctum')->user()->orders())
+            ->allowedIncludes(Order::allowedIncludes())
+            ->get()
+        );
+    }
 
     public function store(StoreOrderRequest $request) : JsonResponse {
         return DB::transaction(function () use ($request) {

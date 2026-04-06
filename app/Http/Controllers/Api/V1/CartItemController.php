@@ -129,7 +129,7 @@ class CartItemController extends ApiController
     // helper function
     public function calculateTotal($cart) {
         $this->subtotal = $this->getSubTotal($cart);
-        $this->shipping = $this->subtotal >= Cart::$freeShippingLimit ? 0 : Cart::$shippingCost;
+        $this->shipping = ($this->subtotal > Cart::$freeShippingLimit) || ($cart->cartItems->isEmpty()) ? 0 : Cart::$shippingCost;
         $this->total = $this->subtotal + $this->shipping;
     }
 }

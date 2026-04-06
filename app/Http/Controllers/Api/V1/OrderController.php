@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\Api\V1\StoreOrderRequest;
 use App\Models\Address;
+use App\Models\CartItem;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends ApiController
 {
+    public ?CartItem $outOfStockItem = null;
+
     public function store(StoreOrderRequest $request) : JsonResponse {
         return DB::transaction(function () use ($request) {
             $user = auth('sanctum')->user();
@@ -17,7 +20,16 @@ class OrderController extends ApiController
 
             if (!$cart || $cart->cartItems->isEmpty()) return $this->error('Your cart is empty!', 400);
 
-            $this->checkStock($cart);
+            if ($this->isOutOfStock($cart)) {
+                return $this->error(
+                    [
+                       'message' =>  'The product in ' . $this->outOfStockItem->productVariant->color->name . ' (size ' . $this->outOfStockItem->productVariant->size->size_label . ' ) is out of stock.',
+                       'outOfStockItemId' => $this->outOfStockItem->id,
+                    ],
+                    400
+                );
+            }
+
 
             $shippingAddressId = $this->resolveAddress($request, $user);
 
@@ -50,12 +62,14 @@ class OrderController extends ApiController
         
     }
 
-    public function checkStock($cart) {
+    public function isOutOfStock($cart) {
         foreach ($cart->cartItems as $cartItem) {
             if ($cartItem->productVariant->stock < $cartItem->quantity) {
-                return $this->error('Product out of stock!', 400);
+                $this->outOfStockItem = $cartItem;
+                return true;
             }
         }
+        return false;
     }
 
     private function resolveAddress($request, $user)

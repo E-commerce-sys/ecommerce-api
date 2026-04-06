@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Requests\Api\V1\StoreCartItemRequest;
 use App\Http\Requests\Api\V1\UpdateCartItemRequest;
 use App\Http\Resources\Api\V1\CartItemResource;
+use App\Http\Resources\Api\V1\CartResource;
 use App\Models\Cart;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
@@ -85,22 +86,37 @@ class CartItemController extends ApiController
 
         $cartItem->update($request->mappedAttributes());
 
+        $this->calculateTotal($cartItem->cart);
+
+        $cartItem->cart->update([
+            'subtotal' => $this->subtotal,
+            'shipping_cost' => $this->shipping,
+            'total_price' => $this->total,
+        ]);
+
         return $this->ok(
-            new CartItemResource($cartItem),
+            new CartResource($cartItem->cart),
             'Product was updated in your cart'
         );
     }
 
     public function destroy(Request $request) {
-        // dd($request->cartItem)
-        auth('sanctum')
-        ->user()
-        ->cart
+        $userCart = auth('sanctum')->user()->cart;
+        $userCart
         ->cartItems()
         ->where('id', $request->cartItemId)
         ->firstOrFail()
         ->delete();
-        return $this->ok([], 'Product was removed from your cart');
+        
+        $this->calculateTotal($userCart);
+
+        $userCart->update([
+            'subtotal' => $this->subtotal,
+            'shipping_cost' => $this->shipping,
+            'total_price' => $this->total,
+        ]);
+
+        return $this->ok(new CartResource($userCart), 'Product was removed from your cart');
     }
 
     // helper function 

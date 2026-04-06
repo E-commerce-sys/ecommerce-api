@@ -25,6 +25,7 @@ class BaseOrderRequest extends FormRequest
         $attributeMap = [
             'data.included.address.attributes.city' => 'city',
             'data.included.address.attributes.streetName' => 'street_name',
+            'data.included.address.attributes.houseNumber' => 'house_number',
         ];
 
         $attributesToUpdate = [];

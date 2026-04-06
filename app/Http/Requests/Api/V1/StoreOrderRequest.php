@@ -45,6 +45,11 @@ class StoreOrderRequest extends BaseOrderRequest
                 'min:3', 
                 'regex:/^[A-Za-z\s]+$/'
             ],
+            'data.included.address.attributes.houseNumber' => [
+                'sometimes',
+                'string',
+                'digits_between:1,100000'
+            ]
         ];
     }
 }

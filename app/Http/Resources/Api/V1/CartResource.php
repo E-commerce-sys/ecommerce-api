@@ -18,6 +18,8 @@ class CartResource extends JsonResource
             'type' => 'cart',
             'id' => $this->id,
             'attributes' => [
+                'shippingCost' => $this->shipping_cost,
+                'subtotal' => $this->subtotal,
                 'totalPrice' => $this->total_price
             ],
             'relationships' => [

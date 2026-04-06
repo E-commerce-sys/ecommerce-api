@@ -16,7 +16,10 @@ class OrderController extends ApiController
     public function store(StoreOrderRequest $request) : JsonResponse {
         return DB::transaction(function () use ($request) {
             $user = auth('sanctum')->user();
-            $cart = $user->cart;
+            $cart = $user->cart()->with([
+                'cartItems.productVariant.color', 
+                'cartItems.productVariant.size'
+            ])->first();
 
             if (!$cart || $cart->cartItems->isEmpty()) return $this->error('Your cart is empty!', 400);
 

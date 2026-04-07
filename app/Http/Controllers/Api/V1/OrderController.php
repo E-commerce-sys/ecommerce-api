@@ -79,7 +79,7 @@ class OrderController extends ApiController
     }
 
     public function update(UpdateOrderRequest $request, $order_id) {
-        $order = auth('sanctum')->user()->orders()->findOrFail($order_id);
+        $order = $request->order; // cached order
         $order->update($request->mappedAttributes());
         return $this->success(new OrderResource($order), 'Order updated successfully!');
     }

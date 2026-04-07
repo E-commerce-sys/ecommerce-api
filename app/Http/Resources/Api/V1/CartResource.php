@@ -37,7 +37,7 @@ class CartResource extends JsonResource
                 ])
             ],
             'included' => [
-                'cartItems' => $this->when($this->relationLoaded('cartItems'), fn() => CartItemResource::collection($this->cartItems))
+                'cartItems' => $this->when($this->relationLoaded('cartItems'), fn() => CartItemResource::collection($this->cartItems()->orderBy('created_at', 'desc')->get()))
             ]
         ];
     }

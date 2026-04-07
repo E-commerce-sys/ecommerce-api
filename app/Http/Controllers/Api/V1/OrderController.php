@@ -38,7 +38,7 @@ class OrderController extends ApiController
             if ($this->isOutOfStock($cart)) {
                 return $this->error(
                     [
-                       'message' =>  'The product in ' . $this->outOfStockItem->productVariant->color->name . ' (size ' . $this->outOfStockItem->productVariant->size->size_label . ' ) is out of stock.',
+                       'message' => "Oops! That's unfortunate.The selected options are currently out of stock! Review your cart.",
                        'outOfStockItemId' => $this->outOfStockItem->id,
                     ],
                     400

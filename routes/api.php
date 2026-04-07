@@ -53,3 +53,4 @@ Route::get('user-orders', [OrderController::class, 'userOrders'])->middleware('a
 
 Route::get('user-addresses', [AddressController::class, 'userAddresses'])->middleware('auth:sanctum');
 Route::post('address', [AddressController::class, 'store'])->middleware('auth:sanctum');
+Route::patch('user-addresses/{address_id}', [AddressController::class, 'update'])->middleware('auth:sanctum');

@@ -43,7 +43,6 @@ class StoreOrderRequest extends BaseOrderRequest
                 'string', 
                 'max:132', 
                 'min:3', 
-                'regex:/^[A-Za-z\s]+$/'
             ],
             'data.included.address.attributes.houseNumber' => [
                 'sometimes',

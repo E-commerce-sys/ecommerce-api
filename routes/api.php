@@ -52,3 +52,4 @@ Route::post('order', [OrderController::class, 'store'])->middleware('auth:sanctu
 Route::get('user-orders', [OrderController::class, 'userOrders'])->middleware('auth:sanctum');
 
 Route::get('user-addresses', [AddressController::class, 'userAddresses'])->middleware('auth:sanctum');
+Route::post('address', [AddressController::class, 'store'])->middleware('auth:sanctum');

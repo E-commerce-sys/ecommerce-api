@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->onDelete('cascade');
-            $table->string('house_number')->nullable();
+            $table->string('address_name')->nullable();
             $table->string('street_name');
             $table->string('city');
+            $table->string('house_number')->nullable();
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->string('zip_code')->nullable();

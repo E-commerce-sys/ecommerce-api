@@ -24,6 +24,7 @@ class Order extends Model
 
     public static function allowedIncludes() {
         return [
+            'user',
             'orderItems',
             'orderItems.productVariant.product',
             'orderItems.productVariant.product.images',

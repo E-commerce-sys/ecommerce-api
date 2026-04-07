@@ -41,14 +41,14 @@ class StoreOrderRequest extends BaseOrderRequest
                 Rule::requiredIf($this->boolean('isNewAddress')),
                 Rule::prohibitedIf(!$this->boolean('isNewAddress')),
                 'string', 
-                'max:32', 
+                'max:132', 
                 'min:3', 
                 'regex:/^[A-Za-z\s]+$/'
             ],
             'data.included.address.attributes.houseNumber' => [
                 'sometimes',
                 'string',
-                'digits_between:1,100000'
+                'alpha_num'
             ]
         ];
     }

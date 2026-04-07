@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AddressController;
 use App\Http\Controllers\Api\V1\Auth\RegisterUserController;
 use App\Http\Controllers\Api\V1\Auth\UserSessionController;
 use App\Http\Controllers\Api\V1\BannerController;
@@ -49,3 +50,6 @@ Route::get('user-cart', [CartController::class, 'show'])->middleware('auth:sanct
 
 Route::post('order', [OrderController::class, 'store'])->middleware('auth:sanctum');
 Route::get('user-orders', [OrderController::class, 'userOrders'])->middleware('auth:sanctum');
+
+Route::get('user-addresses', [AddressController::class, 'userAddresses'])->middleware('auth:sanctum');
+Route::post('address', [AddressController::class, 'store'])->middleware('auth:sanctum');

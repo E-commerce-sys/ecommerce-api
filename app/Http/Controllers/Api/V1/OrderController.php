@@ -19,6 +19,8 @@ class OrderController extends ApiController
         return OrderResource::collection(
             QueryBuilder::for(auth('sanctum')->user()->orders())
             ->allowedIncludes(Order::allowedIncludes())
+            ->allowedFilters(Order::allowedFilters())
+            ->orderBy('created_at', 'desc')
             ->get()
         );
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Address;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class Order extends Model
 {
@@ -30,6 +31,15 @@ class Order extends Model
             'orderItems.productVariant.product.productSizes',
             'orderItems.productVariant.size',
             'orderItems.productVariant.color',
+        ];
+    }
+
+    public static function allowedFilters() {
+        return [
+            'id',
+            'user_id',
+            'address_id',
+            AllowedFilter::exact('status', 'status'),
         ];
     }
 }

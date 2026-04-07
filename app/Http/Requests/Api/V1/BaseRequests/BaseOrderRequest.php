@@ -9,6 +9,7 @@ class BaseOrderRequest extends FormRequest
    public function mappedAttributes() : array {
         $attributeMap = [
             'data.relationships.shippingAddress.data.id' => 'shipping_address_id',
+            'data.attributes.status' => 'status',
         ];
 
         $attributesToUpdate = [];

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\Api\V1\StoreOrderRequest;
+use App\Http\Requests\Api\V1\UpdateOrderRequest;
 use App\Http\Resources\Api\V1\OrderResource;
 use App\Models\Address;
 use App\Models\CartItem;
@@ -75,6 +76,12 @@ class OrderController extends ApiController
         });
 
         
+    }
+
+    public function update(UpdateOrderRequest $request, $order_id) {
+        $order = auth('sanctum')->user()->orders()->findOrFail($order_id);
+        $order->update($request->mappedAttributes());
+        return $this->success(new OrderResource($order), 'Order updated successfully!');
     }
 
     public function isOutOfStock($cart) {

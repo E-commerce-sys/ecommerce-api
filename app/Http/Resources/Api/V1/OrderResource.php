@@ -22,7 +22,8 @@ class OrderResource extends JsonResource
                 'discountPercentage' => $this->discount_percentage,
                 'shippingCost' => $this->shipping_cost,
                 'subtotal' => $this->subtotal,
-                'totalPrice' => $this->total_price
+                'totalPrice' => $this->total_price,
+                'createdAt' => $this->created_at
             ],
             'relationships' => [
                 'user' => [

@@ -22,7 +22,8 @@ class UserSessionController extends ApiController
         if (!$user->hasVerifiedEmail()) {
             return $this->error([
                 'message' => 'Please verify your email address first.',
-                'userId' => $user->id
+                'userId' => $user->id,
+                'status' => 403
             ], 403);
         }
 

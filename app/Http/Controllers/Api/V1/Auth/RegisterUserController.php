@@ -45,12 +45,10 @@ class RegisterUserController extends ApiController
             ]);
         }
 
-        $token = $user->createToken($user->email)->plainTextToken;
         Mail::to($user->email)->queue(new UserRegistered($user, $otp));
 
         return $this->success(
             [
-                'token'        => $token,
                 'user'         => $user,
                 'is_restored'  => $isRestored,
             ],
@@ -64,7 +62,7 @@ class RegisterUserController extends ApiController
     public function verifyOtp(VerifyOtpRequest $request) {
         $user = $request->user();
 
-        if ($user->email_verified_at) {
+        if ($user->hasVerifiedEmail()) {
             return response()->json([
                 'message' => 'Email is already verified.',
             ], 409);
@@ -88,7 +86,14 @@ class RegisterUserController extends ApiController
             'otp_expires_at'    => null,
         ]);
 
-        return $this->ok([], 'Email verified successfully!');
+        $token = $user->createToken(
+            $user->email,
+        )->plainTextToken;
+
+        return $this->ok([
+            'token' => $token,
+            'user' => $user
+        ], 'Email verified successfully!');
 
     }
 

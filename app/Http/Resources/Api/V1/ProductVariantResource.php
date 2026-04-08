@@ -17,6 +17,10 @@ class ProductVariantResource extends JsonResource
         return [
             'type' => 'product-variant',
             'id' => $this->id,
+            'attributes' => [
+                'stock' => $this->stock,
+                'isAvailable' => $this->stock === 0 ? false : true
+            ],
             'relationships' => [
                 'product' => [
                     'data' => [

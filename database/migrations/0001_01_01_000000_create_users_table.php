@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->string('zip_code')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 

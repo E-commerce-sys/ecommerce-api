@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
             $table->string('status')->default('pending');
-            $table->foreignId('shipping_address_id')->constrained('addresses')->onDelete('set null');
+            $table->foreignId('shipping_address_id')->constrained('addresses')->onDelete('restrict');
             $table->decimal('shipping_cost', 8, 2)->default(0);
             $table->integer('discount_percentage')->default(0);
             $table->decimal('subtotal', 8, 2)->default(0);

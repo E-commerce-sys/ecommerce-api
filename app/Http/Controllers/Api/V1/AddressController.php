@@ -27,4 +27,10 @@ class AddressController extends ApiController
         $address->update($request->mappedAttributes());
         return $this->success(new AddressResource($address), 'Address updated successfully!');
     }
+
+    public function destroy($address_id) {
+        $address = auth('sanctum')->user()->addresses()->findOrFail($address_id);
+        $address->delete();
+        return $this->ok([], 'Address deleted successfully!');
+    }
 }

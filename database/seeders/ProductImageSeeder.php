@@ -17,7 +17,10 @@ class ProductImageSeeder extends Seeder
         $primaryProductImages = [];
 
         for ($i = 1; $i <= 14; $i++) {
-            $primaryProductImages[] = config('app.server_base_url') . "/storage/product-images/product-image$i.png";
+            $primaryProductImages[] = 
+            "
+                https://exclusive-images-intern.s3.eu-north-1.amazonaws.com/all-images/product-images/product-image{$i}.png
+            ";
         }
 
         Product::all()->each(function ($product) use ($primaryProductImages) {

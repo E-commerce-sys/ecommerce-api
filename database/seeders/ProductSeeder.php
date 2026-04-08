@@ -26,7 +26,7 @@ class ProductSeeder extends Seeder
             'is_featured' => true,
             'is_new_arrival' => true,
             'is_new' => false,
-            'new_arrival_image' => config('app.server_base_url') . '/storage/banner-images/ps5.png',
+            'new_arrival_image' => config('app.server_base_url') . '/storage/is-new-arrival-images/ps5.png',
             'average_rating' => 4.80,
             'rating_count' => 2340,
         ]);
@@ -48,7 +48,7 @@ class ProductSeeder extends Seeder
             'is_featured' => true,
             'is_new_arrival' => true,
             'is_new' => true,
-            'new_arrival_image' => config('app.server_base_url') . '/storage/banner-images/woman.png',
+            'new_arrival_image' => config('app.server_base_url') . '/storage/is-new-arrival-images/woman.png',
             'average_rating' => 4.60,
             'rating_count' => 875,
         ]);
@@ -70,7 +70,7 @@ class ProductSeeder extends Seeder
             'is_featured' => false,
             'is_new_arrival' => true,
             'is_new' => false,
-            'new_arrival_image' => config('app.server_base_url') . '/storage/banner-images/speaker.png',
+            'new_arrival_image' => config('app.server_base_url') . '/storage/is-new-arrival-images/speaker.png',
             'average_rating' => 4.50,
             'rating_count' => 1120,
         ]);
@@ -92,7 +92,7 @@ class ProductSeeder extends Seeder
             'is_featured' => true,
             'is_new_arrival' => true,
             'is_new' => true,
-            'new_arrival_image' => config('app.server_base_url') . '/storage/banner-images/gucci.png',
+            'new_arrival_image' => config('app.server_base_url') . '/storage/is-new-arrival-images/gucci.png',
             'average_rating' => 4.90,
             'rating_count' => 530,
         ]);

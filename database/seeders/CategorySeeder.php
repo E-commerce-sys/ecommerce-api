@@ -154,7 +154,7 @@ class CategorySeeder extends Seeder
                     'name_en' => $child['name_en'],
                     'name_ar' => $child['name_ar'],
                     'name_ku' => $child['name_ku'],
-                    'icon' => config('app.server_base_url') . '/storage/subcategory-icons/' . $child['name_en'] . '.png',
+                    'icon' => "https://exclusive-images-intern.s3.eu-north-1.amazonaws.com/all-images/subcategory-icons/{$child['name_en']}.png",
                     'parent_id' => $parent->id,
                 ]);
             }

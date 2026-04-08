@@ -55,3 +55,4 @@ Route::patch('order/{order_id}', [OrderController::class, 'update'])->middleware
 Route::get('user-addresses', [AddressController::class, 'userAddresses'])->middleware('auth:sanctum');
 Route::post('address', [AddressController::class, 'store'])->middleware('auth:sanctum');
 Route::patch('user-addresses/{address_id}', [AddressController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('user-addresses/{address_id}', [AddressController::class, 'destroy'])->middleware('auth:sanctum');

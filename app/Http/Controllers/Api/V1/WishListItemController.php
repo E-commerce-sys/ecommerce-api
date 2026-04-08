@@ -45,12 +45,4 @@ class WishListItemController extends ApiController
         ->delete();
         return $this->ok([], 'Wish list item removed successfully!');
     }
-
-    public function getSimilarProducts(Request $request) {
-        $categoryIds = $request->query('categoryIds', '');
-        return ProductResource::collection(
-            WishListItem::getSimilarProducts($categoryIds)
-        );
-    }
-
 }

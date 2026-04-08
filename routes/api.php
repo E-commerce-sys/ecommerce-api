@@ -33,13 +33,13 @@ Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctu
 
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
+Route::get('similar-products', [ProductController::class, 'getSimilarProducts']);
 Route::apiResource('banners', BannerController::class);
 Route::apiResource('contacts', ContactController::class);
 
 Route::get('wish-list-items', [WishListItemController::class, 'usersWishListItems'])->middleware('auth:sanctum');
 Route::post('wish-list-items', [WishListItemController::class, 'store'])->middleware('auth:sanctum');
 Route::delete('wish-list-items', [WishListItemController::class, 'destroy'])->middleware('auth:sanctum');
-Route::get('similar-products', [WishListItemController::class, 'getSimilarProducts'])->middleware('auth:sanctum');
 
 Route::post('cart-items', [CartItemController::class, 'store'])->middleware('auth:sanctum');
 Route::delete('cart-items', [CartItemController::class, 'destroy'])->middleware('auth:sanctum');

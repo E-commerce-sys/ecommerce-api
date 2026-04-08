@@ -25,31 +25,4 @@ class WishListItem extends Model
             'product.images'
         ];
     }
-
-    public static function getSimilarProducts($categoryIds)
-    {
-        $categoryIds = array_filter(array_map('intval', explode(',', $categoryIds)));
-
-        if (empty($categoryIds)) {
-            return collect();
-        }
-
-        $user = auth('sanctum')->user();
-
-        $userWishListItemProductIds = $user
-            ? $user->wishListItems()->pluck('product_id')->toArray()
-            : [];
-
-        $query = Product::whereIn('category_id', $categoryIds);
-
-        if (!empty($userWishListItemProductIds)) {
-            $query->whereNotIn('id', $userWishListItemProductIds);
-        }
-
-        return $query
-            ->inRandomOrder()
-            ->limit(4)
-            ->with('images')
-            ->get();
-    }
 }

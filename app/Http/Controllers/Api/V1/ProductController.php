@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\V1\ProductResource;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ProductController extends Controller
@@ -32,6 +33,13 @@ class ProductController extends Controller
             QueryBuilder::for(Product::class)
             ->allowedIncludes(Product::allowedIncludes())
             ->findOrFail($product_id)
+        );
+    }
+
+    public function getSimilarProducts(Request $request) {
+        $categoryIds = $request->query('categoryIds', '');
+        return ProductResource::collection(
+            Product::getSimilarProducts($categoryIds)
         );
     }
 }

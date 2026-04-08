@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\Resources\Api\V1\ProductResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 
@@ -119,5 +121,32 @@ class Product extends Model
             'productColors',
             'productSizes'
         ];
+    }
+
+    public static function getSimilarProducts($categoryIds)
+    {
+        $categoryIds = array_filter(array_map('intval', explode(',', $categoryIds)));
+
+        if (empty($categoryIds)) {
+            return collect();
+        }
+
+        $user = auth('sanctum')->user();
+
+        $userWishListItemProductIds = $user
+            ? $user->wishListItems()->pluck('product_id')->toArray()
+            : [];
+
+        $query = Product::whereIn('category_id', $categoryIds);
+
+        if (!empty($userWishListItemProductIds)) {
+            $query->whereNotIn('id', $userWishListItemProductIds);
+        }
+
+        return $query
+            ->inRandomOrder()
+            ->limit(4)
+            ->with('images')
+            ->get();
     }
 }

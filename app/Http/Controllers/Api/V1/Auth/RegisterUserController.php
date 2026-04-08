@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Auth;
 use App\Http\Controllers\Api\V1\ApiController;
 use App\Http\Requests\Api\V1\RegisterUserRequest;
 use App\Http\Requests\Api\V1\VerifyOtpRequest;
+use App\Http\Resources\Api\V1\UserResource;
 use App\Mail\UserRegistered;
 use App\Models\User;
 use Carbon\Carbon;
@@ -49,7 +50,7 @@ class RegisterUserController extends ApiController
 
         return $this->success(
             [
-                'user'         => $user,
+                'user'         => new UserResource($user),  
                 'is_restored'  => $isRestored,
             ],
             $isRestored
@@ -60,7 +61,7 @@ class RegisterUserController extends ApiController
     }
 
     public function verifyOtp(VerifyOtpRequest $request) {
-        $user = $request->user();
+        $user = User::findOrFail($request->input('userId'));
 
         if ($user->hasVerifiedEmail()) {
             return response()->json([
@@ -92,13 +93,13 @@ class RegisterUserController extends ApiController
 
         return $this->ok([
             'token' => $token,
-            'user' => $user
+            'user' => new UserResource($user),
         ], 'Email verified successfully!');
 
     }
 
     public function resendOtp(Request $request) {
-        $user = $request->user();
+        $user = User::findOrFail($request->input('userId'));
 
         if ($user->email_verified_at) {
             return $this->error('Email is already verified.', 409);

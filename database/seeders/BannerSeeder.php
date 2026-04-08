@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Banner;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class BannerSeeder extends Seeder
@@ -15,33 +14,33 @@ class BannerSeeder extends Seeder
     {
         $banners = [
             [
-                'title' => 'Banner 1',
-                'subtitle' => 'Subtitle 1',
-                'image' => 'https://picsum.photos/seed/ad/600/400',
+                'title' => 'Pro. Beyond.',
+                'subtitle' => 'Experience the power of the iPhone 14 Pro.',
+                'image' => 'https://exclusive-images-intern.s3.eu-north-1.amazonaws.com/all-images/banner-images/iphone.png',
                 'link' => 'https://example.com/banner1'
             ],
             [
-                'title' => 'Banner 2',
-                'subtitle' => 'Subtitle 2',
-                'image' => 'https://picsum.photos/seed/ae/600/400',
+                'title' => 'Massive Sound. Anywhere.',
+                'subtitle' => 'Bring the party with the JBL Boombox 3.',
+                'image' => 'https://exclusive-images-intern.s3.eu-north-1.amazonaws.com/all-images/banner-images/J8LI.png',
                 'link' => 'https://example.com/banner2'
             ],
             [
-                'title' => 'Banner 3',
-                'subtitle' => 'Subtitle 3',
-                'image' => 'https://picsum.photos/seed/af/600/400',
+                'title' => 'Deep Purple Elegance',
+                'subtitle' => 'Sophisticated design meets unmatched performance.',
+                'image' => 'https://exclusive-images-intern.s3.eu-north-1.amazonaws.com/all-images/banner-images/iphone.png',
                 'link' => 'https://example.com/banner3'
             ],
             [
-                'title' => 'Banner 4',
-                'subtitle' => 'Subtitle 4',
-                'image' => 'https://picsum.photos/seed/ag/600/400',
+                'title' => 'Power Your Anthem',
+                'subtitle' => 'Iconic design with deep, powerful bass.',
+                'image' => 'https://exclusive-images-intern.s3.eu-north-1.amazonaws.com/all-images/banner-images/J8LI.png',
                 'link' => 'https://example.com/banner4'
             ],
             [
-                'title' => 'Banner 5',
-                'subtitle' => 'Subtitle 5',
-                'image' => 'https://picsum.photos/seed/ah/600/400',
+                'title' => 'The Ultimate Upgrade',
+                'subtitle' => 'Level up your mobile experience today.',
+                'image' => 'https://exclusive-images-intern.s3.eu-north-1.amazonaws.com/all-images/banner-images/iphone.png',
                 'link' => 'https://example.com/banner5'
             ]
         ];

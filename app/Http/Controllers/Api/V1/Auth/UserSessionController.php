@@ -20,7 +20,10 @@ class UserSessionController extends ApiController
         $user = User::where('email', $request->email)->first();
 
         if (!$user->hasVerifiedEmail()) {
-            return $this->error('Please verify your email first.', 403);
+            return $this->error([
+                'message' => 'Please verify your email address first.',
+                'userId' => $user->id
+            ], 403);
         }
 
         $token = $user->createToken(

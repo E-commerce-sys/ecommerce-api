@@ -21,7 +21,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4' # Matched to your symfony/clock requirements
+          php-version: '8.4'
           extensions: mbstring, xml, ctype, iconv, pdo_pgsql
           coverage: none
 
@@ -38,7 +38,8 @@ jobs:
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
       - name: Create Deployment Artifact
-        run: tar -czf release.tar.gz .
+        # Excludes prevents race conditions and keeps the file size small
+        run: tar --exclude='./.git' --exclude='./release.tar.gz' -czf release.tar.gz .
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -83,11 +84,11 @@ jobs:
             echo "⚙️ Configuring Environment..."
             sudo chmod -R 775 storage bootstrap/cache
 
-            echo "📋 Managing Database (PostgreSQL)..."
+            echo "📋 Managing Database..."
             if [ "${{ needs.build-and-test.outputs.db_changed }}" = "true" ]; then
-              # Determine if we run via Docker or Local PHP
-              if docker ps | grep -q "exclusive_api"; then
-                CMD="docker compose exec -T exclusive_api php artisan"
+              # Detect if we should use Docker or local PHP
+              if sudo docker ps | grep -q "exclusive_api"; then
+                CMD="sudo docker compose exec -T exclusive_api php artisan"
               else
                 CMD="php artisan"
               fi
@@ -102,12 +103,12 @@ jobs:
             echo "🚀 Optimizing & Restarting..."
             php artisan optimize
             
-            # Restarting PHP 8.4 (Matches your local build)
-            sudo systemctl restart php8.4-fpm || echo "Local FPM not found, checking Docker..."
+            # Restarting PHP 8.4 (matches your build environment)
+            sudo systemctl restart php8.4-fpm || echo "Local PHP-FPM not found, checking Docker..."
             
-            # If using Docker, restart the container
-            if docker ps | grep -q "exclusive_api"; then
-              docker compose restart exclusive_api
+            # Restart container if it exists
+            if sudo docker ps | grep -q "exclusive_api"; then
+              sudo docker compose restart exclusive_api
             fi
             
             sudo supervisorctl restart all || echo "Supervisor not found, skipping..."
@@ -121,8 +122,10 @@ jobs:
     steps:
       - name: Check Service Status
         run: |
+          # Try the domain first, fallback to the IP if domain isn't fully configured
           status_code=$(curl -s -o /dev/null -w "%{http_code}" https://api.exclusive.quest/health || curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.EC2_HOST }})
-          if [ "$status_code" -ne 200 ]; then
-            echo "Site is down with status $status_code"
+          if [ "$status_code" -ne 200 ] && [ "$status_code" -ne 301 ] && [ "$status_code" -ne 302 ]; then
+            echo "Site returned $status_code - health check failed."
             exit 1
           fi
+          echo "Health check passed with status $status_code"

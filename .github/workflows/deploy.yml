@@ -4,7 +4,6 @@ on:
   push:
     branches: [develop, main]
 
-# Prevent concurrent deployments to the same environment
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -22,8 +21,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
-          extensions: mbstring, xml, ctype, iconv, mysql
+          php-version: '8.4' # Matched to your symfony/clock requirements
+          extensions: mbstring, xml, ctype, iconv, pdo_pgsql
           coverage: none
 
       - name: Detect Database Changes
@@ -38,10 +37,6 @@ jobs:
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
-      # Optional: Run tests before even thinking about deploying
-      # - name: Run Tests
-      #   run: php artisan test
-
       - name: Create Deployment Artifact
         run: tar -czf release.tar.gz .
 
@@ -55,7 +50,6 @@ jobs:
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
-    # Use environments for better secret management (Settings > Environments)
     environment: 
       name: ${{ github.ref_name == 'main' && 'production' || 'development' }}
     
@@ -77,7 +71,7 @@ jobs:
       - name: Execute Remote Deployment
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            set -e # Exit immediately if a command fails
+            set -e 
             
             PROJECT_ROOT="/var/www/ecommerce-api"
             cd $PROJECT_ROOT
@@ -87,29 +81,40 @@ jobs:
             sudo chown -R ubuntu:www-data .
 
             echo "⚙️ Configuring Environment..."
-            # Ensure storage permissions are correct every time
             sudo chmod -R 775 storage bootstrap/cache
 
-            echo "📋 Managing Database..."
+            echo "📋 Managing Database (PostgreSQL)..."
             if [ "${{ needs.build-and-test.outputs.db_changed }}" = "true" ]; then
-              if [ "${{ github.ref_name }}" = "main" ]; then
-                php artisan migrate --force
+              # Determine if we run via Docker or Local PHP
+              if docker ps | grep -q "exclusive_api"; then
+                CMD="docker compose exec -T exclusive_api php artisan"
               else
-                php artisan migrate:fresh --seed --force
+                CMD="php artisan"
+              fi
+
+              if [ "${{ github.ref_name }}" = "main" ]; then
+                $CMD migrate --force
+              else
+                $CMD migrate:fresh --seed --force
               fi
             fi
 
             echo "🚀 Optimizing & Restarting..."
             php artisan optimize
-            sudo systemctl restart php8.2-fpm
             
-            # Restart Workers only if they exist
+            # Restarting PHP 8.4 (Matches your local build)
+            sudo systemctl restart php8.4-fpm || echo "Local FPM not found, checking Docker..."
+            
+            # If using Docker, restart the container
+            if docker ps | grep -q "exclusive_api"; then
+              docker compose restart exclusive_api
+            fi
+            
             sudo supervisorctl restart all || echo "Supervisor not found, skipping..."
             
             echo "✅ Deployment Successful"
           EOF
 
-  # Bonus: Final Health Check
   health-check:
     needs: deploy
     runs-on: ubuntu-latest

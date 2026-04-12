@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\StoreCategoryRequest;
 use App\Http\Resources\Api\V1\CategoryResource;
 use App\Models\Category;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class CategoryController extends Controller
+class CategoryController extends ApiController
 {
     public function index() {
         return CategoryResource::collection(
@@ -24,5 +25,11 @@ class CategoryController extends Controller
             ->allowedIncludes(Category::allowedIncludes())
             ->findOrFail($category_id)
         );
+    }
+
+    public function store(StoreCategoryRequest $request) {
+        $this->authorize('create', Category::class);
+        $category = Category::create($request->mappedAttributes());
+        return new CategoryResource($category);
     }
 }

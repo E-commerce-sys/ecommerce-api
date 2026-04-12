@@ -4,12 +4,15 @@ namespace App\Http\Requests\Api\V1\BaseRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BaseCartItemRequest extends FormRequest
+class BaseCategoryRequest extends FormRequest
 {
     public function mappedAttributes() : array {
         $attributeMap = [
-            'data.attributes.quantity' => 'quantity',
-            'data.relationships.productVariant.data.id' => 'product_variant_id',
+            'data.attributes.nameEn' => 'name_en',
+            'data.attributes.nameKu' => 'name_ku',
+            'data.attributes.nameAr' => 'name_ar',
+            'data.attributes.icon' => 'icon',
+            'data.relationships.parent.data.id' => 'parent_id',
         ];
 
         $attributesToUpdate = [];
@@ -20,12 +23,5 @@ class BaseCartItemRequest extends FormRequest
             }
         }
         return $attributesToUpdate;
-    } 
-
-    public function messages()
-    {
-        return [
-            
-        ];
-    }
+    }  
 }

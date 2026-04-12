@@ -40,11 +40,11 @@ class CartItemController extends ApiController
 
         // if cart item is already in the cart
         if ($cartItem) {
-            $this->calculateTotal($cart);
             $cartItem->update([
                 'quantity' => $cartItem->quantity + $mappedAttributes['quantity']
-            ]);
-
+            ]); 
+            $this->calculateTotal($cart);
+             
             $cart->update([
                 'subtotal' => $this->subtotal,
                 'shipping_cost' => $this->shipping,

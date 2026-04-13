@@ -22,9 +22,9 @@ class StoreCategoryRequest extends BaseCategoryRequest
     public function rules(): array
     {
         return [
-            // 'data.attributes.nameEn' => ['required', 'string', 'max:32', 'min:3'],
-            // 'data.attributes.nameKu' => ['required', 'string', 'max:32', 'min:3'],
-            // 'data.attributes.nameAr' => ['required', 'string', 'max:32', 'min:3'],
+            'data.attributes.nameEn' => ['required', 'string', 'max:32', 'min:3'],
+            'data.attributes.nameKu' => ['required', 'string', 'max:32', 'min:3'],
+            'data.attributes.nameAr' => ['required', 'string', 'max:32', 'min:3'],
             'data.attributes.icon' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'data.relationships.parent.data.id' => ['sometimes', 'integer', 'exists:categories,id'],
         ];

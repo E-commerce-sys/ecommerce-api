@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,6 +15,12 @@ class CategoryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $numberOfProducts = $this->parent_id
+            ? $this->products()->count()
+            : Product::whereIn(
+                'category_id',
+                $this->children()->select('id')
+            )->count();
         return [
             'type' => 'category',
             'id' => $this->id,
@@ -22,6 +29,7 @@ class CategoryResource extends JsonResource
                 'nameAr' => $this->name_ar,
                 'nameKu' => $this->name_ku,
                 'icon' => $this->icon,
+                'NumberOfProducts' => $numberOfProducts,
             ],
             'relationships' => [
                 'parent',

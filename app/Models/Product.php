@@ -90,6 +90,9 @@ class Product extends Model
     }
 
     public function scopePriceBetween($query, ...$prices) {
+        if (count($prices) !== 2) {
+            abort(400, 'Invalid price range');
+        }
         return $query->whereBetween('effective_price', $prices);
     }
     

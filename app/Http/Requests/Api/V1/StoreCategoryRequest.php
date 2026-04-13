@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Api\V1\BaseRequests\BaseCategoryRequest;
 
-class StoreCategoryRequest extends FormRequest
+class StoreCategoryRequest extends BaseCategoryRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'data.attributes.nameEn' => ['required', 'string', 'max:32', 'min:3'],
-            'data.attributes.nameKu' => ['required', 'string', 'max:32', 'min:3'],
-            'data.attributes.nameAr' => ['required', 'string', 'max:32', 'min:3'],
+            // 'data.attributes.nameEn' => ['required', 'string', 'max:32', 'min:3'],
+            // 'data.attributes.nameKu' => ['required', 'string', 'max:32', 'min:3'],
+            // 'data.attributes.nameAr' => ['required', 'string', 'max:32', 'min:3'],
             'data.attributes.icon' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'data.relationships.parent.data.id' => ['sometimes', 'integer', 'exists:categories,id'],
         ];

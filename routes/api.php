@@ -33,6 +33,8 @@ Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctu
 
 Route::apiResource('categories', CategoryController::class)->only('index', 'show');
 Route::post('categories', [CategoryController::class, 'store'])->middleware('auth:sanctum');
+Route::patch('categories/{category_id}', [CategoryController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('categories/{category_id}', [CategoryController::class, 'destroy'])->middleware('auth:sanctum');
 
 
 Route::apiResource('products', ProductController::class);

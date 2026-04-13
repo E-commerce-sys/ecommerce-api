@@ -13,11 +13,6 @@ class CategoryPolicy
         return $user->can('category:create');
     }
 
-    public function replace(User $user, Category $category): bool
-    {
-        return $user->can('category:replace');
-    }
-    
     public function update(User $user, Category $category): bool
     {
        return $user->can('category:update');

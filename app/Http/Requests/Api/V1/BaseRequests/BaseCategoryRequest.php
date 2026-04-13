@@ -24,4 +24,12 @@ class BaseCategoryRequest extends FormRequest
         }
         return $attributesToUpdate;
     }  
+
+    public function messages() {
+        return [
+            'data.attributes.nameEn.regex' => 'Only English characters are allowed',
+            'data.attributes.nameKu.regex' => 'Only Kurdish characters are allowed',
+            'data.attributes.nameAr.regex' => 'Only Arabic characters are allowed',
+        ];
+    }
 }

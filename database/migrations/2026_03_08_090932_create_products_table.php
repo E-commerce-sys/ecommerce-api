@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description_en');
             $table->text('description_ar');
             $table->text('description_ku');
-            $table->foreignId('category_id')->constrained('categories')->onDelete('set null');
+            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->decimal('price', 8, 2);
             $table->boolean('has_discount')->default(false);
             $table->integer('discount_percentage')->default(0);

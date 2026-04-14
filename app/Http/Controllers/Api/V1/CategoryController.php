@@ -33,7 +33,7 @@ class CategoryController extends ApiController
         $mappedAttributes = $request->mappedAttributes();
         $iconFile = $request->file('data.attributes.icon');
         if ($iconFile) {
-            $iconFile->store('all-images/subcategory-icons', 's3');
+            $path = $iconFile->store('all-images/subcategory-icons', 's3');
             $mappedAttributes['icon'] = Storage::disk('s3')->url($path);
         }
         $category = Category::create($mappedAttributes);

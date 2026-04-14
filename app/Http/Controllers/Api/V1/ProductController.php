@@ -9,7 +9,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class ProductController extends Controller
+class ProductController extends ApiController
 {
     public function index() {
         return ProductResource::collection(
@@ -38,7 +38,11 @@ class ProductController extends Controller
     }
 
     public function store(StoreProductRequest $request) {
-        
+        $this->authorize('create', Product::class);
+        $mappedAttributes = $request->mappedAttributes();
+        $product = Product::create($mappedAttributes);
+        dd($product);
+        return new ProductResource($product);
     }
 
     public function getSimilarProducts(Request $request) {

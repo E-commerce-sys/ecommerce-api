@@ -31,14 +31,17 @@ Route::get('user', [UserController::class, 'show'])->middleware('auth:sanctum');
 Route::delete('user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
 Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctum');
 
-Route::apiResource('categories', CategoryController::class)->only('index', 'show');
+Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::post('categories', [CategoryController::class, 'store'])->middleware('auth:sanctum');
 Route::patch('categories/{category_id}', [CategoryController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('categories/{category_id}', [CategoryController::class, 'destroy'])->middleware('auth:sanctum');
 
 
-Route::apiResource('products', ProductController::class);
+Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+Route::post('products', [ProductController::class, 'store'])->middleware('auth:sanctum');
+
 Route::get('similar-products', [ProductController::class, 'getSimilarProducts']);
+
 Route::apiResource('banners', BannerController::class);
 Route::apiResource('contacts', ContactController::class);
 

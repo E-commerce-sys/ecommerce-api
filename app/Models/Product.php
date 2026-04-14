@@ -117,6 +117,7 @@ class Product extends Model
 
     public static function allowedIncludes() {
         return [
+            'images',
             'category',
             'variants',
             'variants.color',

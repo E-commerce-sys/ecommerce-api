@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1;
 
+use App\Http\Resources\Api\V1\ProductVariantResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -50,6 +51,13 @@ class ProductResource extends JsonResource
                         'related' => route('categories.show', ['category' => $this->category_id])
                     ]
                 ],
+                'images' => $this->when($this->relationLoaded('images'), fn() => [
+                        'data' => ProductImageResource::collection($this->images)->map(fn($image) => [
+                                'type' => 'product-image',
+                                'id'   => $image->id,
+                            ]),
+                    ]
+                ),
                 'variants' => $this->when($this->relationLoaded('variants'), fn() => [
                         'data' => ProductVariantResource::collection($this->variants)->map(fn($variant) => [
                                 'type' => 'product-variant',
@@ -74,6 +82,7 @@ class ProductResource extends JsonResource
             ],
             'included' => [
                 'category'      => new CategoryResource($this->whenLoaded('category')),
+                'images'      => ProductImageResource::collection($this->whenLoaded('images')),
                 'variants'      => ProductVariantResource::collection($this->whenLoaded('variants')),
                 'productColors' => ProductColorResource::collection($this->whenLoaded('productColors')),
                 'productSizes' => ProductSizeResource::collection($this->whenLoaded('productSizes')),

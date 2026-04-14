@@ -28,7 +28,7 @@ class UpdateCategoryRequest extends BaseCategoryRequest
                 'string', 
                 'max:32', 
                 'min:3', 
-                'regex:/^[A-Za-z0-9]+$/', 
+                'regex:/^[A-Za-z0-9\s]+$/',
                 'unique:categories,name_en'
             ],
             'data.attributes.nameKu' => [

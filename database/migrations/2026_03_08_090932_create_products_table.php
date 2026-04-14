@@ -66,7 +66,7 @@ return new class extends Migration
 
         Schema::create('product_sizes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('size_label');
             $table->decimal('extra_price', 8, 2)->default(0);
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');

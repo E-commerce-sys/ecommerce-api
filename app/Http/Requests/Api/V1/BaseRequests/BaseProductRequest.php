@@ -47,7 +47,7 @@ class BaseProductRequest extends FormRequest
         if ($this->has('data.included.images')) {
             foreach ($this->input('data.included.images') as $index => $image) {
                 $images[] = [
-                    'image' => data_get($image, 'attributes.image'),
+                    'image' => $this->file('data.included.images.' . $index . '.attributes.image'),
                     'is_primary' => data_get($image, 'attributes.isPrimary', false),
                 ];
             }

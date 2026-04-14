@@ -7,6 +7,8 @@ use App\Http\Requests\Api\V1\StoreProductRequest;
 use App\Http\Resources\Api\V1\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ProductController extends ApiController
@@ -39,10 +41,22 @@ class ProductController extends ApiController
 
     public function store(StoreProductRequest $request) {
         $this->authorize('create', Product::class);
-        $mappedAttributes = $request->mappedAttributes();
-        $product = Product::create($mappedAttributes);
-        dd($product);
-        return new ProductResource($product);
+        return DB::transaction(function () use($request) {
+            $mappedAttributes = $request->mappedAttributes();
+            if ($request->has('data.attributes.newArrivalImage')) {
+                $path = $request->file('data.attributes.newArrivalImage')->store('all-images/product-images/is-new-arrival-images', 's3');
+                $mappedAttributes['new_arrival_image'] = Storage::disk('s3')->url($path);
+            }
+            $product = Product::create($mappedAttributes);
+
+            // storing images
+            $this->storeProductImage($product, $request->mappedImages());
+
+            // storing variants
+            $this->storeProductVariants($product, $request->mappedVariants());
+
+            return new ProductResource($product);
+        });
     }
 
     public function getSimilarProducts(Request $request) {
@@ -50,5 +64,42 @@ class ProductController extends ApiController
         return ProductResource::collection(
             Product::getSimilarProducts($categoryIds)
         );
+    }
+
+
+    // helper function
+    protected function storeProductImage($product, $images) {
+        if ($images) {
+            foreach ($images as $image) {
+                $path = $image['image']->store('all-images/product-images', 's3');
+                $product->images()->create([
+                    'image' => Storage::disk('s3')->url($path),
+                    'is_primary' => $image['is_primary']
+                ]);
+            }
+        }
+    }
+
+    // helper function
+    protected function storeProductVariants($product, $variants) {
+        if ($variants) {
+            foreach ($variants as $variant) {
+                $color = $product->productColors()->create([
+                    'name' => $variant['color']['name'],
+                    'hex_code' => $variant['color']['hex_code'],
+                ]);
+
+                $size = $product->productSizes()->create([
+                    'size_label' => $variant['size']['size_label'],
+                    'extra_price' => $variant['size']['extra_price'],
+                ]);
+
+                $product->variants()->create([
+                    'stock' => $variant['stock'],
+                    'color_id' => $color->id,
+                    'size_id' => $size->id
+                ]);
+            }
+        }
     }
 }

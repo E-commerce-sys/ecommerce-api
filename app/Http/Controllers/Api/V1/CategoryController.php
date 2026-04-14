@@ -43,7 +43,13 @@ class CategoryController extends ApiController
     public function update(UpdateCategoryRequest $request, $category_id) {
         $category = Category::findOrFail($category_id);
         $this->authorize('update', $category);
-        $category->update($request->mappedAttributes());
+        $mappedAttributes = $request->mappedAttributes();
+        $iconFile = $request->file('data.attributes.icon');
+        if ($iconFile) {
+            $path = $iconFile->store('all-images/subcategory-icons', 's3');
+            $mappedAttributes['icon'] = Storage::disk('s3')->url($path);
+        }
+        $category->update($mappedAttributes);
         return new CategoryResource($category);
     }
 

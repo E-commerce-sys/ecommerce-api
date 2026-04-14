@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name_ar')->unique();
             $table->string('name_ku')->unique();
             $table->string('icon')->nullable();
-            $table->foreignId('parent_id')->nullable()->constrained('categories')->nullOnDelete();
+            $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('cascade'); // delete parent category will delete all child categories
             $table->timestamps();
         });
     }

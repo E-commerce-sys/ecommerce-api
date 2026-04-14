@@ -30,6 +30,8 @@ class BaseCategoryRequest extends FormRequest
             'data.attributes.nameEn.regex' => 'Only English characters are allowed',
             'data.attributes.nameKu.regex' => 'Only Kurdish characters are allowed',
             'data.attributes.nameAr.regex' => 'Only Arabic characters are allowed',
+            'data.attributes.icon.required_with' => 'The icon is required when a parent category is selected.',
+            'data.relationships.parent.data.id.required_with' => 'A parent category must be selected when uploading an icon.',
         ];
     }
 }

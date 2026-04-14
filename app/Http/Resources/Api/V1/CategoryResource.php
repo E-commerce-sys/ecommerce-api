@@ -30,6 +30,7 @@ class CategoryResource extends JsonResource
                 'nameKu' => $this->name_ku,
                 'icon' => $this->icon,
                 'NumberOfProducts' => $numberOfProducts,
+                'isParent' => $this->parent_id ? false : true
             ],
             'relationships' => [
                 'parent',

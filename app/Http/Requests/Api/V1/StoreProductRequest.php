@@ -147,6 +147,7 @@ class StoreProductRequest extends BaseProductRequest
             'data.included.variants.*.included.color.attributes.hexCode' => [
                 'required', 
                 'string', 
+                'regex:/^#(?:[0-9a-fA-F]{3}){1,2}$/',
             ],
             'data.included.variants.*.included.size.attributes.sizeLabel' => [
                 'required', 

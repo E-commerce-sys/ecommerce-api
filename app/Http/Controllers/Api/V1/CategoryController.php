@@ -50,7 +50,7 @@ class CategoryController extends ApiController
             $mappedAttributes['icon'] = Storage::disk('s3')->url($path);
         }
         $category->update($mappedAttributes);
-        return new CategoryResource($category);
+        return new CategoryResource($category->fresh());
     }
 
     public function destroy($category_id) {

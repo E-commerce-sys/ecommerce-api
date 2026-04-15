@@ -12,4 +12,9 @@ class ProductPolicy
     {
         return $user->can('product:create');
     }
+
+    public function replace(User $user, Product $product): bool
+    {
+        return $user->can('product:replace');
+    }
 }

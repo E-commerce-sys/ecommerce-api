@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\ReplaceProductRequest;
 use App\Http\Requests\Api\V1\StoreProductRequest;
 use App\Http\Resources\Api\V1\ProductResource;
 use App\Models\Product;
@@ -43,19 +44,58 @@ class ProductController extends ApiController
         $this->authorize('create', Product::class);
         return DB::transaction(function () use($request) {
             $mappedAttributes = $request->mappedAttributes();
-            if ($request->has('data.attributes.newArrivalImage')) {
+            if ($request->hasFile('data.attributes.newArrivalImage')) {
                 $path = $request->file('data.attributes.newArrivalImage')->store('all-images/product-images/is-new-arrival-images', 's3');
                 $mappedAttributes['new_arrival_image'] = Storage::disk('s3')->url($path);
             }
             $product = Product::create($mappedAttributes);
 
             // storing images
-            $this->storeProductImage($product, $request->mappedImages());
+            $this->storeProductImages($product, $request->mappedImages());
 
             // storing variants
             $this->storeProductVariants($product, $request->mappedVariants());
 
             return new ProductResource($product);
+        });
+    }
+
+    public function replace(ReplaceProductRequest $request, $product_id) {
+        $product = Product::findOrFail($product_id);
+        $this->authorize('replace', $product);
+
+        return DB::transaction(function () use ($request, $product) {
+            $mappedAttributes = $request->mappedAttributes();
+            if ($request->hasFile('data.attributes.newArrivalImage')) {
+                if ($product->new_arrival_image) {
+                    $oldPath = str_replace(Storage::disk('s3')->url(''), '', $product->new_arrival_image);
+                    Storage::disk('s3')->delete($oldPath);
+                }
+                $path = $request->file('data.attributes.newArrivalImage')->store('all-images/product-images/is-new-arrival-images', 's3');
+                $mappedAttributes['new_arrival_image'] = Storage::disk('s3')->url($path);
+            }
+            $product->update($mappedAttributes);
+
+            // Wipe and replace images
+            if ($request->has('data.included.images')) {
+                // S3 deletion logic
+                foreach ($product->images as $imageModel) {
+                    if ($imageModel->image) {
+                        $oldPath = str_replace(Storage::disk('s3')->url(''), '', $imageModel->image);
+                        Storage::disk('s3')->delete($oldPath);
+                    }
+                }
+                $product->images()->delete(); 
+                $this->storeProductImages($product, $request->mappedImages());
+            }
+
+            // Wipe and replace variants
+            if ($request->has('data.included.variants')) {
+                $product->variants()->delete();
+                $this->storeProductVariants($product, $request->mappedVariants());
+            }
+
+            return new ProductResource($product->fresh());
         });
     }
 
@@ -68,7 +108,7 @@ class ProductController extends ApiController
 
 
     // helper function
-    protected function storeProductImage($product, $images) {
+    protected function storeProductImages($product, $images) {
         if ($images) {
             foreach ($images as $image) {
                 $path = $image['image']->store('all-images/product-images', 's3');

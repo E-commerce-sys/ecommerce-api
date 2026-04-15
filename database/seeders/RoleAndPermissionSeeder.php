@@ -22,6 +22,7 @@ class RoleAndPermissionSeeder extends Seeder
             'user:replace',
             'user:delete',
 
+            'product:list',
             'product:create',
             'product:update',
             'product:replace',

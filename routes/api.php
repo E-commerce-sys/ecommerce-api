@@ -57,6 +57,7 @@ Route::patch('cart-items', [CartItemController::class, 'update'])->middleware('a
 
 Route::get('user-cart', [CartController::class, 'show'])->middleware('auth:sanctum');
 
+Route::get('orders', [OrderController::class, 'index'])->middleware('auth:sanctum');
 Route::post('order', [OrderController::class, 'store'])->middleware('auth:sanctum');
 Route::get('user-orders', [OrderController::class, 'userOrders'])->middleware('auth:sanctum');
 Route::patch('order/{order_id}', [OrderController::class, 'update'])->middleware('auth:sanctum');

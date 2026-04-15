@@ -16,6 +16,17 @@ class OrderController extends ApiController
 {
     public ?CartItem $outOfStockItem = null;
 
+    public function index() {
+        $this->authorize('viewAny', Order::class);
+        return OrderResource::collection(
+            QueryBuilder::for(Order::class)
+            ->allowedIncludes(Order::allowedIncludes())
+            ->allowedFilters(Order::allowedFilters())
+            ->orderBy('created_at', 'desc')
+            ->get()
+        );
+    }
+
     public function userOrders() {
         return OrderResource::collection(
             QueryBuilder::for(auth('sanctum')->user()->orders())

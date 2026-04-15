@@ -22,6 +22,7 @@ class VerifyOtpRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'userId' => ['required', 'exists:users,id'],
             'otp' => ['required', 'numeric', 'digits:6'],
         ];
     }

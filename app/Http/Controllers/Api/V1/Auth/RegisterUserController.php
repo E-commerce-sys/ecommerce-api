@@ -99,6 +99,9 @@ class RegisterUserController extends ApiController
     }
 
     public function resendOtp(Request $request) {
+        $request->validate([
+            'userId' => 'required|exists:users,id',
+        ]);
         $user = User::findOrFail($request->input('userId'));
 
         if ($user->email_verified_at) {

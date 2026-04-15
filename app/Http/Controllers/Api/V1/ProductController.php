@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ReplaceProductRequest;
 use App\Http\Requests\Api\V1\StoreProductRequest;
 use App\Http\Resources\Api\V1\ProductResource;
@@ -97,6 +96,22 @@ class ProductController extends ApiController
 
             return new ProductResource($product->fresh());
         });
+    }
+
+    public function destroy($product_id) {
+        $product = Product::findOrFail($product_id);
+        $this->authorize('delete', $product);
+        // S3 deletion logic
+        $newArrivalImagePath = str_replace(Storage::disk('s3')->url(''), '', $product->new_arrival_image);
+        Storage::disk('s3')->delete($newArrivalImagePath);
+        foreach ($product->images as $imageModel) {
+            if ($imageModel->image) {
+                $oldPath = str_replace(Storage::disk('s3')->url(''), '', $imageModel->image);
+                Storage::disk('s3')->delete($oldPath);
+            }
+        }
+        $product->delete();
+        return $this->ok([], 'Product deleted successfully!');
     }
 
     public function getSimilarProducts(Request $request) {

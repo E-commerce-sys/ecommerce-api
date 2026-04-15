@@ -17,4 +17,9 @@ class ProductPolicy
     {
         return $user->can('product:replace');
     }
+
+    public function delete(User $user, Product $product): bool
+    {
+        return $user->can('product:delete');
+    }
 }

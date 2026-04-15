@@ -22,8 +22,8 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function address() {
-        return $this->belongsTo(Address::class);
+    public function shippingAddress() {
+        return $this->belongsTo(Address::class, 'shipping_address_id');
     }
 
     public function orderItems() {
@@ -33,6 +33,7 @@ class Order extends Model
     public static function allowedIncludes() {
         return [
             'user',
+            'shippingAddress',
             'orderItems',
             'orderItems.productVariant.product',
             'orderItems.productVariant.product.images',

@@ -54,7 +54,7 @@ return new class extends Migration
 
         Schema::create('product_colors', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('hex_code');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
 

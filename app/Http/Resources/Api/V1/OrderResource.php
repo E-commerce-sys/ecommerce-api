@@ -46,6 +46,8 @@ class OrderResource extends JsonResource
                 ])
             ],
             'included' => [
+                'user' => new UserResource($this->whenLoaded('user')),
+                'shippingAddress' => new AddressResource($this->whenLoaded('shippingAddress')),
                 'OrderItems' => $this->when($this->relationLoaded('orderItems'), fn() => OrderItemResource::collection($this->orderItems))
             ]
         ];

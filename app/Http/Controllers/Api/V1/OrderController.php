@@ -22,8 +22,8 @@ class OrderController extends ApiController
             QueryBuilder::for(Order::class)
             ->allowedIncludes(Order::allowedIncludes())
             ->allowedFilters(Order::allowedFilters())
-            ->orderBy('created_at', 'desc')
-            ->paginate(25)
+            ->orderBy('created_at', 'asc')
+            ->paginate(3)
         );
     }
 

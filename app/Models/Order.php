@@ -3,12 +3,20 @@
 namespace App\Models;
 
 use App\Models\Address;
+use App\States\OrderState;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\ModelStates\HasStates;
 use Spatie\QueryBuilder\AllowedFilter;
 
 class Order extends Model
 {
+    use HasStates;
+
     protected $guarded = [];
+
+    protected $casts = [
+        'status' => OrderState::class,
+    ];
 
     public function user() {
         return $this->belongsTo(User::class);

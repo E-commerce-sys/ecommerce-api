@@ -4,8 +4,8 @@ namespace App\States;
 
 class Pending extends OrderState
 {
-    public function name(): string
+    public function next(): string
     {
-        return 'pending';
+        return Preparing::class;
     }
 }

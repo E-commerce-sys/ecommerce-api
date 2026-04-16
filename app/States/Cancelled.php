@@ -2,10 +2,10 @@
 
 namespace App\States;
 
-class Delivering extends OrderState
+class Cancelled extends OrderState
 {
     public function next(): ?string
     {
-        return Arrived::class;
+        return null;
     }
 }

@@ -4,8 +4,8 @@ namespace App\States;
 
 class Shipping extends OrderState
 {
-    public function name(): string
+    public function next(): string
     {
-        return 'shipping';
+        return Delivering::class;
     }
 }

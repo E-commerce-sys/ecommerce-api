@@ -4,8 +4,8 @@ namespace App\States;
 
 class Arrived extends OrderState
 {
-    public function name(): string
+    public function next(): ?string
     {
-        return 'arrived';
+        return null;
     }
 }

@@ -139,20 +139,19 @@ class ProductController extends ApiController
     protected function storeProductVariants($product, $variants) {
         if ($variants) {
             foreach ($variants as $variant) {
-                $color = $product->productColors()->create([
-                    'name' => $variant['color']['name'],
+                $color = $variant['color'] ? $product->productColors()->create([
                     'hex_code' => $variant['color']['hex_code'],
-                ]);
+                ]) : null;
 
-                $size = $product->productSizes()->create([
+                $size = $variant['size'] ? $product->productSizes()->create([
                     'size_label' => $variant['size']['size_label'],
                     'extra_price' => $variant['size']['extra_price'],
-                ]);
+                ]) : null;
 
                 $product->variants()->create([
                     'stock' => $variant['stock'],
-                    'color_id' => $color->id,
-                    'size_id' => $size->id
+                    'color_id' => $color?->id,
+                    'size_id' => $size?->id
                 ]);
             }
         }

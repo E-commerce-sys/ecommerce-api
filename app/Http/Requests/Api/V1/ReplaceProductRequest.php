@@ -145,18 +145,18 @@ class ReplaceProductRequest extends BaseProductRequest
                 'min:3', 
             ],
             'data.included.variants.*.included.color.attributes.hexCode' => [
-                'required', 
+                'sometimes', 
                 'string', 
                 'regex:/^#(?:[0-9a-fA-F]{3}){1,2}$/',
             ],
             'data.included.variants.*.included.size.attributes.sizeLabel' => [
-                'required', 
+                'sometimes', 
                 'string', 
                 'max:32', 
                 'min:1', 
             ],
             'data.included.variants.*.included.size.attributes.extraPrice' => [
-                'required', 
+                'sometimes', 
                 'numeric', 
                 'min:0',
             ]

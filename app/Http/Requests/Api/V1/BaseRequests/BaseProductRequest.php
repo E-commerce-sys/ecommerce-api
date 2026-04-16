@@ -66,16 +66,15 @@ class BaseProductRequest extends FormRequest
                     'stock' => data_get($variant, 'attributes.stock'),
 
                     // nested color
-                    'color' => [
-                        'name' => data_get($variant, 'included.color.attributes.name'),
+                    'color' => data_get($variant, 'included.color') ? [
                         'hex_code' => data_get($variant, 'included.color.attributes.hexCode'),
-                    ],
+                    ] : null,
 
                     // nested size
-                    'size' => [
+                    'size' => data_get($variant, 'included.size') ? [
                         'size_label' => data_get($variant, 'included.size.attributes.sizeLabel'),
                         'extra_price' => data_get($variant, 'included.size.attributes.extraPrice'),
-                    ],
+                    ] : null,
                 ];
             }
         }

@@ -13,21 +13,11 @@ class UpdateOrderRequest extends BaseOrderRequest
     {
         return true;
     }
-
-    protected function prepareForValidation(): void
-    {
-        // caching order on the request
-        $orderId = $this->route('order_id');
-        if ($orderId) {
-            $this->order = auth('sanctum')->user()->orders()->findOrFail($orderId);
-        }
-    }
-
     
     public function rules(): array
     {
         $rules = [
-            'data.attributes.status' => ['sometimes', 'string', new CancelOrder($this->order->status), 'in:pending,preparing,shipping,delivering,arrived,cancelled'],
+            'data.attributes.status' => ['sometimes', 'string', 'in:pending,preparing,shipping,delivering,arrived,cancelled'],
         ];
 
         return $rules;

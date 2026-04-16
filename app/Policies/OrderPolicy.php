@@ -11,4 +11,9 @@ class OrderPolicy
         return $user->can('product:list');
     }
 
+    public function update(User $user, $order): bool
+    {
+        return $user->can('order:update');
+    }
+
 }

@@ -20,10 +20,10 @@ abstract class OrderState extends State
             ->registerState(Delivering::class)
             ->registerState(Cancelled::class)
 
-            ->allowTransition(Pending::class, Preparing::class) 
-            ->allowTransition(Preparing::class, Shipping::class) 
-            ->allowTransition(Shipping::class, Delivering::class) 
-            ->allowTransition(Delivering::class, Arrived::class) 
+            ->allowTransition(Pending::class, Pending::next()) 
+            ->allowTransition(Preparing::class, Preparing::next()) 
+            ->allowTransition(Shipping::class, Shipping::next()) 
+            ->allowTransition(Delivering::class, Delivering::next()) 
             ->allowTransition(Pending::class, Cancelled::class) 
             ->allowTransition(Preparing::class, Cancelled::class)
         ;

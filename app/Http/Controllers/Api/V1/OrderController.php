@@ -8,6 +8,7 @@ use App\Http\Resources\Api\V1\OrderResource;
 use App\Models\Address;
 use App\Models\CartItem;
 use App\Models\Order;
+use App\States\Cancelled;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -89,10 +90,23 @@ class OrderController extends ApiController
         
     }
 
-    public function update(UpdateOrderRequest $request, $order_id) {
-        $order = $request->order; // cached order
-        $order->update($request->mappedAttributes());
-        return $this->success(new OrderResource($order), 'Order updated successfully!');
+    public function nextStatus($order_id) {
+        $order = Order::findOrFail($order_id);
+        $this->authorize('update', $order);
+        if (is_null($order->status::next())) {
+            return $this->error('Invalid order status transition!', 400);
+        }
+        $order->status->transitionTo($order->status::next());
+        return $this->success(new OrderResource($order), 'Order went into next status successfully!');
+    }
+
+    public function cancelOrder($order_id) {
+        $order = auth('sanctum')->user()->orders()->findOrFail($order_id);
+        if (!$order->status->canTransitionTo(Cancelled::class)) {
+            return $this->error('Order cannot be cancelled! Because it is in ' . class_basename($order->status) . ' status', 400);
+        }
+        $order->status->transitionTo(Cancelled::class);
+        return $this->success(new OrderResource($order), 'Order cancelled successfully!');
     }
 
     public function isOutOfStock($cart) {

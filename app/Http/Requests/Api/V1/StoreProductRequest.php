@@ -35,12 +35,14 @@ class StoreProductRequest extends BaseProductRequest
                 'string', 
                 'max:32', 
                 'min:3', 
+                'unique:products,name_ar'
             ],
             'data.attributes.nameKu' => [
                 'required', 
                 'string', 
                 'max:32', 
                 'min:3', 
+                'unique:products,name_ku'
             ],
             'data.attributes.descriptionEn' => [
                 'required', 

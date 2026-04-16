@@ -7,7 +7,7 @@ use Spatie\ModelStates\StateConfig;
 
 abstract class OrderState extends State
 {
-    abstract public function next(): ?string;
+    abstract public static function next(): ?string;
 
     public static function config(): StateConfig
     {

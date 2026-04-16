@@ -27,20 +27,22 @@ class ReplaceProductRequest extends BaseProductRequest
                 'required', 
                 'string', 
                 'max:32', 
-                'min:3', 
-                'unique:products,name_en'
+                'min:3',
+                Rule::unique('products', 'name_en')->ignore(intval($this->route('product_id')))
             ],
             'data.attributes.nameAr' => [
                 'required', 
                 'string', 
                 'max:32', 
                 'min:3', 
+                Rule::unique('products', 'name_ar')->ignore(intval($this->route('product_id')))
             ],
             'data.attributes.nameKu' => [
                 'required', 
                 'string', 
                 'max:32', 
                 'min:3', 
+                Rule::unique('products', 'name_ku')->ignore(intval($this->route('product_id')))
             ],
             'data.attributes.descriptionEn' => [
                 'required', 
@@ -137,12 +139,6 @@ class ReplaceProductRequest extends BaseProductRequest
                 'required', 
                 'numeric', 
                 'min:0',
-            ],
-            'data.included.variants.*.included.color.attributes.name' => [
-                'required', 
-                'string', 
-                'max:32', 
-                'min:3', 
             ],
             'data.included.variants.*.included.color.attributes.hexCode' => [
                 'sometimes', 

@@ -28,4 +28,16 @@ abstract class OrderState extends State
             ->allowTransition(Preparing::class, Cancelled::class)
         ;
     }
+
+    public static function map(): array
+    {
+        return [
+            'Pending' => Pending::class,
+            'Preparing' => Preparing::class,
+            'Shipping' => Shipping::class,
+            'Delivering' => Delivering::class,
+            'Arrived' => Arrived::class,
+            'Cancelled' => Cancelled::class,
+        ];
+    }   
 }

@@ -18,7 +18,7 @@ class OrderResource extends JsonResource
             'type' => 'order',
             'id' => $this->id,
             'attributes' => [
-                'status' => $this->status,
+                'status' => class_basename($this->status),
                 'discountPercentage' => $this->discount_percentage,
                 'shippingCost' => $this->shipping_cost,
                 'subtotal' => $this->subtotal,

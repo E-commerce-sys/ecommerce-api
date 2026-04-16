@@ -59,7 +59,7 @@ Route::get('user-cart', [CartController::class, 'show'])->middleware('auth:sanct
 
 Route::get('orders', [OrderController::class, 'index'])->middleware('auth:sanctum');
 Route::post('order', [OrderController::class, 'store'])->middleware('auth:sanctum');
-Route::patch('orders/{order_id}/next-status', [OrderController::class, 'nextStatus'])->middleware('auth:sanctum');
+Route::patch('orders/next-status', [OrderController::class, 'nextStatus'])->middleware('auth:sanctum');
 Route::get('user-orders', [OrderController::class, 'userOrders'])->middleware('auth:sanctum');
 Route::patch('user-orders/{order_id}/cancel', [OrderController::class, 'cancelOrder'])->middleware('auth:sanctum');
 

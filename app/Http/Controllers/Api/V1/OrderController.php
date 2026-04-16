@@ -10,6 +10,7 @@ use App\Models\CartItem;
 use App\Models\Order;
 use App\States\Cancelled;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -90,14 +91,21 @@ class OrderController extends ApiController
         
     }
 
-    public function nextStatus($order_id) {
-        $order = Order::findOrFail($order_id);
-        $this->authorize('update', $order);
-        if (is_null($order->status::next())) {
-            return $this->error('Invalid order status transition!', 400);
-        }
-        $order->status->transitionTo($order->status::next());
-        return $this->success(new OrderResource($order), 'Order went into next status successfully!');
+    public function nextStatus(Request $request) {
+        $this->authorize('update', Order::class);
+        $orderIds = $request->query('orderIds', '');
+        $orderIds = array_filter(array_map('intval', explode(',', $orderIds)));
+        $orders = Order::whereIn('id', $orderIds)->get();
+
+        DB::transaction(function () use ($orders) {
+            foreach ($orders as $order) {
+                if (is_null($order->status::next())) {
+                    abort(400, "Invalid order status transition for order {$order->id}");
+                }
+                $order->status->transitionTo($order->status::next());
+            }
+        });
+        return $this->ok([], 'Orders went into next status successfully!');
     }
 
     public function cancelOrder($order_id) {

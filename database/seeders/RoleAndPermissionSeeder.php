@@ -43,6 +43,8 @@ class RoleAndPermissionSeeder extends Seeder
             'order:replace',
             'order:delete',
 
+            'contact:view',
+
             'role:create',
             'role:update',
             'role:replace',

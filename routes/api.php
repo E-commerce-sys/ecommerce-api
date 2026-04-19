@@ -46,7 +46,9 @@ Route::patch('products/{product_id}', [ProductController::class, 'update'])->mid
 Route::get('similar-products', [ProductController::class, 'getSimilarProducts']);
 
 Route::apiResource('banners', BannerController::class);
-Route::apiResource('contacts', ContactController::class);
+
+Route::post('contacts', [ContactController::class, 'store']);
+Route::get('contacts', [ContactController::class, 'index'])->middleware('auth:sanctum');
 
 Route::get('wish-list-items', [WishListItemController::class, 'usersWishListItems'])->middleware('auth:sanctum');
 Route::post('wish-list-items', [WishListItemController::class, 'store'])->middleware('auth:sanctum');

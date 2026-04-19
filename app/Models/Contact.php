@@ -9,7 +9,6 @@ class Contact extends Model
     protected $table = 'contacts';
     protected $guarded = [];
 
-
     public static function allowedIncludes() {
         return [
             'user'

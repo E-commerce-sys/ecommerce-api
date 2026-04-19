@@ -18,6 +18,11 @@ class ProductPolicy
         return $user->can('product:replace');
     }
 
+    public function update(User $user, Product $product): bool
+    {
+        return $user->can('product:update');
+    }
+
     public function delete(User $user, Product $product): bool
     {
         return $user->can('product:delete');

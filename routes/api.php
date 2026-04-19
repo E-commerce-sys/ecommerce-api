@@ -41,6 +41,7 @@ Route::apiResource('products', ProductController::class)->only(['index', 'show']
 Route::post('products', [ProductController::class, 'store'])->middleware('auth:sanctum');
 Route::put('products/{product_id}', [ProductController::class, 'replace'])->middleware('auth:sanctum');
 Route::delete('products/{product_id}', [ProductController::class, 'destroy'])->middleware('auth:sanctum');
+Route::patch('products/{product_id}', [ProductController::class, 'update'])->middleware('auth:sanctum');
 
 Route::get('similar-products', [ProductController::class, 'getSimilarProducts']);
 

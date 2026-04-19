@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\Api\V1\ReplaceProductRequest;
 use App\Http\Requests\Api\V1\StoreProductRequest;
+use App\Http\Requests\Api\V1\UpdateProductRequest;
 use App\Http\Resources\Api\V1\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -96,6 +97,13 @@ class ProductController extends ApiController
 
             return new ProductResource($product->fresh());
         });
+    }
+
+    public function update(UpdateProductRequest $request, $product_id) {
+        $product = Product::findOrFail($product_id);
+        $this->authorize('update', $product);
+        $product->update($request->mappedAttributes());
+        return new ProductResource($product);
     }
 
     public function destroy($product_id) {

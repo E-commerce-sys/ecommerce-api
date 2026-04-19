@@ -34,6 +34,13 @@ class Category extends Model
             'id',
             'name',
             AllowedFilter::exact('parentCategory', 'parent_id')->nullable(),
+            AllowedFilter::callback('hasParent', function ($query, $value) {
+                if (filter_var($value, FILTER_VALIDATE_BOOLEAN)) {
+                    $query->whereNotNull('parent_id');
+                } else {
+                    $query->whereNull('parent_id');
+                }
+            }),
         ];
     }
 

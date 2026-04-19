@@ -3,13 +3,7 @@
 namespace App\Models;
 
 use App\Models\Address;
-use App\States\Arrived;
-use App\States\Cancelled;
-use App\States\Delivering;
 use App\States\OrderState;
-use App\States\Pending;
-use App\States\Preparing;
-use App\States\Shipping;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\ModelStates\HasStates;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -58,8 +52,20 @@ class Order extends Model
             AllowedFilter::callback('status', function ($query, $value) {
                 $map = OrderState::map();
 
+                if (is_array($value)) {
+                    $statuses = [];
+                    foreach($value as $key => $status) {
+                        if (!isset($map[$status])) {
+                            abort(400, $status . 'is an invalid status');
+                        }
+                        $statuses[] = $map[$status];
+                    }
+                    $query->whereIn('status', $statuses);
+                    return;
+                }
+
                 if (!isset($map[$value])) {
-                    abort(400, 'Invalid status');
+                    abort(400, $value . 'is an invalid status');
                 }
 
                 $query->where('status', $map[$value]);

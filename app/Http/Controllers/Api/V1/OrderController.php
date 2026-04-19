@@ -25,7 +25,7 @@ class OrderController extends ApiController
             ->allowedIncludes(Order::allowedIncludes())
             ->allowedFilters(Order::allowedFilters())
             ->orderBy('created_at', 'asc')
-            ->paginate(3)
+            ->paginate(10)
         );
     }
 

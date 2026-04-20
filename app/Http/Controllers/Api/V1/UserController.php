@@ -16,6 +16,8 @@ class UserController extends ApiController
             ->allowedIncludes(User::allowedIncludes())
             ->allowedFilters(User::allowedFilters())
             ->with(['orders', 'roles'])
+            ->orderBy('created_at', 'desc')
+            ->doesntHave('roles')
             ->paginate(10)
         );
     }

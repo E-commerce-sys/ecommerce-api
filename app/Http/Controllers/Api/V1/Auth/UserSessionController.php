@@ -28,6 +28,14 @@ class UserSessionController extends ApiController
             ], 403);
         }
 
+        if (!is_null($user->blocked_at)) {
+            return $this->error([
+                'message' => 'Your account has been blocked.',
+                'userId' => $user->id,
+                'status' => 403
+            ], 403);
+        }
+
         $token = $user->createToken(
             $user->email,
         )->plainTextToken;

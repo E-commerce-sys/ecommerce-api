@@ -10,4 +10,9 @@ class UserPolicy
     {
         return $user->can('user:list');
     }
+
+    public function update(User $user, User $model): bool
+    {
+        return $user->can('user:update');
+    }
 }

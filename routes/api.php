@@ -28,6 +28,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('users', [UserController::class, 'index'])->middleware('auth:sanctum')->name('users.index');
+Route::patch('users/{user_id}', [UserController::class, 'adminUpdate'])->middleware('auth:sanctum');
 Route::get('user', [UserController::class, 'show'])->middleware('auth:sanctum');
 Route::delete('user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
 Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctum');

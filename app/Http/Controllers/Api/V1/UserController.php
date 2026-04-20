@@ -20,8 +20,11 @@ class UserController extends ApiController
         );
     }
 
-    public function adminUpdate(UpdateUserRequest $request) {
-
+    public function adminUpdate(UpdateUserRequest $request, $user_id) {
+        $user = User::findOrFail($user_id);
+        $this->authorize('update', $user);
+        $user->Update($request->mappedAttributes());
+        return new UserResource($user);
     }
 
     public function show() {

@@ -9,28 +9,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens, SoftDeletes, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'address',
-        'password',
-        'otp',
-        'otp_expires_at',
-        'email_verified_at',
-    ];
-
+    protected $guarded = [];
+    
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -67,7 +54,26 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Address::class);
     }
 
+    public function defaultAddress() {
+        return $this->belongsTo(Address::class, 'default_address_id');
+    }
+
+
     public function orders() {
         return $this->hasMany(Order::class);
+    }
+
+    public static function allowedIncludes() {
+        return [
+            'defaultAddress'
+        ];
+    }
+
+    public static function allowedFilters() {
+        return [
+            AllowedFilter::partial('email', 'email'),
+            AllowedFilter::partial('firstName', 'first_name'),
+            AllowedFilter::partial('lastName', 'last_name'),
+        ];
     }
 }

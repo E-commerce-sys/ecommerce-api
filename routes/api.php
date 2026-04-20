@@ -27,6 +27,7 @@ Route::prefix('auth')->group(function () {
     Route::post('/resend-otp', [RegisterUserController::class, 'resendOtp']);
 });
 
+Route::get('users', [UserController::class, 'index'])->middleware('auth:sanctum')->name('users.index');
 Route::get('user', [UserController::class, 'show'])->middleware('auth:sanctum');
 Route::delete('user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
 Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctum');

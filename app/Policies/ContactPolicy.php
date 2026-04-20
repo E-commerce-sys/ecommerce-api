@@ -10,6 +10,6 @@ class ContactPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->can('contact:view', Contact::class);
+        return $user->can('contact:list', Contact::class);
     }
 }

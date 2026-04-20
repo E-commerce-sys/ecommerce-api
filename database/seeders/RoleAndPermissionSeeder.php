@@ -17,6 +17,7 @@ class RoleAndPermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $permissions = [
+            'user:list',
             'user:create',
             'user:update',
             'user:replace',
@@ -43,7 +44,7 @@ class RoleAndPermissionSeeder extends Seeder
             'order:replace',
             'order:delete',
 
-            'contact:view',
+            'contact:list',
 
             'role:create',
             'role:update',

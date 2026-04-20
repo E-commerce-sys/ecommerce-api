@@ -20,6 +20,10 @@ class UserController extends ApiController
         );
     }
 
+    public function adminUpdate(UpdateUserRequest $request) {
+
+    }
+
     public function show() {
         $user = auth('sanctum')->user();
         return new UserResource(

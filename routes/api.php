@@ -29,6 +29,8 @@ Route::prefix('auth')->group(function () {
 
 Route::get('users', [UserController::class, 'index'])->middleware('auth:sanctum')->name('users.index');
 Route::patch('users/{user_id}', [UserController::class, 'adminUpdate'])->middleware('auth:sanctum');
+Route::delete('users/{user_id}', [UserController::class, 'adminDestroy'])->middleware('auth:sanctum');
+Route::patch('users/{user_id}/block', [UserController::class, 'blockUser'])->middleware('auth:sanctum');
 Route::get('user', [UserController::class, 'show'])->middleware('auth:sanctum');
 Route::delete('user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
 Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctum');
@@ -67,7 +69,7 @@ Route::post('order', [OrderController::class, 'store'])->middleware('auth:sanctu
 Route::patch('orders/next-status', [OrderController::class, 'nextStatus'])->middleware('auth:sanctum');
 Route::get('user-orders', [OrderController::class, 'userOrders'])->middleware('auth:sanctum');
 Route::patch('user-orders/{order_id}/cancel', [OrderController::class, 'cancelOrder'])->middleware('auth:sanctum');
-Route::patch('orders/{id}/cancel', [OrderController::class, 'adminCancelOrder'])->middleware('auth:sanctum');
+Route::patch('orders/{order_id}/cancel', [OrderController::class, 'adminCancelOrder'])->middleware('auth:sanctum');
 
 Route::get('user-addresses', [AddressController::class, 'userAddresses'])->middleware('auth:sanctum');
 Route::post('address', [AddressController::class, 'store'])->middleware('auth:sanctum');

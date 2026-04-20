@@ -27,6 +27,22 @@ class UserController extends ApiController
         return new UserResource($user);
     }
 
+    public function adminDestroy($user_id) {
+        $user = User::findOrFail($user_id);
+        $this->authorize('delete', $user);
+        $user->delete();
+        return $this->ok([], 'User deleted successfully!');
+    }
+    
+    public function blockUser($user_id) {
+        $user = User::findOrFail($user_id);
+        $this->authorize('block', $user);
+        $user->update([
+            'blocked_at' => now()
+        ]);
+        return $this->ok([], 'User blocked successfully!');
+    }
+
     public function show() {
         $user = auth('sanctum')->user();
         return new UserResource(

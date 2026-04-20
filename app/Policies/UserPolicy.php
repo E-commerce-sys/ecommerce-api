@@ -15,4 +15,14 @@ class UserPolicy
     {
         return $user->can('user:update');
     }
+
+    public function delete(User $user, User $model): bool
+    {
+        return $user->can('user:delete') && !$model->hasRole('super_admin');
+    }
+
+    public function block(User $user, User $model): bool
+    {
+        return $user->can('user:delete') && !$model->hasRole('super_admin');
+    }
 }

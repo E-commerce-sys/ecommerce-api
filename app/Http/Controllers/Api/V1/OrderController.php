@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\Api\V1\StoreOrderRequest;
-use App\Http\Requests\Api\V1\UpdateOrderRequest;
 use App\Http\Resources\Api\V1\OrderResource;
 use App\Models\Address;
 use App\Models\CartItem;
@@ -115,6 +114,21 @@ class OrderController extends ApiController
         }
         $order->status->transitionTo(Cancelled::class);
         return $this->success(new OrderResource($order), 'Order cancelled successfully!');
+    }
+
+    public function adminCancelOrder($order_id)
+    {
+        $this->authorize('update', Order::class);
+        $order = Order::findOrFail($order_id);
+
+        if (is_null($order->status::next())) {
+            return $this->error("Admin cannot cancel order in " . class_basename($order->status) . " status.", 400);
+        }
+
+        $order->status = Cancelled::class;
+        $order->save();
+
+        return $this->success(new OrderResource($order), 'Order cancelled by Admin.');
     }
 
     public function isOutOfStock($cart) {

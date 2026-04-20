@@ -49,27 +49,7 @@ class Order extends Model
             'id',
             'user_id',
             'address_id',
-            AllowedFilter::callback('status', function ($query, $value) {
-                $map = OrderState::map();
-
-                if (is_array($value)) {
-                    $statuses = [];
-                    foreach($value as $key => $status) {
-                        if (!isset($map[$status])) {
-                            abort(400, $status . 'is an invalid status');
-                        }
-                        $statuses[] = $map[$status];
-                    }
-                    $query->whereIn('status', $statuses);
-                    return;
-                }
-
-                if (!isset($map[$value])) {
-                    abort(400, $value . 'is an invalid status');
-                }
-
-                $query->where('status', $map[$value]);
-            })
+            AllowedFilter::exact('status', 'status'),
         ];
     }
 }

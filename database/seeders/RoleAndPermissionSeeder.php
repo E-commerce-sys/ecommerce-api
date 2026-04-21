@@ -17,6 +17,7 @@ class RoleAndPermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $permissions = [
+            'admin:list',
             'user:list',
             'user:create',
             'user:update',
@@ -68,6 +69,7 @@ class RoleAndPermissionSeeder extends Seeder
         $admin->givePermissionTo(array_diff(
             $permissions, 
             [
+                'admin:list',
                 'role:create',
                 'role:update',
                 'role:replace',

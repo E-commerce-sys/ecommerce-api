@@ -24,7 +24,6 @@ class UserResource extends JsonResource
                 'firstName' => $this->first_name,
                 'lastName' => $this->last_name,
                 'email' => $this->email,
-                'address' => $this->address,    
                 $this->mergeWhen($request->user()?->hasRole('super_admin') || $request->user()?->hasRole('admin'), [
                     'isSuperAdmin' => $this->hasRole('super_admin'),    
                     'isAdmin' => $this->hasRole('admin'),
@@ -36,8 +35,10 @@ class UserResource extends JsonResource
                         'numArrivedOrders' => $this->orders->where('status', Arrived::$name)->count(),
                     ])
                 ]),
-                
             ],
+            'included' => [
+                'mainAddress' => new AddressResource($this->mainAddress),
+            ]
         ];
     }
 }

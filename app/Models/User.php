@@ -54,8 +54,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Address::class);
     }
 
-    public function defaultAddress() {
-        return $this->belongsTo(Address::class, 'default_address_id');
+    public function mainAddress() {
+        return $this->belongsTo(Address::class, 'main_address_id');
     }
 
 
@@ -65,7 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public static function allowedIncludes() {
         return [
-            'defaultAddress'
+            'mainAddress'
         ];
     }
 

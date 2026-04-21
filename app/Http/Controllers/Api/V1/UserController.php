@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Resources\Api\V1\StaffResource;
 use App\Http\Resources\Api\V1\UpdateUserRequest;
 use App\Http\Resources\Api\V1\UserResource;
 use App\Models\User;
@@ -63,5 +64,18 @@ class UserController extends ApiController
         $user = auth('sanctum')->user();
         $user->delete();
         return $this->ok([], 'User deleted successfully!');
+    }
+
+    public function getStaff() {
+        $this->authorize('listAdmins', User::class);
+        return StaffResource::collection(
+            QueryBuilder::for(User::class)
+            ->allowedIncludes(User::allowedIncludes())
+            ->allowedFilters(User::allowedFilters())
+            ->with(['roles', 'roles.permissions', 'permissions'])
+            ->orderBy('created_at', 'desc')
+            ->has('roles')
+            ->paginate(10)
+        );
     }
 }

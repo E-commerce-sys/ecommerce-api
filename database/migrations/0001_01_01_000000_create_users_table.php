@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->foreignId('default_address_id')->nullable()->constrained('addresses');
+            $table->foreignId('main_address_id')->nullable()->constrained('addresses');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('otp')->nullable();

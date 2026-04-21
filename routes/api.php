@@ -34,6 +34,7 @@ Route::patch('users/{user_id}/block', [UserController::class, 'blockUser'])->mid
 Route::get('user', [UserController::class, 'show'])->middleware('auth:sanctum');
 Route::delete('user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
 Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctum');
+Route::get('staff-list', [UserController::class, 'getStaff'])->middleware('auth:sanctum');
 
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::post('categories', [CategoryController::class, 'store'])->middleware('auth:sanctum');

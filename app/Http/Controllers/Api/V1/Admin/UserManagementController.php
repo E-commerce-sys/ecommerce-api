@@ -86,7 +86,7 @@ class UserManagementController extends ApiController
 
     public function staff(): AnonymousResourceCollection
     {
-        $this->authorize('listAdmins', User::class);
+        $this->authorize('listStaff', User::class);
 
         return StaffResource::collection(
             QueryBuilder::for(User::class)

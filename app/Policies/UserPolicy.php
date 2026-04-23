@@ -26,7 +26,7 @@ class UserPolicy
         return $user->can('user:delete') && !$model->hasRole('super_admin');
     }
 
-    public function listAdmins(User $user) {
+    public function listStaff(User $user) {
         return $user->can('admin:list');
     }
 }

@@ -27,7 +27,7 @@ class UserResource extends JsonResource
                 $this->mergeWhen($request->user()?->hasRole('super_admin') || $request->user()?->hasRole('admin'), [
                     'isSuperAdmin' => $this->hasRole('super_admin'),    
                     'isAdmin' => $this->hasRole('admin'),
-                    $this->mergeWhen($request->routeIs('users.index'), [
+                    $this->mergeWhen($request->routeIs('admin.users.index'), [
                         'isBlocked' => $this->blocked_at ? true : false,
                         'isVerified' => $this->email_verified_at ? true : false,
                         'numOfOrders' => $this->orders->count(),

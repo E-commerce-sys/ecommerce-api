@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Api\V1\ApiController;
+use App\Http\Requests\Api\V1\StoreUserRequest;
 use App\Http\Resources\Api\V1\StaffResource;
 use App\Http\Resources\Api\V1\UpdateUserRequest;
 use App\Http\Resources\Api\V1\UserResource;
@@ -97,5 +98,13 @@ class UserManagementController extends ApiController
                 ->has('roles')
                 ->paginate(10)
         );
+    }
+
+    public function createAdmin(StoreUserRequest $request): UserResource
+    {
+        $this->authorize('createAdmin', User::class);
+        $user = User::create($request->mappedAttributes());
+        $user->assignRole('admin');
+        return new UserResource($user);
     }
 }

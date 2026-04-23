@@ -29,4 +29,8 @@ class UserPolicy
     public function listStaff(User $user) {
         return $user->can('admin:list');
     }
+
+    public function createAdmin(User $user) {
+        return $user->can('admin:create');
+    }
 }

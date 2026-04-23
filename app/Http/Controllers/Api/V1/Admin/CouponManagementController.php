@@ -6,11 +6,12 @@ use App\Http\Controllers\Api\V1\ApiController;
 use App\Http\Requests\Api\V1\StoreCouponRequest;
 use App\Http\Resources\Api\V1\CouponResource;
 use App\Models\Coupon;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CouponManagementController extends ApiController
 {
-    public function index() {
+    public function index() : AnonymousResourceCollection {
         $this->authorize('viewAny', Coupon::class);
         $per_page = request('per_page', 10);
         return CouponResource::collection(

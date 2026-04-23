@@ -18,6 +18,11 @@ class RoleAndPermissionSeeder extends Seeder
 
         $permissions = [
             'admin:list',
+            'admin:create',
+            'admin:update',
+            'admin:replace',
+            'admin:delete',
+            
             'user:list',
             'user:create',
             'user:update',

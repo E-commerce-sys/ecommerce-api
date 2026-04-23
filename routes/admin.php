@@ -15,6 +15,7 @@ Route::prefix('admin')->middleware('auth:sanctum')->name('admin.')->group(functi
     Route::patch('users/{user_id}/block', [UserManagementController::class, 'block'])->name('users.block');
     Route::patch('users/{user_id}/unblock', [UserManagementController::class, 'unblock'])->name('users.unblock');
     Route::get('staff-list', [UserManagementController::class, 'staff'])->name('staff.index');
+    Route::post('create-admin', [UserManagementController::class, 'createAdmin'])->name('users.create-admin');
 
     Route::post('categories', [CategoryManagementController::class, 'store'])->name('categories.store');
     Route::patch('categories/{category_id}', [CategoryManagementController::class, 'update'])->name('categories.update');

@@ -43,7 +43,7 @@ class UserResource extends JsonResource
                 ),
             ],
             'included' => [
-                'mainAddress' => new AddressResource($this->mainAddress),
+                'mainAddress' => new AddressResource($this->whenLoaded('mainAddress')),
             ],
         ];
     }

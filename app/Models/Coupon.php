@@ -7,7 +7,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class Coupon extends Model
 {
-    protected $guraded = [];
+    protected $guarded = [];
 
     public function user() {
         return $this->belongsTo(User::class);

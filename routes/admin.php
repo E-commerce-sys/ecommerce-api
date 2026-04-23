@@ -32,4 +32,5 @@ Route::prefix('admin')->middleware('auth:sanctum')->name('admin.')->group(functi
     Route::patch('orders/{order_id}/cancel', [OrderManagementController::class, 'cancel'])->name('orders.cancel');
 
     Route::get('coupons', [CouponManagementController::class, 'index'])->name('coupons.index');
+    Route::post('coupons', [CouponManagementController::class, 'store'])->name('coupons.store');
 });

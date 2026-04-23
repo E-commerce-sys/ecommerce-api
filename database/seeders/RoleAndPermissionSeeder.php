@@ -47,6 +47,12 @@ class RoleAndPermissionSeeder extends Seeder
 
             'contact:list',
 
+            'coupon:list', 
+            'coupon:create',
+            'coupon:update',
+            'coupon:replace',
+            'coupon:delete',
+
             'role:create',
             'role:update',
             'role:replace',

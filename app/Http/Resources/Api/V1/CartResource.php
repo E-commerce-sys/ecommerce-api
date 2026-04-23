@@ -20,7 +20,8 @@ class CartResource extends JsonResource
             'attributes' => [
                 'shippingCost' => $this->shipping_cost,
                 'subtotal' => $this->subtotal,
-                'totalPrice' => $this->total_price
+                'totalPrice' => $this->total_price,
+                'couponIsApplied' => $this->coupon_id ? true : false
             ],
             'relationships' => [
                 'user' => [

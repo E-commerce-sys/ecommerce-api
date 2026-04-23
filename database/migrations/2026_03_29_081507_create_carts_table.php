@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('subtotal', 8, 2)->default(0);
             $table->decimal('shipping_cost')->default(0);
             $table->decimal('total_price', 8, 2)->default(0);
+            $table->foreignId('coupon_id')->nullable()->constrained('coupons')->onDelete('set null');
             $table->softDeletes();
             $table->timestamps();
         });

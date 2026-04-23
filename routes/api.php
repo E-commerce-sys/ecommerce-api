@@ -27,34 +27,19 @@ Route::prefix('auth')->group(function () {
     Route::post('/resend-otp', [RegisterUserController::class, 'resendOtp']);
 });
 
-Route::get('users', [UserController::class, 'index'])->middleware('auth:sanctum')->name('users.index');
-Route::patch('users/{user_id}', [UserController::class, 'adminUpdate'])->middleware('auth:sanctum');
-Route::delete('users/{user_id}', [UserController::class, 'adminDestroy'])->middleware('auth:sanctum');
-Route::patch('users/{user_id}/block', [UserController::class, 'blockUser'])->middleware('auth:sanctum');
-Route::patch('users/{user_id}/unblock', [UserController::class, 'unblockUser'])->middleware('auth:sanctum');
 Route::get('user', [UserController::class, 'show'])->middleware('auth:sanctum');
 Route::delete('user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
 Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctum');
-Route::get('staff-list', [UserController::class, 'getStaff'])->middleware('auth:sanctum');
 
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
-Route::post('categories', [CategoryController::class, 'store'])->middleware('auth:sanctum');
-Route::patch('categories/{category_id}', [CategoryController::class, 'update'])->middleware('auth:sanctum');
-Route::delete('categories/{category_id}', [CategoryController::class, 'destroy'])->middleware('auth:sanctum');
-
 
 Route::apiResource('products', ProductController::class)->only(['index', 'show']);
-Route::post('products', [ProductController::class, 'store'])->middleware('auth:sanctum');
-Route::put('products/{product_id}', [ProductController::class, 'replace'])->middleware('auth:sanctum');
-Route::delete('products/{product_id}', [ProductController::class, 'destroy'])->middleware('auth:sanctum');
-Route::patch('products/{product_id}', [ProductController::class, 'update'])->middleware('auth:sanctum');
 
 Route::get('similar-products', [ProductController::class, 'getSimilarProducts']);
 
 Route::apiResource('banners', BannerController::class);
 
 Route::post('contacts', [ContactController::class, 'store']);
-Route::get('contacts', [ContactController::class, 'index'])->middleware('auth:sanctum');
 
 Route::get('wish-list-items', [WishListItemController::class, 'usersWishListItems'])->middleware('auth:sanctum');
 Route::post('wish-list-items', [WishListItemController::class, 'store'])->middleware('auth:sanctum');
@@ -66,12 +51,9 @@ Route::patch('cart-items', [CartItemController::class, 'update'])->middleware('a
 
 Route::get('user-cart', [CartController::class, 'show'])->middleware('auth:sanctum');
 
-Route::get('orders', [OrderController::class, 'index'])->middleware('auth:sanctum');
 Route::post('order', [OrderController::class, 'store'])->middleware('auth:sanctum');
-Route::patch('orders/next-status', [OrderController::class, 'nextStatus'])->middleware('auth:sanctum');
 Route::get('user-orders', [OrderController::class, 'userOrders'])->middleware('auth:sanctum');
 Route::patch('user-orders/{order_id}/cancel', [OrderController::class, 'cancelOrder'])->middleware('auth:sanctum');
-Route::patch('orders/{order_id}/cancel', [OrderController::class, 'adminCancelOrder'])->middleware('auth:sanctum');
 
 Route::get('user-addresses', [AddressController::class, 'userAddresses'])->middleware('auth:sanctum');
 Route::post('address', [AddressController::class, 'store'])->middleware('auth:sanctum');

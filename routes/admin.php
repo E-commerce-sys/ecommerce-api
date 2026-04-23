@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\Admin\CategoryManagementController;
 use App\Http\Controllers\Api\V1\Admin\ContactSubmissionController;
+use App\Http\Controllers\Api\V1\Admin\CouponManagementController;
 use App\Http\Controllers\Api\V1\Admin\OrderManagementController;
 use App\Http\Controllers\Api\V1\Admin\ProductManagementController;
 use App\Http\Controllers\Api\V1\Admin\UserManagementController;
@@ -29,4 +30,6 @@ Route::prefix('admin')->middleware('auth:sanctum')->name('admin.')->group(functi
     Route::get('orders', [OrderManagementController::class, 'index'])->name('orders.index');
     Route::patch('orders/next-status', [OrderManagementController::class, 'advanceStatus'])->name('orders.advance-status');
     Route::patch('orders/{order_id}/cancel', [OrderManagementController::class, 'cancel'])->name('orders.cancel');
+
+    Route::get('coupons', [CouponManagementController::class, 'index'])->name('coupons.index');
 });

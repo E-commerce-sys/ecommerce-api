@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('code')->unique();
             $table->integer('discount_percentage')->default(0);
-            $table->boolean('is_active')->default(false);
             $table->timestamp('expires_at')->nullable();
             $table->decimal('max_applicable_price', 8, 2)->default(0);
             $table->timestamps();

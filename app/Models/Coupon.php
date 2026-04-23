@@ -27,4 +27,8 @@ class Coupon extends Model
             'user'
         ];
     }
+
+    protected $casts = [
+        'expires_at' => 'datetime',
+    ];
 }

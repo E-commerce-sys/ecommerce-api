@@ -3,12 +3,15 @@
 use App\Http\Controllers\Api\V1\Admin\CategoryManagementController;
 use App\Http\Controllers\Api\V1\Admin\ContactSubmissionController;
 use App\Http\Controllers\Api\V1\Admin\CouponManagementController;
+use App\Http\Controllers\Api\V1\Admin\DashboardStatisticsController;
 use App\Http\Controllers\Api\V1\Admin\OrderManagementController;
 use App\Http\Controllers\Api\V1\Admin\ProductManagementController;
 use App\Http\Controllers\Api\V1\Admin\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->middleware('auth:sanctum')->name('admin.')->group(function () {
+    Route::get('dashboard-statistics', DashboardStatisticsController::class)->name('dashboard.statistics');
+
     Route::get('users', [UserManagementController::class, 'index'])->name('users.index');
     Route::patch('users/{user_id}', [UserManagementController::class, 'update'])->name('users.update');
     Route::delete('users/{user_id}', [UserManagementController::class, 'destroy'])->name('users.destroy');

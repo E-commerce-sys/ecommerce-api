@@ -40,10 +40,25 @@ class UserController extends ApiController
     public function blockUser($user_id) {
         $user = User::findOrFail($user_id);
         $this->authorize('block', $user);
+        if (!is_null($user->blocked_at)) {
+            return $this->error('User is already blocked', 409);
+        }
         $user->update([
             'blocked_at' => now()
         ]);
         return $this->ok([], 'User blocked successfully!');
+    }
+
+    public function unblockUser($user_id) {
+        $user = User::findOrFail($user_id);
+        $this->authorize('block', $user);
+        if (is_null($user->blocked_at)) {
+            return $this->error('User is not blocked', 409);
+        }
+        $user->update([
+            'blocked_at' => null
+        ]);
+        return $this->ok([], 'User unblocked successfully!');
     }
 
     public function show() {

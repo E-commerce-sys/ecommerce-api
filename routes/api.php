@@ -31,6 +31,7 @@ Route::get('users', [UserController::class, 'index'])->middleware('auth:sanctum'
 Route::patch('users/{user_id}', [UserController::class, 'adminUpdate'])->middleware('auth:sanctum');
 Route::delete('users/{user_id}', [UserController::class, 'adminDestroy'])->middleware('auth:sanctum');
 Route::patch('users/{user_id}/block', [UserController::class, 'blockUser'])->middleware('auth:sanctum');
+Route::patch('users/{user_id}/unblock', [UserController::class, 'unblockUser'])->middleware('auth:sanctum');
 Route::get('user', [UserController::class, 'show'])->middleware('auth:sanctum');
 Route::delete('user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
 Route::patch('user', [UserController::class, 'update'])->middleware('auth:sanctum');

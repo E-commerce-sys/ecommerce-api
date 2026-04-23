@@ -71,9 +71,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public static function allowedFilters() {
         return [
+            AllowedFilter::exact('firstName', 'first_name'),
+            AllowedFilter::partial('firstNameContains', 'first_name'),
+            AllowedFilter::beginsWithStrict('firstNameStartsWith', 'first_name'),
+            AllowedFilter::endsWithStrict('firstNameEndsWith', 'first_name'),
+
+            AllowedFilter::exact('lastName', 'last_name'),
+            AllowedFilter::partial('lastNameContains', 'last_name'),
+            AllowedFilter::beginsWithStrict('lastNameStartsWith', 'last_name'),
+            AllowedFilter::endsWithStrict('lastNameEndsWith', 'last_name'),
+
             AllowedFilter::partial('email', 'email'),
-            AllowedFilter::partial('firstName', 'first_name'),
-            AllowedFilter::partial('lastName', 'last_name'),
         ];
     }
 }

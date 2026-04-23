@@ -24,12 +24,7 @@ class CouponManagementController extends ApiController
 
     public function store(StoreCouponRequest $request) {
         $this->authorize('create', Coupon::class);
-        $coupon = Coupon::create(
-            [
-                ...$request->mappedAttributes(),
-                'is_active' => true
-            ]
-        );
+        $coupon = Coupon::create($request->mappedAttributes());
         return new CouponResource($coupon);
     }
 }

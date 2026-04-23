@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CartItemController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ContactController;
+use App\Http\Controllers\Api\V1\CouponController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -50,6 +51,7 @@ Route::delete('cart-items', [CartItemController::class, 'destroy'])->middleware(
 Route::patch('cart-items', [CartItemController::class, 'update'])->middleware('auth:sanctum');
 
 Route::get('user-cart', [CartController::class, 'show'])->middleware('auth:sanctum');
+Route::patch('user-cart/coupon/apply', [CartController::class, 'applyCoupon'])->middleware('auth:sanctum');
 
 Route::post('order', [OrderController::class, 'store'])->middleware('auth:sanctum');
 Route::get('user-orders', [OrderController::class, 'userOrders'])->middleware('auth:sanctum');

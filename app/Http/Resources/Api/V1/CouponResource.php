@@ -20,7 +20,7 @@ class CouponResource extends JsonResource
             'attributes' => [
                 'code' => $this->code,
                 'discountPercentage' => $this->discount_percentage,
-                'isActive' => $this->is_active,
+                'isActive' => $this->expires_at > now(),
                 'expiresAt' => $this->expires_at,
                 'maxApplicablePrice' => $this->max_applicable_price
             ],

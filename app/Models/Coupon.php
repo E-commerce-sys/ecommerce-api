@@ -22,9 +22,17 @@ class Coupon extends Model
         ];
     }
 
-    public static function allowedIncludes(){
+    public static function allowedIncludes() {
         return [
             'user'
         ];
+    }
+
+    protected $casts = [
+        'expires_at' => 'datetime',
+    ];
+
+    public function apply(string $price) : string {
+        return $price - ($price * ($this->discount_percentage / 100));
     }
 }

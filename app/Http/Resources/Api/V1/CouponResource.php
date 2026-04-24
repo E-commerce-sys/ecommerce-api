@@ -22,7 +22,8 @@ class CouponResource extends JsonResource
                 'discountPercentage' => $this->discount_percentage,
                 'isActive' => $this->expires_at > now(),
                 'expiresAt' => $this->expires_at,
-                'maxApplicablePrice' => $this->max_applicable_price
+                'maxApplicablePrice' => $this->max_applicable_price,
+                'isUsed' => $this->is_used
             ],
             'included' => [
                 'user' => new UserResource($this->whenLoaded('user')),

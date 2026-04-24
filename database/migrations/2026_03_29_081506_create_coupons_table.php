@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('discount_percentage')->default(0);
             $table->timestamp('expires_at')->nullable();
             $table->decimal('max_applicable_price', 8, 2)->default(0);
+            $table->boolean('is_used')->default(false);
             $table->timestamps();
         });
     }

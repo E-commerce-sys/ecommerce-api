@@ -20,17 +20,20 @@ class CartController extends ApiController
 
     public function applyCoupon(Request $request) {
         $user = auth('sanctum')->user();
-        $coupon = Coupon::where('code', $request->input('code'))->firstOrFail();
+        $coupon = $user->coupons()->where('code', $request->input('code'))->firstOrFail();
         $usersCart = $user->cart;
         if (is_null($usersCart)) {
             return $this->error('User cart does not exist!', 404);
         }
-        if (!is_null($usersCart->coupon_id)) {
+        if ($coupon->is_used || !is_null($usersCart->coupon_id)) {
             return $this->error('Coupon already applied!', 403);
         }
         $usersCart->update([
             'coupon_id' => $coupon->id,
             'total_price' => $coupon->apply($usersCart->total_price)
+        ]);
+        $coupon->update([
+            'is_used' => true
         ]);
         return $this->ok(new CartResource($usersCart), 'Coupon applied successfully!');
     }

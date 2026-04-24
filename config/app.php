@@ -125,4 +125,6 @@ return [
     
     'server_base_url' => env('SERVER_BASE_URL', 'https://api.exclusive.quest'),
 
+    'site_base_url' => env('SITE_BASE_URL', 'https://exclusive.quest'),
+
 ];

@@ -16,12 +16,8 @@ class CategoryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $numberOfProducts = $this->parent_id
-            ? $this->products()->count()
-            : Product::whereIn(
-                'category_id',
-                $this->children()->select('id')
-            )->count();
+        $user = $request->user('sanctum');
+        
         return [
             'type' => 'category',
             'id' => $this->id,
@@ -30,7 +26,14 @@ class CategoryResource extends JsonResource
                 'nameAr' => $this->name_ar,
                 'nameKu' => $this->name_ku,
                 'icon' => $this->icon,
-                'NumberOfProducts' => $numberOfProducts,
+                
+                'numberOfProducts' => $this->when(
+                    $user?->hasRole('super_admin') || $user?->hasRole('admin'),
+                    fn () => $this->parent_id
+                        ? $this->products_count          // child category
+                        : $this->children_products_count // parent category
+                ),
+
                 'isParent' => $this->parent_id ? false : true
             ],
             'relationships' => [

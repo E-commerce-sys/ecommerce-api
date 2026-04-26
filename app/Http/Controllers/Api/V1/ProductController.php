@@ -24,6 +24,7 @@ class ProductController extends ApiController
                         },
                     ]
                 )
+                ->orderBy(config('app.main_order_by_field'), 'desc')
                 ->paginate(40)
         );
     }

@@ -10,7 +10,7 @@ class BannerController extends Controller
 {
     public function index() {
         return BannerResource::collection(
-            Banner::all()
+            Banner::orderBy(config('app.main_order_by_field'))->get()
         );
     }
 }

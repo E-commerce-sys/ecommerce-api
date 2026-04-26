@@ -8,6 +8,7 @@ use App\Http\Requests\Api\V1\UpdateCategoryRequest;
 use App\Http\Resources\Api\V1\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryManagementController extends ApiController
@@ -27,8 +28,12 @@ class CategoryManagementController extends ApiController
 
         $this->authorize('update', $category);
 
-        $category->update($this->mappedAttributesWithIcon($request));
+        if ($request->hasFile('data.attributes.icon')) {
+            $this->deleteIconFromStorage($category->icon);
+        }
 
+        $category->update($this->mappedAttributesWithIcon($request));
+        
         return new CategoryResource($category->fresh());
     }
 
@@ -37,8 +42,10 @@ class CategoryManagementController extends ApiController
         $category = Category::findOrFail($categoryId);
 
         $this->authorize('delete', $category);
-
+        
         $category->delete();
+
+        $this->deleteIconFromStorage($category->icon);
 
         return $this->ok([], 'Category deleted successfully!');
     }
@@ -57,5 +64,21 @@ class CategoryManagementController extends ApiController
         }
 
         return $mappedAttributes;
+    }
+
+    private function deleteIconFromStorage(?string $iconUrl): bool
+    {
+        if (! $iconUrl) {
+            return false;
+        }
+
+        
+        $oldPath = str_replace(Storage::disk('s3')->url(''), '', $iconUrl);
+
+        if ($oldPath === '') {
+            return false;
+        }
+
+        return Storage::disk('s3')->delete($oldPath);
     }
 }

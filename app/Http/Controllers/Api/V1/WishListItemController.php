@@ -24,8 +24,8 @@ class WishListItemController extends ApiController
     public function store(StoreWishListItemRequest $request) {
         $user = auth('sanctum')->user();
 
-        if ($user->wishListItems()->count() > 56) {
-            return $this->error('You cannot have more than 50 products in your wish list!', 400);
+        if ($user->wishListItems()->count() >= 56) {
+            return $this->error('You cannot have more than 56 products in your wish list!', 400);
         }
 
         $wishlistItem = WishListItem::create([

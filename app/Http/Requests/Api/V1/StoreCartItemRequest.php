@@ -31,7 +31,7 @@ class StoreCartItemRequest extends BaseCartItemRequest
     public function rules(): array
     {
         return [
-            'data.attributes.quantity' => ['required', 'integer', 'min:1'],
+            'data.attributes.quantity' => ['required', 'integer', 'min:1', 'max:500'],
 
             'data.relationships.productVariant.data.id' => [
                 'required',

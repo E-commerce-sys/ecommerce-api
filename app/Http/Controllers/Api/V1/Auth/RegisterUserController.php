@@ -61,7 +61,7 @@ class RegisterUserController extends ApiController
     }
 
     public function verifyOtp(VerifyOtpRequest $request) {
-        $user = User::findOrFail($request->input('userId'));
+        $user = User::where('email', $request->input('email'));
 
         if ($user->hasVerifiedEmail()) {
             return response()->json([
@@ -100,9 +100,9 @@ class RegisterUserController extends ApiController
 
     public function resendOtp(Request $request) {
         $request->validate([
-            'userId' => 'required|exists:users,id',
+            'email' => ['required', 'exists:users,email'],
         ]);
-        $user = User::findOrFail($request->input('userId'));
+        $user = User::where('email', $request->input('email'));
 
         if ($user->email_verified_at) {
             return $this->error('Email is already verified.', 409);

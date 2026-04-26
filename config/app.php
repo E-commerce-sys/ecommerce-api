@@ -127,4 +127,6 @@ return [
 
     'site_base_url' => env('SITE_BASE_URL', 'https://exclusive.quest'),
 
+    'main_order_by_field' => env('MAIN_ORDER_BY_FIELD', 'id'),
+
 ];

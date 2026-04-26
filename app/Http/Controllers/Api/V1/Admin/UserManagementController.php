@@ -23,8 +23,8 @@ class UserManagementController extends ApiController
                 ->allowedIncludes(User::allowedIncludes())
                 ->allowedFilters(User::allowedFilters())
                 ->with(['orders', 'roles'])
-                ->orderBy('created_at', 'desc')
                 ->doesntHave('roles')
+                ->orderBy(config('app.main_order_by_field'), 'desc')
                 ->paginate(10)
         );
     }
@@ -94,8 +94,8 @@ class UserManagementController extends ApiController
                 ->allowedIncludes(User::allowedIncludes())
                 ->allowedFilters(User::allowedFilters())
                 ->with(['roles', 'roles.permissions', 'permissions'])
-                ->orderBy('created_at', 'desc')
                 ->has('roles')
+                ->orderBy(config('app.main_order_by_field'), 'desc')
                 ->paginate(10)
         );
     }

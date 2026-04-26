@@ -151,6 +151,7 @@ class Product extends Model
             ->inRandomOrder()
             ->limit(4)
             ->with('images')
+            ->orderBy(config('app.main_order_by_field'))
             ->get();
     }
 }

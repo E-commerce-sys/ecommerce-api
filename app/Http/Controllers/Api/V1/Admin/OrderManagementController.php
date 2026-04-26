@@ -22,7 +22,7 @@ class OrderManagementController extends ApiController
             QueryBuilder::for(Order::class)
                 ->allowedIncludes(Order::allowedIncludes())
                 ->allowedFilters(Order::allowedFilters())
-                ->orderBy('created_at', 'asc')
+                ->orderBy(config('app.main_order_by_field'), 'desc')
                 ->paginate(10)
         );
     }

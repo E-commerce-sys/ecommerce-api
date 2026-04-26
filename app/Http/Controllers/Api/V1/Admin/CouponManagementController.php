@@ -20,6 +20,7 @@ class CouponManagementController extends ApiController
             QueryBuilder::for(Coupon::class)
             ->allowedFilters(Coupon::allowedFilters())
             ->allowedIncludes(Coupon::allowedIncludes())
+            ->orderBy(config('app.main_order_by_field'), 'desc')
             ->paginate($per_page)
         );
     }

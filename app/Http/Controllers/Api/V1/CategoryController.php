@@ -14,6 +14,7 @@ class CategoryController extends ApiController
             QueryBuilder::for(Category::class)
                 ->allowedFilters(Category::allowedFilters())
                 ->allowedIncludes(Category::allowedIncludes())
+                ->orderBy(config('app.main_order_by_field'))
                 ->get()
         );
     }

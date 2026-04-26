@@ -16,7 +16,7 @@ class WishListItemController extends ApiController
         return WishListItemResource::collection(
             QueryBuilder::for($items)
             ->allowedIncludes(WishListItem::allowedIncludes())
-            ->orderBy('created_at', 'desc')
+            ->orderBy(config('app.main_order_by_field'), 'desc')
             ->paginate(8)
         );
     }

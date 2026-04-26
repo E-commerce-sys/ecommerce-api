@@ -12,7 +12,7 @@ class AddressController extends ApiController
     public function userAddresses() {
         return AddressResource::collection(
             QueryBuilder::for(auth('sanctum')->user()->addresses())
-            ->orderBy('created_at', 'desc')
+            ->orderBy(config('app.main_order_by_field'), 'desc')
             ->get()
         );
     }

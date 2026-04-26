@@ -17,6 +17,7 @@ class ContactSubmissionController extends ApiController
         return ContactResource::collection(
             QueryBuilder::for(Contact::class)
                 ->allowedIncludes(Contact::allowedIncludes())
+                ->orderBy(config('app.main_order_by_field'), 'desc')
                 ->paginate(10)
         );
     }

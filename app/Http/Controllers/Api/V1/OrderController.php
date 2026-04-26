@@ -22,7 +22,7 @@ class OrderController extends ApiController
             QueryBuilder::for(auth('sanctum')->user()->orders())
                 ->allowedIncludes(Order::allowedIncludes())
                 ->allowedFilters(Order::allowedFilters())
-                ->orderBy('created_at', 'desc')
+                ->orderBy(config('app.main_order_by_field'), 'desc')
                 ->get()
         );
     }

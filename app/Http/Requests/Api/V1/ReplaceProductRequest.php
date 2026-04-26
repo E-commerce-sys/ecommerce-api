@@ -119,6 +119,7 @@ class ReplaceProductRequest extends BaseProductRequest
                 'required', 
                 'array', 
                 'min:1',
+                'max:4'
             ],
             'data.included.images.*.attributes.image' => [
                 'required', 

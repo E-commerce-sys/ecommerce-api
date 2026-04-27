@@ -78,7 +78,8 @@ class RegisterUserController extends ApiController
         if (!is_null($user->blocked_at)) {
             return $this->error([
                 'message' => 'Your account has been blocked.',
-                'status' => 403
+                'status' => 403,
+                'source' => 'blockedUser'
             ], 403);
         }
 

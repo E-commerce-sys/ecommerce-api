@@ -23,15 +23,16 @@ class UserSessionController extends ApiController
         if (!$user->hasVerifiedEmail()) {
             return $this->error([
                 'message' => 'Please verify your email address first.',
-                'userId' => $user->id,
-                'status' => 403
+                'status' => 403,
+                'source' => 'emailVerification'
             ], 403);
         }
 
         if (!is_null($user->blocked_at)) {
             return $this->error([
                 'message' => 'Your account has been blocked.',
-                'status' => 403
+                'status' => 403,
+                'source' => 'blockedUser'
             ], 403);
         }
 

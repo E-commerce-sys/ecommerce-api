@@ -6,7 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class BaseWishListItemRequest extends FormRequest
 {
-    public function mappedAttributes() {
+    public function mappedAttributes(): array
+    {
         $attributeMap = [
             'data.relationships.product.data.id' => 'product_id',
         ];
@@ -18,12 +19,15 @@ class BaseWishListItemRequest extends FormRequest
                 $attributesToUpdate[$attribute] = $value;
             }
         }
-        return $attributesToUpdate;
-    } 
 
-    public function messages()
+        return $attributesToUpdate;
+    }
+
+    public function messages(): array
     {
         return [
+            'data.relationships.product.data.id.required' => 'Please choose a product to add to your wishlist.',
+            'data.relationships.product.data.id.exists' => 'The selected wishlist product does not exist.',
             'data.relationships.product.data.id.unique' => 'The product has already been added to your wishlist.',
         ];
     }

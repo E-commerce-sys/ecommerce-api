@@ -22,6 +22,9 @@ class StoreProductRequest extends BaseProductRequest
      */
     public function rules(): array
     {
+        $hasColor = $this->boolean('data.attributes.hasColor');
+        $hasSize = $this->boolean('data.attributes.hasSize');
+        
         return [
             'data.attributes.nameEn' => [
                 'required', 
@@ -142,12 +145,14 @@ class StoreProductRequest extends BaseProductRequest
                 'min:0',
             ],
             'data.included.variants.*.included.color.attributes.hexCode' => [
-                'sometimes', 
+                Rule::requiredIf($hasColor),
+                Rule::prohibitedIf(!$hasColor),
                 'string', 
                 'regex:/^#(?:[0-9a-fA-F]{3}){1,2}$/',
             ],
             'data.included.variants.*.included.size.attributes.sizeLabel' => [
-                'sometimes', 
+                Rule::requiredIf($hasSize),
+                Rule::prohibitedIf(!$hasSize), 
                 'string', 
                 'max:32', 
                 'min:1', 
@@ -159,4 +164,44 @@ class StoreProductRequest extends BaseProductRequest
             ]
         ];
     }
+
+    // /**
+    //  * Add custom validation logic after base rules pass.
+    //  * AI GENERATED FUNCTION
+    //  */
+    // public function withValidator($validator): void
+    // {
+    //     $validator->after(function ($validator) {
+    //         $variants = $this->input('data.included.variants', []);
+
+    //         if (empty($variants)) {
+    //             return;
+    //         }
+
+    //         $hasColor = fn($variant) => isset($variant['included']['color']['attributes']['hexCode'])
+    //             && !is_null($variant['included']['color']['attributes']['hexCode']);
+
+    //         $hasSize = fn($variant) => isset($variant['included']['size']['attributes']['sizeLabel'])
+    //             && !is_null($variant['included']['size']['attributes']['sizeLabel']);
+
+    //         $colorStates = array_map($hasColor, $variants);
+    //         $sizeStates  = array_map($hasSize,  $variants);
+
+    //         // If not all variants agree on having/not having color → inconsistent
+    //         if (count(array_unique($colorStates)) > 1) {
+    //             $validator->errors()->add(
+    //                 'data.included.variants',
+    //                 'Color inconsistency: either all variants must have a color or none of them should.'
+    //             );
+    //         }
+
+    //         // If not all variants agree on having/not having size → inconsistent
+    //         if (count(array_unique($sizeStates)) > 1) {
+    //             $validator->errors()->add(
+    //                 'data.included.variants',
+    //                 'Size inconsistency: either all variants must have a size or none of them should.'
+    //             );
+    //         }
+    //     });
+    // }
 }

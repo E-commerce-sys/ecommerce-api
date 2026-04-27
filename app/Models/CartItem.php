@@ -9,6 +9,8 @@ class CartItem extends Model
     protected $table = 'cart_items';
     protected $guarded = [];
 
+    public static $maxQuantity = 100;
+
     public function cart()
     {
         return $this->belongsTo(Cart::class);

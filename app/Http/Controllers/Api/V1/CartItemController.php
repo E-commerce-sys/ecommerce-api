@@ -8,6 +8,7 @@ use App\Http\Resources\Api\V1\CartResource;
 use App\Models\Cart;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
+use Pest\Mutate\Mutators\Logical\BooleanAndToBooleanOr;
 
 class CartItemController extends ApiController
 {
@@ -40,18 +41,7 @@ class CartItemController extends ApiController
 
         // if cart item is already in the cart
         if ($cartItem) {
-            $cartItem->update([
-                'quantity' => $cartItem->quantity + $mappedAttributes['quantity']
-            ]); 
-            $this->calculateTotal($cart);
-             
-            $cart->update([
-                'subtotal' => $this->subtotal,
-                'shipping_cost' => $this->shipping,
-                'total_price' => $this->total,
-            ]);
-
-            return $this->success([], 'Cart updated', 201);
+            return $this->addQuantity($cart, $cartItem, $mappedAttributes['quantity']);
         }  
         
         CartItem::create([
@@ -127,9 +117,28 @@ class CartItemController extends ApiController
     }
 
     // helper function
-    public function calculateTotal($cart) {
+    private function calculateTotal($cart) {
         $this->subtotal = $this->getSubTotal($cart);
         $this->shipping = ($this->subtotal > Cart::$freeShippingLimit) || ($cart->cartItems->isEmpty()) ? 0 : Cart::$shippingCost;
         $this->total = $this->subtotal + $this->shipping;
+    }
+
+    private function addQuantity($cart, $cartItem, $amount) {
+        if ($cartItem->quantity + $amount > CartItem::$maxQuantity) {
+            return $this->error('You cannot add more than ' . CartItem::$maxQuantity . ' items to your cart!', 403);
+        }
+
+        $cartItem->update([
+            'quantity' => $cartItem->quantity + $amount
+        ]); 
+        $this->calculateTotal($cart);
+             
+        $cart->update([
+            'subtotal' => $this->subtotal,
+            'shipping_cost' => $this->shipping,
+            'total_price' => $this->total,
+        ]);
+
+        return $this->success([], 'Quantity of this product was updated in your cart', 201);
     }
 }

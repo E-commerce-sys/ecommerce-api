@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\CartItem;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -30,6 +32,12 @@ return new class extends Migration
             $table->decimal('unit_price', 8, 2);
             $table->timestamps();
         });
+
+
+        DB::statement(
+            'ALTER TABLE cart_items
+            ADD CONSTRAINT check_quantity CHECK (quantity > 0 AND quantity <= ' . CartItem::$maxQuantity . ');'
+        );
     }
 
     /**
@@ -39,5 +47,10 @@ return new class extends Migration
     {
         Schema::dropIfExists('carts');
         Schema::dropIfExists('cart_items');
+
+        DB::statement(
+            'ALTER TABLE cart_items
+            DROP CONSTRAINT check_quantity;'
+        );
     }
 };

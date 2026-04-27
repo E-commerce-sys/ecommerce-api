@@ -29,6 +29,14 @@ class StoreOrderRequest extends BaseOrderRequest
                 'exists:addresses,id',
             ],
 
+            'data.included.address.attributes.addressName' => [
+                Rule::requiredIf($this->boolean('isNewAddress')),
+                Rule::prohibitedIf(!$this->boolean('isNewAddress')),
+                'string',
+                'max:32',
+                'min:3',
+            ],
+
             'data.included.address.attributes.city' => [
                 Rule::requiredIf($this->boolean('isNewAddress')),
                 Rule::prohibitedIf(!$this->boolean('isNewAddress')),

@@ -24,6 +24,7 @@ class BaseOrderRequest extends FormRequest
 
     public function mappedAddressAttributes() : array {
         $attributeMap = [
+            'data.included.address.attributes.addressName' => 'address_name',
             'data.included.address.attributes.city' => 'city',
             'data.included.address.attributes.streetName' => 'street_name',
             'data.included.address.attributes.houseNumber' => 'house_number',

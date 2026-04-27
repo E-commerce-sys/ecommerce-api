@@ -31,7 +31,6 @@ class UserSessionController extends ApiController
         if (!is_null($user->blocked_at)) {
             return $this->error([
                 'message' => 'Your account has been blocked.',
-                'userId' => $user->id,
                 'status' => 403
             ], 403);
         }

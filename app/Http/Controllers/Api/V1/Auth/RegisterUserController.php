@@ -75,6 +75,13 @@ class RegisterUserController extends ApiController
             ], 422);
         }
 
+        if (!is_null($user->blocked_at)) {
+            return $this->error([
+                'message' => 'Your account has been blocked.',
+                'status' => 403
+            ], 403);
+        }
+
         if (!$user->otp || !Hash::check($request->otp, $user->otp)) {
             return response()->json([
                 'message' => 'Invalid OTP.',

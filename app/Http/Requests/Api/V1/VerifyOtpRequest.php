@@ -26,4 +26,15 @@ class VerifyOtpRequest extends FormRequest
             'otp' => ['required', 'numeric', 'digits:6'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'The email address is required to verify the OTP.',
+            'email.exists' => 'No user was found with this email address.',
+            'otp.required' => 'The OTP code is required.',
+            'otp.numeric' => 'The OTP code must contain only numbers.',
+            'otp.digits' => 'The OTP code must be exactly 6 digits.',
+        ];
+    }
 }

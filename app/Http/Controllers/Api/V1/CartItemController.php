@@ -74,7 +74,13 @@ class CartItemController extends ApiController
         )
         ->firstOrFail();
 
-        $cartItem->update($request->mappedAttributes());
+        $mappedAttributes = $request->mappedAttributes();
+
+        if ($cartItem->quantity + $mappedAttributes['quantity']  > CartItem::$maxQuantity) {
+            return $this->error('You cannot add more than ' . CartItem::$maxQuantity . ' items to your cart!', 403);
+        }
+
+        $cartItem->update($mappedAttributes);
 
         $this->calculateTotal($cartItem->cart);
 

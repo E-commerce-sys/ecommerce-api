@@ -33,7 +33,7 @@ class UpdateCartItemRequest extends BaseCartItemRequest
     public function rules(): array
     {
         return [
-            'data.attributes.quantity' => ['sometimes', 'integer', 'min:1'],
+            'data.attributes.quantity' => ['sometimes', 'integer', 'min:1', 'max:100'],
         ];
     }
 }

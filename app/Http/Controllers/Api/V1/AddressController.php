@@ -18,7 +18,11 @@ class AddressController extends ApiController
     }
 
     public function store(StoreAddressRequest $request) {
+        $isMain = $request->boolean('isMain');
         $address = auth('sanctum')->user()->addresses()->create($request->mappedAttributes());
+        if ($isMain) {
+            auth('sanctum')->user()->update(['main_address_id' => $address->id]);
+        }
         return $this->success(new AddressResource($address), 'Address created successfully!', 201);
     }
 

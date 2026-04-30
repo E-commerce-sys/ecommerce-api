@@ -14,6 +14,7 @@ class BaseUserRequest extends FormRequest
             'data.attributes.email' => 'email',
             'data.attributes.password' => 'password',
             'data.attributes.address' => 'address',
+            'data.relationships.mainAddress.data.id' => 'main_address_id',
         ];
 
         $attributesToUpdate = [];

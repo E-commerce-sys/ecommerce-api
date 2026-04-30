@@ -5,6 +5,7 @@ namespace App\Http\Resources\Api\V1;
 use App\Http\Requests\Api\V1\BaseRequests\BaseUserRequest;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends BaseUserRequest
 {
@@ -47,6 +48,11 @@ class UpdateUserRequest extends BaseUserRequest
                 'required_with:data.attributes.password',
                 'string',
             ],
+            'data.relationships.mainAddress.data.id' => [
+                'sometimes',
+                'integer',
+                Rule::exists('addresses', 'id')->where('user_id', $this->user()->id),
+            ]
         ];
     }
 

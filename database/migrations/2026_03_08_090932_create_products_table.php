@@ -87,6 +87,7 @@ return new class extends Migration
             // Composite keys
             $table->unique(['product_id', 'color_id', 'size_id']);
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
